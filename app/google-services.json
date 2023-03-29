@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1036129719958",
+    "firebase_url": "https://dormitory-manager-df9f5-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "dormitory-manager-df9f5",
+    "storage_bucket": "dormitory-manager-df9f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1036129719958:android:ee13257f0129d24869d4b7",
+        "android_client_info": {
+          "package_name": "com.example.dormitorymanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1036129719958-fdjarlv9oobq2vsq336epdbrg5ajd00f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2VwdyrOf8gqN85aVRNdoYxmXV0t9HbP0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1036129719958-fdjarlv9oobq2vsq336epdbrg5ajd00f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
