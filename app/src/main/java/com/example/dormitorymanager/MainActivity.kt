@@ -37,10 +37,9 @@ class MainActivity : AppCompatActivity() {
         menu()
 //endMenu
         binding.btnstart.setOnClickListener {
-            var intent = Intent(this, RegisterActivity::class.java)
+            var intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
-
 
     }
 
@@ -95,6 +94,8 @@ class MainActivity : AppCompatActivity() {
             header.findViewById<TextView>(R.id.textView).setText("")
         }
     }
+
+
     fun checkRole(RoleID:String):String{
         if(RoleID.equals("2")){
             return "Sinh Viên"

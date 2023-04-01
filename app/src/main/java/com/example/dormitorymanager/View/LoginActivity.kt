@@ -42,6 +42,7 @@ class LoginActivity : AppCompatActivity() {
             val users = viewModel.dbRef.child(uid)
 
             if(viewModel.user!=null){
+                //lấy thông tin đăng nhập
                 users.addValueEventListener(object : ValueEventListener{
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if(snapshot.exists()){
