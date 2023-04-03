@@ -1,4 +1,4 @@
-package com.example.dormitorymanager
+package com.example.dormitorymanager.View
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,44 +7,59 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import android.widget.Toolbar
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.dormitorymanager.View.LoginActivity
-import com.example.dormitorymanager.View.RegisterActivity
-import com.example.dormitorymanager.View.RoomActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.dormitorymanager.MainActivity
+import com.example.dormitorymanager.Model.Rooms
+import com.example.dormitorymanager.R
+import com.example.dormitorymanager.ViewModel.ViewModelRoom
 import com.example.dormitorymanager.ViewModel.ViewModelUser
-import com.example.dormitorymanager.databinding.ActivityMainBinding
-import com.example.dormitorymanager.databinding.ActivityRegisterBinding
-import com.google.android.material.navigation.NavigationView
+import com.example.dormitorymanager.databinding.ActivityRoomBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_register.*
+import java.text.FieldPosition
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding:  ActivityMainBinding
+class RoomActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityRoomBinding
+    private lateinit var viewModelRoom: ViewModelRoom
     private lateinit var viewModel : ViewModelUser
+    private lateinit var adapter: AdapterRoom
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = ActivityRoomBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(ViewModelUser::class.java)
-
-//menu
+        viewModelRoom = ViewModelProvider(this).get(ViewModelRoom::class.java)
         menu()
-//endMenu
-        binding.btnstart.setOnClickListener {
-            var intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-        }
+        selectRoom(viewModelRoom.getRoom())
+        setContentView(binding.root)
+    }
+
+    fun addRoom(){
 
     }
 
+
+    fun selectRoom(list: MutableList<Rooms>){
+         adapter = AdapterRoom(list,object : rvInter{
+            override fun onClickRoom(position: Int){
+                Toast.makeText(this@RoomActivity,"bạn đã click vào ${adapter.currentList[position].name}",Toast.LENGTH_SHORT).show()
+            }
+        },this@RoomActivity)
+        binding.rvRoom.adapter = adapter
+        binding.rvRoom.layoutManager =GridLayoutManager(this,
+            3,
+            GridLayoutManager.HORIZONTAL,
+            false)
+
+        //Hàm viewModelRoom.rooms.observe() được sử dụng để đăng ký một Observer cho LiveData được trả về từ ViewModel. Khi dữ liệu trong LiveData được cập nhật, Observer sẽ nhận được thông báo và có thể thực hiện một số hành động liên quan đến dữ liệu đó.
+        viewModelRoom.rooms.observe(this, { rooms ->
+            adapter.setData(rooms.toMutableList())
+        })
+    }
+
+//menu
     fun menu(){
         //dùng nút bấm để hiển thị navigation
         setSupportActionBar(findViewById(R.id.toolbar))
@@ -54,7 +69,7 @@ class MainActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_menu)
         }
-        val header:View =  binding.navLeftmenu.getHeaderView(0)
+        val header: View =  binding.navLeftmenu.getHeaderView(0)
         header.findViewById<TextView>(R.id.textView).text = intent.getStringExtra("fullname")
         header.findViewById<TextView>(R.id.textView2).text = checkRole(intent.getStringExtra("role").toString())
 
@@ -84,8 +99,8 @@ class MainActivity : AppCompatActivity() {
         //lắng nghe sự kiện click lên các sự kiện menu
         binding.navLeftmenu.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.home -> {var intent = Intent(this, RoomActivity::class.java)
-                    startActivity(intent)}
+                R.id.home -> {var intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)}
                 R.id.logout -> {
                     viewModel.Logout()
                     finish()}
@@ -117,6 +132,5 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-
+//end menu
 }
