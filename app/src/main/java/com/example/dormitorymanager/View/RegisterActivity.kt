@@ -64,6 +64,7 @@ class RegisterActivity : AppCompatActivity() {
         binding.txtlogin.setOnClickListener{
             val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 

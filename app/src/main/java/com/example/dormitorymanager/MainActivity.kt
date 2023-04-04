@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
         binding.btnstart.setOnClickListener {
             var intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
     }
@@ -85,7 +86,8 @@ class MainActivity : AppCompatActivity() {
         binding.navLeftmenu.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> {var intent = Intent(this, RoomActivity::class.java)
-                    startActivity(intent)}
+                    startActivity(intent)
+                    finish()}
                 R.id.logout -> {
                     viewModel.Logout()
                     finish()}

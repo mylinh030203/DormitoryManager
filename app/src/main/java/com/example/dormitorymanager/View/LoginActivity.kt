@@ -53,6 +53,7 @@ class LoginActivity : AppCompatActivity() {
                             intent.putExtra("fullname", name )
                             intent.putExtra("role",role_id)
                             startActivity(intent)
+                            finish()
                         }
                     }
 
@@ -68,6 +69,7 @@ class LoginActivity : AppCompatActivity() {
         binding.txtregis.setOnClickListener{
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 

@@ -100,7 +100,8 @@ class RoomActivity : AppCompatActivity() {
         binding.navLeftmenu.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> {var intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)}
+                startActivity(intent)
+                    finish()}
                 R.id.logout -> {
                     viewModel.Logout()
                     finish()}
