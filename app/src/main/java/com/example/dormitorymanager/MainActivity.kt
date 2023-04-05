@@ -1,64 +1,66 @@
 package com.example.dormitorymanager
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import android.widget.Toolbar
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.dormitorymanager.View.LoginActivity
-import com.example.dormitorymanager.View.RegisterActivity
-import com.example.dormitorymanager.View.RoomActivity
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import com.example.dormitorymanager.ViewModel.ViewModelUser
 import com.example.dormitorymanager.databinding.ActivityMainBinding
-import com.example.dormitorymanager.databinding.ActivityRegisterBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_register.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding:  ActivityMainBinding
+    private lateinit var drawerLayout: DrawerLayout
     private lateinit var viewModel : ViewModelUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         viewModel = ViewModelProvider(this).get(ViewModelUser::class.java)
-
-//menu
+        setContentView(binding.root)
+        setupDrawerLayout()
         menu()
-//endMenu
-        binding.btnstart.setOnClickListener {
-            var intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-
     }
 
-    fun menu(){
-        //dùng nút bấm để hiển thị navigation
+    private fun setupDrawerLayout() {
         setSupportActionBar(findViewById(R.id.toolbar))
-        supportActionBar?.setDisplayShowTitleEnabled(true)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_menu)
         }
-        val header:View =  binding.navLeftmenu.getHeaderView(0)
-        header.findViewById<TextView>(R.id.textView).text = intent.getStringExtra("fullname")
-        header.findViewById<TextView>(R.id.textView2).text = checkRole(intent.getStringExtra("role").toString())
 
+        drawerLayout = binding.drawLayout
+        val toggle = ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+    }
+
+    fun menu(){
+
+        val myNavHostFragment   = supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment
+//        val navController  = this.findNavController(R.id.myNavHostFragment)
+        val navController = myNavHostFragment.navController
+        val navView: NavigationView = binding.navLeftmenu
+        NavigationUI.setupWithNavController(navView, navController)
+        drawerLayout = binding.drawLayout
+        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout )
+        val header: View =  binding.navLeftmenu.getHeaderView(0)
+        val textView = header.findViewById<TextView>(R.id.textView)
+        val textView2 = header.findViewById<TextView>(R.id.textView2)
 
         if(viewModel.checkLogin()){
             val uid = viewModel.user?.uid.toString()
@@ -68,8 +70,8 @@ class MainActivity : AppCompatActivity() {
                     if(snapshot.exists()){
                         val name:String = snapshot.child("name").value.toString()
                         var role_id : String = snapshot.child("role_id").value.toString()
-                        header.findViewById<TextView>(R.id.textView).text = name
-                        header.findViewById<TextView>(R.id.textView2).text = checkRole(role_id)
+                        textView.text = name
+                        textView2.text = checkRole(role_id)
                     }
                 }
 
@@ -85,12 +87,13 @@ class MainActivity : AppCompatActivity() {
         //lắng nghe sự kiện click lên các sự kiện menu
         binding.navLeftmenu.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.home -> {var intent = Intent(this, RoomActivity::class.java)
-                    startActivity(intent)
-                    finish()}
+                R.id.home -> {
+                    navController.navigate(R.id.action_homeFragment_to_roomFragment)
+                }
                 R.id.logout -> {
                     viewModel.Logout()
-                    finish()}
+                    finish()
+                }
                 R.id.exit -> Toast.makeText(this, "exit", Toast.LENGTH_SHORT).show()
             }
             true
@@ -110,15 +113,10 @@ class MainActivity : AppCompatActivity() {
         return ""
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                binding.drawLayout.openDrawer(GravityCompat.START)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
 
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = this.findNavController(R.id.myNavHostFragment)
+        return NavigationUI.navigateUp(navController,drawerLayout)
+    }
 
 }

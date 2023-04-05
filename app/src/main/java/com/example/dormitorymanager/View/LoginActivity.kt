@@ -3,10 +3,8 @@ package com.example.dormitorymanager.View
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.dormitorymanager.MainActivity
-import com.example.dormitorymanager.Model.Users
 import com.example.dormitorymanager.ViewModel.ViewModelUser
 import com.example.dormitorymanager.databinding.ActivityLoginBinding
 import com.google.firebase.database.DataSnapshot
@@ -53,7 +51,6 @@ class LoginActivity : AppCompatActivity() {
                             intent.putExtra("fullname", name )
                             intent.putExtra("role",role_id)
                             startActivity(intent)
-                            finish()
                         }
                     }
 

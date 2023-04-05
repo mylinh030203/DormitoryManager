@@ -1,6 +1,5 @@
 package com.example.dormitorymanager.View
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +10,14 @@ import com.example.dormitorymanager.Model.Rooms
 import com.example.dormitorymanager.R
 import kotlinx.android.synthetic.main.layout_item_room.view.*
 
-class AdapterRoom(var list:MutableList<Rooms>, val onClickRoom: rvInter, val context: Context):ListAdapter<Rooms,AdapterRoom.RoomViewHolder>(RoomDiffCallback())  {
+class AdapterRoom(var list:MutableList<Rooms>, val onClickRoom: rvInter, val context: RoomFragment):ListAdapter<Rooms,AdapterRoom.RoomViewHolder>(RoomDiffCallback())  {
 
 
 
     inner class RoomViewHolder(itemView: View):RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.layout_item_room,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_item_room,parent,false)
 
         return RoomViewHolder(view)
 

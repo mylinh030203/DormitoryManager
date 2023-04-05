@@ -48,25 +48,33 @@ class ViewModelUser(application: Application): AndroidViewModel(application) {
                     dbRef.child(id).setValue(userData)
                     _userCreated.value = true
                 }
-                dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        for (childSnapshot in dataSnapshot.children) {
-                            val user = childSnapshot.getValue(Users::class.java)
-                            user?.let {
-                                // Thêm dữ liệu vào Firestore collection
-                                usersCollection.document(user._id).set(user)
-                            }
-                        }
-                    }
 
-                    override fun onCancelled(error: DatabaseError) {
-
-                    }
-                })
             }else{
                 Log.e("TAG","Failes to create user", task.exception)
                 _userCreated.value = false
             }
+            dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (childSnapshot in dataSnapshot.children) {
+                        val user = childSnapshot.getValue(Users::class.java)
+                        user?.let {
+//                                val firestoreUser = hashMapOf(
+//                                    "_id" to user._id,
+//                                    "email" to user.email,
+//                                    "name" to user.Name,
+//                                    "password" to user.Password,
+//                                    "role_id" to user.Role_id)
+                            // Thêm dữ liệu vào Firestore collection
+                            usersCollection.document(user._id).set(user)
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+            })
+
         }
 
     }

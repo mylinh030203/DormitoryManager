@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/roomFragment">
+
+
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.example.dormitorymanager.View.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login">
+
+    </activity>
+    <activity
+        android:id="@+id/registerActivity"
+        android:name="com.example.dormitorymanager.View.RegisterActivity"
+        android:label="activity_register"
+        tools:layout="@layout/activity_register">
+    </activity>
+    <fragment
+        android:id="@+id/addRoomFragment"
+        android:name="com.example.dormitorymanager.View.AddRoomFragment"
+        android:label="fragment_add_room"
+        tools:layout="@layout/fragment_add_room" />
+    <fragment
+        android:id="@+id/roomFragment"
+        android:name="com.example.dormitorymanager.View.RoomFragment"
+        android:label="RoomFragment"
+        tools:layout="@layout/fragment_room" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.dormitorymanager.View.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_registerActivity"
+            app:destination="@id/registerActivity" />
+        <action
+            android:id="@+id/action_homeFragment_to_roomFragment"
+            app:destination="@id/roomFragment" />
+    </fragment>
+</navigation>
