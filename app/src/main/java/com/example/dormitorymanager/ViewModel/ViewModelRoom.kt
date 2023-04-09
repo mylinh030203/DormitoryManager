@@ -17,20 +17,19 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
-class ViewModelRoom : ViewModel()
-{
+class ViewModelRoom : ViewModel() {
     private val db = Firebase.firestore
     val collectionRoom = db.collection("Rooms")
     val _rooms = MutableLiveData<List<Rooms>>()
 
-    val rooms : LiveData<List<Rooms>>
+    val rooms: LiveData<List<Rooms>>
         get() = _rooms
 
-    fun getRoom():MutableList<Rooms>{
+    fun getRoom(): MutableList<Rooms> {
         //lấy hết document trong colection room chuyển nó thành đối tượng Rooms rồi thêm vào list, sau đó cập nhật cho multablelivedata
-        collectionRoom.get().addOnSuccessListener { snapshot->
+        collectionRoom.get().addOnSuccessListener { snapshot ->
             val roomsList = mutableListOf<Rooms>()
-            for(doc in snapshot!!){
+            for (doc in snapshot!!) {
                 val room = doc.toObject(Rooms::class.java)
                 room._id = doc.id
                 roomsList.add(room)
@@ -50,10 +49,38 @@ class ViewModelRoom : ViewModel()
 //    }
 
 
-    fun addRoom(room: Rooms) {
-        val list = _rooms.value?.toMutableList() ?: mutableListOf()
-        list.add(room)
-        _rooms.value = list
+    fun addRoom( beds:String, description:String, location: String, name:String, prices:Long, status: String) {
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
+        coroutineScope.launch {
+            try {
+                val count = countDoc()+1
+                val _id = (count).toString()
+                val room = Rooms(_id, beds, description, location, name, prices, status)
+                val roomDoc = hashMapOf(
+                    "_id" to _id,
+                    "beds" to beds,
+                    "description" to description,
+                    "location" to location,
+                    "name" to name,
+                    "price" to prices,
+                    "status" to status
+                )
+                collectionRoom.document(_id)
+                    .set(roomDoc).addOnSuccessListener {
+                    val list = _rooms.value?.toMutableList() ?: mutableListOf()
+                    list.add(room)
+                    _rooms.value = list
+                    Log.d("TAG", "Đã thêm tài liệu mới với ID: ${it}")
+                }.addOnFailureListener { error ->
+                    Log.e("TAG", "Lỗi khi thêm tài liệu: ", error) }
+            }
+            catch (e: Exception) {
+                // Xử lý lỗi nếu có
+            }
+        }
+
+
+
     }
 
     fun deleteRoom(room: Rooms) {
@@ -67,5 +94,10 @@ class ViewModelRoom : ViewModel()
         val list = _rooms.value?.toMutableList() ?: mutableListOf()
         list[index] = room
         _rooms.value = list
+    }
+
+    suspend fun countDoc(): Int {
+        val querySnapshot = collectionRoom.get().await()
+        return querySnapshot.size()
     }
 }

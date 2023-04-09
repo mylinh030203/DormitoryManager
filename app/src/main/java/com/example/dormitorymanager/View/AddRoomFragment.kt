@@ -1,60 +1,57 @@
 package com.example.dormitorymanager.View
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import com.example.dormitorymanager.Model.Rooms
 import com.example.dormitorymanager.R
+import com.example.dormitorymanager.ViewModel.ViewModelRoom
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AddRoomFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AddRoomFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var viewModelRoom: ViewModelRoom
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_room, container, false)
+        viewModelRoom = ViewModelProvider(this).get(ViewModelRoom::class.java)
+        var view: View = inflater.inflate(R.layout.fragment_add_room,container,false)
+        var edtbed = view.findViewById<EditText>(R.id.beds)
+        var edtDesc = view.findViewById<EditText>(R.id.desc)
+        var edtLoc = view.findViewById<EditText>(R.id.loc)
+        var edtName = view.findViewById<EditText>(R.id.nameR)
+        var edtprice = view.findViewById<EditText>(R.id.price)
+        var edtStatus = view.findViewById<EditText>(R.id.status)
+        var btnadd :Button = view.findViewById(R.id.btnadd)
+        btnadd.setOnClickListener {
+            viewModelRoom.addRoom(edtbed.text.toString(),edtDesc.text.toString(),
+                                    edtLoc.text.toString(),edtName.text.toString(),
+                                    edtprice.text.toString().toLong(),edtStatus.text.toString())
+            viewModelRoom.collectionRoom.get().addOnSuccessListener {
+
+                    Toast.makeText(activity, "Add room success", Toast.LENGTH_SHORT).show()
+                    edtbed.setText("")
+                    edtDesc.setText("")
+                    edtLoc.setText("")
+                    edtName.setText("")
+                    edtprice.setText("")
+                    edtStatus.setText("")
+
+            }.addOnFailureListener { error ->
+                Toast.makeText(activity, "Add room failer", Toast.LENGTH_SHORT).show()
+            }
+
+        }
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AddRoomFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AddRoomFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
+
 }

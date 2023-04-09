@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_main"
+    app:startDestination="@id/roomFragment2">
+    <fragment
+        android:id="@+id/roomFragment2"
+        android:name="com.example.dormitorymanager.View.RoomFragment"
+        android:label="fragment_room"
+        tools:layout="@layout/fragment_room" >
+        <action
+            android:id="@+id/action_roomFragment2_to_addRoomFragment2"
+            app:destination="@id/addRoomFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/addRoomFragment2"
+        android:name="com.example.dormitorymanager.View.AddRoomFragment"
+        android:label="fragment_add_room"
+        tools:layout="@layout/fragment_add_room" />
+</navigation>

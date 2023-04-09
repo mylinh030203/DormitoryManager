@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -16,6 +17,7 @@ import com.example.dormitorymanager.Model.Rooms
 import com.example.dormitorymanager.R
 import com.example.dormitorymanager.ViewModel.ViewModelRoom
 import com.example.dormitorymanager.ViewModel.ViewModelUser
+import kotlinx.android.synthetic.main.fragment_room.view.*
 
 
 class RoomFragment : Fragment() {
@@ -27,12 +29,17 @@ class RoomFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         var view: View = inflater.inflate(R.layout.fragment_room,container,false)
+        var btnaddroom = view.findViewById<Button>(R.id.btnAddRoom)
         viewModel = ViewModelProvider(this).get(ViewModelUser::class.java)
         viewModelRoom = ViewModelProvider(this).get(ViewModelRoom::class.java)
         rvRoom = view.findViewById(R.id.rvRoom)
         // Inflate the layout for this fragment
         selectRoom(viewModelRoom.getRoom())
+        btnaddroom.setOnClickListener {
+            view.findNavController().navigate(R.id.action_roomFragment_to_addRoomFragment)
+        }
         return view
     }
 
@@ -53,5 +60,9 @@ class RoomFragment : Fragment() {
             adapter.setData(rooms.toMutableList())
         })
     }
+
+
+
+
 
 }

@@ -1,16 +1,20 @@
 package com.example.dormitorymanager
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.example.dormitorymanager.View.LoginActivity
 import com.example.dormitorymanager.ViewModel.ViewModelUser
 import com.example.dormitorymanager.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
@@ -19,9 +23,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding:  ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var viewModel : ViewModelUser
+    private lateinit var viewModel: ViewModelUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -29,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupDrawerLayout()
         menu()
+
     }
 
     private fun setupDrawerLayout() {
@@ -49,27 +54,31 @@ class MainActivity : AppCompatActivity() {
         toggle.syncState()
     }
 
-    fun menu(){
+    fun menu() {
 
-        val myNavHostFragment   = supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment
-//        val navController  = this.findNavController(R.id.myNavHostFragment)
+        val myNavHostFragment =
+            supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment
         val navController = myNavHostFragment.navController
+
         val navView: NavigationView = binding.navLeftmenu
         NavigationUI.setupWithNavController(navView, navController)
+
+
         drawerLayout = binding.drawLayout
-        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout )
-        val header: View =  binding.navLeftmenu.getHeaderView(0)
+        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+        val header: View = binding.navLeftmenu.getHeaderView(0)
         val textView = header.findViewById<TextView>(R.id.textView)
         val textView2 = header.findViewById<TextView>(R.id.textView2)
 
-        if(viewModel.checkLogin()){
-            val uid = viewModel.user?.uid.toString()
-            val users = viewModel.dbRef.child(uid)
+        if (viewModel.checkLogin()) {
+            val uid = viewModel.user.value?.uid
+            val users = viewModel.dbRef.child(uid.toString())
+            //lấy thông tin đăng nhập
             users.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    if(snapshot.exists()){
-                        val name:String = snapshot.child("name").value.toString()
-                        var role_id : String = snapshot.child("role_id").value.toString()
+                    if (snapshot.exists()) {
+                        val name: String = snapshot.child("name").value.toString()
+                        var role_id: String = snapshot.child("role_id").value.toString()
                         textView.text = name
                         textView2.text = checkRole(role_id)
                     }
@@ -88,35 +97,83 @@ class MainActivity : AppCompatActivity() {
         binding.navLeftmenu.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> {
-                    navController.navigate(R.id.action_homeFragment_to_roomFragment)
+                    navController.navigate(R.id.action_roomFragment_to_homeFragment)
+
                 }
                 R.id.logout -> {
+                    Log.e("dc",viewModel.checkLogin().toString())
                     viewModel.Logout()
+                    Log.e("dd",viewModel.checkLogin().toString())
                     finish()
+                    val intent = Intent(this,LoginActivity::class.java)
+                    startActivity(intent)
+
                 }
                 R.id.exit -> Toast.makeText(this, "exit", Toast.LENGTH_SHORT).show()
             }
             true
         }
-        if(viewModel.user==null){
+        if (viewModel.checkLogin() == false) {
             header.findViewById<TextView>(R.id.textView).setText("")
         }
+
+//        val bottomNavigationView = binding.bottomNavigationView
+//        bottomNavigationView.setOnItemReselectedListener {
+//            when(it.itemId){
+//                R.id.home->{
+//                    Log.e("aaa",viewModel.checkLogin().toString())
+//                    if(viewModel.checkLogin()){
+//                        replaceFragment(HomeFragment())
+//                    }
+//                    else{
+//                        var intent = Intent(this, LoginActivity::class.java)
+//                        startActivity(intent)
+//                        finish()
+//                    }
+//
+//                }
+//                R.id.room->{
+//                    Log.e("aaa",viewModel.checkLogin().toString())
+//                    if(viewModel.checkLogin()) {
+//                        replaceFragment(RoomFragment())
+//                    }else{
+//                        var intent = Intent(this, LoginActivity::class.java)
+//                        startActivity(intent)
+//                        finish()
+//                    }
+//                }
+//
+//                else -> {
+//
+//                }
+//            }
+//            true
+//        }
+
     }
 
-
-    fun checkRole(RoleID:String):String{
-        if(RoleID.equals("2")){
+    fun checkRole(RoleID: String): String {
+        if (RoleID.equals("2")) {
             return "Sinh Viên"
-        }else if(RoleID.equals("1")){
+        } else if (RoleID.equals("1")) {
             return "Quản lý"
         }
         return ""
     }
 
-
     override fun onSupportNavigateUp(): Boolean {
         val navController = this.findNavController(R.id.myNavHostFragment)
-        return NavigationUI.navigateUp(navController,drawerLayout)
+        return NavigationUI.navigateUp(navController, drawerLayout)
     }
+
+
+    fun replaceFragment(fragment: Fragment) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frame_layout, fragment)
+        fragmentTransaction.commit()
+
+    }
+
 
 }
