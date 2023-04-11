@@ -18,7 +18,14 @@
         android:theme="@style/Theme.DormitoryManager"
         tools:targetApi="31">
         <activity
-            android:name=".View.RoomActivity"
+            android:name=".View.Student.StudentActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".View.RoomManager.RoomActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

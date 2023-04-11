@@ -39,8 +39,6 @@ class ViewModelUser(application: Application) : AndroidViewModel(application) {
 
     private val _user = MutableLiveData<FirebaseUser?>()
     val user: MutableLiveData<FirebaseUser?> get() = _user
-    // CoroutineScope để quản lý các coroutine trong ViewModel
-//        private val viewModelScope = CoroutineScope(Dispatchers.Default)
 
     fun RegisterUsers(email: String, name: String, password: String, roleID: String) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
@@ -105,7 +103,8 @@ class ViewModelUser(application: Application) : AndroidViewModel(application) {
 
     fun getCurrentUser(): String {
         _user.value = auth.currentUser
-        return _user.value?.email.toString()
+        Log.w("TAG",_user.value?.email.toString())
+        return _user.value?.uid.toString()
         //        return this.user.toString()
     }
 

@@ -1,6 +1,5 @@
-package com.example.dormitorymanager.View
+package com.example.dormitorymanager.View.RoomManager
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,7 +9,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import com.example.dormitorymanager.Model.Rooms
 import com.example.dormitorymanager.R
 import com.example.dormitorymanager.ViewModel.ViewModelRoom
 

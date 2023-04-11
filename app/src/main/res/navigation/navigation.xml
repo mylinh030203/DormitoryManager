@@ -21,12 +21,12 @@
     </activity>
     <fragment
         android:id="@+id/addRoomFragment"
-        android:name="com.example.dormitorymanager.View.AddRoomFragment"
+        android:name="com.example.dormitorymanager.View.RoomManager.AddRoomFragment"
         android:label="fragment_add_room"
         tools:layout="@layout/fragment_add_room" />
     <fragment
         android:id="@+id/roomFragment"
-        android:name="com.example.dormitorymanager.View.RoomFragment"
+        android:name="com.example.dormitorymanager.View.RoomManager.RoomFragment"
         android:label="RoomFragment"
         tools:layout="@layout/fragment_room" >
         <action

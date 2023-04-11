@@ -1,4 +1,4 @@
-package com.example.dormitorymanager.View
+package com.example.dormitorymanager.View.RoomManager
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dormitorymanager.Model.Rooms
 import com.example.dormitorymanager.R
+import com.example.dormitorymanager.View.AdapterRoom
+import com.example.dormitorymanager.View.rvInter
 import com.example.dormitorymanager.ViewModel.ViewModelRoom
 import com.example.dormitorymanager.ViewModel.ViewModelUser
 
@@ -42,7 +44,7 @@ class RoomFragment : Fragment() {
     }
 
     fun selectRoom(list: MutableList<Rooms>){
-        adapter = AdapterRoom(list,object : rvInter{
+        adapter = AdapterRoom(list,object : rvInter {
             override fun onClickRoom(position: Int){
 //                Toast.makeText(activity,"bạn đã click vào ${adapter.currentList[position].name}",
 //                    Toast.LENGTH_SHORT).show()

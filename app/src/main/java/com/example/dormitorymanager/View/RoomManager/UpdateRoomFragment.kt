@@ -1,4 +1,4 @@
-package com.example.dormitorymanager.View
+package com.example.dormitorymanager.View.RoomManager
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -15,9 +15,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.dormitorymanager.R
 import com.example.dormitorymanager.ViewModel.ViewModelRoom
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 
 class updateRoomFragment : Fragment() {

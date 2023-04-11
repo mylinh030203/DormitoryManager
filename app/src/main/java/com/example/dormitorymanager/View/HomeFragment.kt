@@ -10,13 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import com.example.dormitorymanager.MainActivity
 import com.example.dormitorymanager.R
+import com.example.dormitorymanager.View.RoomManager.RoomActivity
 import com.example.dormitorymanager.ViewModel.ViewModelUser
-import kotlinx.android.synthetic.main.activity_login.*
 
 
 class HomeFragment : Fragment() {
@@ -32,7 +30,7 @@ class HomeFragment : Fragment() {
         btnstart.setOnClickListener {
             Log.e("home", viewModel.getCurrentUser())
             if(viewModel.checkLogin()){
-                val inten = Intent(activity,RoomActivity::class.java)
+                val inten = Intent(activity, RoomActivity::class.java)
                 startActivity(inten)
             }
             else{

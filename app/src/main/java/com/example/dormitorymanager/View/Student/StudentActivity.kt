@@ -1,4 +1,4 @@
-package com.example.dormitorymanager
+package com.example.dormitorymanager.View.Student
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,28 +9,27 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.example.dormitorymanager.R
 import com.example.dormitorymanager.View.HomeFragment
 import com.example.dormitorymanager.View.LoginActivity
 import com.example.dormitorymanager.View.RoomManager.RoomActivity
 import com.example.dormitorymanager.ViewModel.ViewModelUser
-import com.example.dormitorymanager.databinding.ActivityMainBinding
+import com.example.dormitorymanager.databinding.ActivityStudentBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+class StudentActivity : AppCompatActivity() {
+    private lateinit var binding : ActivityStudentBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var viewModel: ViewModelUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(ViewModelUser::class.java)
         setContentView(binding.root)
         setupDrawerLayout()
@@ -99,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         binding.navLeftmenu.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> {
-                   var intent = Intent(this, HomeFragment::class.java)
+                    var intent = Intent(this, HomeFragment::class.java)
                     startActivity(intent)
                 }
                 R.id.info->{
@@ -118,7 +117,7 @@ class MainActivity : AppCompatActivity() {
                     viewModel.Logout()
                     Log.e("dd",viewModel.checkLogin().toString())
                     finish()
-                    val intent = Intent(this,LoginActivity::class.java)
+                    val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
 
                 }
@@ -129,39 +128,6 @@ class MainActivity : AppCompatActivity() {
         if (viewModel.checkLogin() == false) {
             header.findViewById<TextView>(R.id.textView).setText("")
         }
-
-//        val bottomNavigationView = binding.bottomNavigationView
-//        bottomNavigationView.setOnItemReselectedListener {
-//            when(it.itemId){
-//                R.id.home->{
-//                    Log.e("aaa",viewModel.checkLogin().toString())
-//                    if(viewModel.checkLogin()){
-//                        replaceFragment(HomeFragment())
-//                    }
-//                    else{
-//                        var intent = Intent(this, LoginActivity::class.java)
-//                        startActivity(intent)
-//                        finish()
-//                    }
-//
-//                }
-//                R.id.room->{
-//                    Log.e("aaa",viewModel.checkLogin().toString())
-//                    if(viewModel.checkLogin()) {
-//                        replaceFragment(RoomFragment())
-//                    }else{
-//                        var intent = Intent(this, LoginActivity::class.java)
-//                        startActivity(intent)
-//                        finish()
-//                    }
-//                }
-//
-//                else -> {
-//
-//                }
-//            }
-//            true
-//        }
 
     }
 
@@ -179,14 +145,6 @@ class MainActivity : AppCompatActivity() {
         return NavigationUI.navigateUp(navController, drawerLayout)
     }
 
-
-    fun replaceFragment(fragment: Fragment) {
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frame_layout, fragment)
-        fragmentTransaction.commit()
-
-    }
 
 
 }

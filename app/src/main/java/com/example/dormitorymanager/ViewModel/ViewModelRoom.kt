@@ -81,9 +81,6 @@ class ViewModelRoom : ViewModel() {
                 // Xử lý lỗi nếu có
             }
         }
-
-
-
     }
 
     fun deleteRoom(_id: String) {
