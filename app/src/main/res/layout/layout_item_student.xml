@@ -43,26 +43,26 @@
 
 
         <TextView
-            android:id="@+id/tvStatus"
+            android:id="@+id/tvIdStd"
             android:textSize="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Trạng thái: " />
+            android:text="Mã sinh viên: " />
 
         <TextView
-            android:id="@+id/tvDes"
+            android:id="@+id/tvclass"
             android:textSize="15dp"
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Mô tả" />
+            android:text="Lớp" />
         <TextView
-            android:id="@+id/tvMember"
+            android:id="@+id/tvphone"
             android:textSize="15dp"
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Số thành viên" />
+            android:text="Số điện thoại" />
     </LinearLayout>
 
 </LinearLayout>
