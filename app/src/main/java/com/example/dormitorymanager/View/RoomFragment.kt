@@ -1,24 +1,20 @@
 package com.example.dormitorymanager.View
 
+import android.content.DialogInterface
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import androidx.lifecycle.Observer
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dormitorymanager.Model.Rooms
 import com.example.dormitorymanager.R
 import com.example.dormitorymanager.ViewModel.ViewModelRoom
 import com.example.dormitorymanager.ViewModel.ViewModelUser
-import kotlinx.android.synthetic.main.fragment_room.view.*
 
 
 class RoomFragment : Fragment() {
@@ -38,7 +34,7 @@ class RoomFragment : Fragment() {
         rvRoom = view.findViewById(R.id.rvRoom)
         // Inflate the layout for this fragment
         selectRoom(viewModelRoom.getRoom())
-
+        registerForContextMenu(rvRoom)
         btnaddroom.setOnClickListener {
             view.findNavController().navigate(R.id.action_roomFragment2_to_addRoomFragment2)
         }
@@ -78,7 +74,33 @@ class RoomFragment : Fragment() {
             adapter.setData(rooms.toMutableList())
         })
 
+    }
 
+    override fun onCreateContextMenu(
+        menu: ContextMenu,
+        v: View,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        menu?.add(100,11,1,"Delete Room")
+        menu?.add(100,12,2,"Member of room")
+    }
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            11-> {
+                viewModelRoom.deleteRoom(arguments?.getString("id").toString())
+                var ad = AlertDialog.Builder(requireContext())
+                ad.setTitle("Delete record")
+                ad.setMessage("Delete success")
+                ad.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
+                    Toast.makeText(context, "Delete success", Toast.LENGTH_SHORT).show()
+                }).show()
+            }
+            12->{
+
+            }
+        }
+        return super.onContextItemSelected(item)
     }
 
 

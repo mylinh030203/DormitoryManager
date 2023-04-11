@@ -143,4 +143,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Update" />
+    <Button
+        android:id="@+id/btndelete"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete" />
 </LinearLayout>
