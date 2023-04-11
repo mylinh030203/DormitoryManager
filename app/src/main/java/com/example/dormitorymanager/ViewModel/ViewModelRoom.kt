@@ -1,8 +1,7 @@
 package com.example.dormitorymanager.ViewModel
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,9 +10,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -24,6 +20,14 @@ class ViewModelRoom : ViewModel() {
 
     val rooms: LiveData<List<Rooms>>
         get() = _rooms
+
+    private val _updateResult = MutableLiveData<Boolean>()
+    val updateResult: LiveData<Boolean>
+        get() = _updateResult
+
+    fun setUpdateResult(result: Boolean) {
+        _updateResult.value = result
+    }
 
     fun getRoom(): MutableList<Rooms> {
         //lấy hết document trong colection room chuyển nó thành đối tượng Rooms rồi thêm vào list, sau đó cập nhật cho multablelivedata
@@ -83,17 +87,65 @@ class ViewModelRoom : ViewModel() {
 
     }
 
-    fun deleteRoom(room: Rooms) {
-        val list = _rooms.value?.toMutableList() ?: mutableListOf()
-        list.remove(room)
-        _rooms.value = list
+    fun deleteRoom(_id: String) {
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
+        coroutineScope.launch {
+            try {
+                var docDelete = collectionRoom.document(_id)
+                docDelete.delete() .addOnSuccessListener {
+                    Log.d("TAG", "Đã xóa tài liệu thành công!")
+                }
+                    .addOnFailureListener { error ->
+                        Log.e("TAG", "Lỗi khi xóa tài liệu: ", error)
+                    }
+                val list = _rooms.value?.toMutableList() ?: mutableListOf()
+                val removedRoom = list.find { it._id == _id } // Tìm kiếm đối tượng có _id trùng với _id trong danh sách
+                if (removedRoom != null) { // Nếu tìm thấy đối tượng cần xóa
+                    list.remove(removedRoom) // Xóa đối tượng khỏi danh sách
+                    _rooms.value = list // Cập nhật lại giá trị của _rooms.value
+                }
+            }catch (e: Exception){
+
+            }
+
+        }
+
     }
 
-    fun updateRoom(room: Rooms) {
-        val index = _rooms.value?.indexOfFirst { it._id == room._id } ?: return
-        val list = _rooms.value?.toMutableList() ?: mutableListOf()
-        list[index] = room
-        _rooms.value = list
+    fun updateRoom(
+        _id: String,
+        beds:String, description:String, location: String, name:String, prices:Long, status: String) {
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
+        coroutineScope.launch {
+            try {
+                val roomDoc = hashMapOf(
+                    "_id" to _id,
+                    "beds" to beds,
+                    "description" to description,
+                    "location" to location,
+                    "name" to name,
+                    "price" to prices,
+                    "status" to status
+                )
+                collectionRoom.document(_id).update(roomDoc as Map<String, Any>).addOnSuccessListener {
+                    _updateResult.value = true
+                    Log.d("TAG", "Đã cập nhật trường thành công!")
+
+                }.addOnFailureListener { error ->
+                    _updateResult.value = false
+                    Log.e("TAG", "Lỗi khi cập nhật trường: ", error)
+
+                }
+                val rooms = Rooms(_id, beds, description, location, name, prices, status)
+                val list = _rooms.value?.toMutableList() ?: mutableListOf()
+                val room =  list.find { it._id == _id }
+                val index = _rooms.value?.indexOfFirst { it._id == room?._id } ?: return@launch
+                list[index] = rooms
+                _rooms.value = list
+            }catch (e: Exception){
+
+            }
+        }
     }
 
     suspend fun countDoc(): Int {

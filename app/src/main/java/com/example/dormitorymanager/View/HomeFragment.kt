@@ -32,7 +32,8 @@ class HomeFragment : Fragment() {
         btnstart.setOnClickListener {
             Log.e("home", viewModel.getCurrentUser())
             if(viewModel.checkLogin()){
-                view.findNavController().navigate(R.id.action_homeFragment_to_roomFragment)
+                val inten = Intent(activity,RoomActivity::class.java)
+                startActivity(inten)
             }
             else{
 //                var intent = Intent(activity, loginActivity::class.java)

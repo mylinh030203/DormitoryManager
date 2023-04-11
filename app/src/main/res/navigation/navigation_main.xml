@@ -12,10 +12,22 @@
         <action
             android:id="@+id/action_roomFragment2_to_addRoomFragment2"
             app:destination="@id/addRoomFragment2" />
+        <action
+            android:id="@+id/action_roomFragment2_to_updateRoomFragment2"
+            app:destination="@id/updateRoomFragment2" />
     </fragment>
     <fragment
         android:id="@+id/addRoomFragment2"
         android:name="com.example.dormitorymanager.View.AddRoomFragment"
         android:label="fragment_add_room"
         tools:layout="@layout/fragment_add_room" />
+    <fragment
+        android:id="@+id/updateRoomFragment2"
+        android:name="com.example.dormitorymanager.View.updateRoomFragment"
+        android:label="fragment_update_room"
+        tools:layout="@layout/fragment_update_room" >
+        <action
+            android:id="@+id/action_updateRoomFragment2_to_roomFragment2"
+            app:destination="@id/roomFragment2" />
+    </fragment>
 </navigation>

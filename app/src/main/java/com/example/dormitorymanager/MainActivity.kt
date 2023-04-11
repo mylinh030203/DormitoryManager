@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.example.dormitorymanager.View.HomeFragment
 import com.example.dormitorymanager.View.LoginActivity
 import com.example.dormitorymanager.ViewModel.ViewModelUser
 import com.example.dormitorymanager.databinding.ActivityMainBinding
@@ -97,8 +98,8 @@ class MainActivity : AppCompatActivity() {
         binding.navLeftmenu.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> {
-                    navController.navigate(R.id.action_roomFragment_to_homeFragment)
-
+                   var intent = Intent(this, HomeFragment::class.java)
+                    startActivity(intent)
                 }
                 R.id.logout -> {
                     Log.e("dc",viewModel.checkLogin().toString())
