@@ -67,4 +67,3 @@ class AdapterStudent (
             return oldItem._id == newItem._id
         }
     }
-}

@@ -17,6 +17,8 @@ import androidx.navigation.ui.NavigationUI
 import com.example.dormitorymanager.View.HomeFragment
 import com.example.dormitorymanager.View.LoginActivity
 import com.example.dormitorymanager.View.RoomManager.RoomActivity
+import com.example.dormitorymanager.View.Student.StudentActivity
+import com.example.dormitorymanager.View.Student.StudentFragment
 import com.example.dormitorymanager.ViewModel.ViewModelUser
 import com.example.dormitorymanager.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
@@ -104,7 +106,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.info->{
                     if(viewModel.checkLogin()){
-                        val inten = Intent(this, RoomActivity::class.java)
+                        val inten = Intent(this, StudentActivity::class.java)
                         startActivity(inten)
                     }
                     else{

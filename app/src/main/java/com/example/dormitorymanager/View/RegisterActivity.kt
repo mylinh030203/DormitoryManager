@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.dormitorymanager.Model.Users
 import com.example.dormitorymanager.R
+import com.example.dormitorymanager.View.Student.StudentActivity
 import com.example.dormitorymanager.ViewModel.ViewModelUser
 import com.example.dormitorymanager.databinding.ActivityRegisterBinding
 import com.google.firebase.FirebaseException
@@ -22,7 +23,7 @@ import java.util.concurrent.TimeUnit
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
-    private lateinit var viewModel : ViewModelUser
+    private lateinit var viewModel: ViewModelUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
@@ -43,30 +44,31 @@ class RegisterActivity : AppCompatActivity() {
             var password = binding.edtPassword.text.toString()
             var fullName = binding.edtFullname.text.toString()
             var roleID = "2"
-            if(email.isEmpty()){
-                binding.edtemail.error ="Enter your email"
+            if (email.isEmpty()) {
+                binding.edtemail.error = "Enter your email"
                 return@setOnClickListener
             }
-            if(password.isEmpty()){
-                binding.edtPassword.error ="Enter your password"
+            if (password.isEmpty()) {
+                binding.edtPassword.error = "Enter your password"
                 return@setOnClickListener
             }
-            if(fullName.isEmpty()){
-                binding.edtFullname.error ="Enter your full name"
+            if (fullName.isEmpty()) {
+                binding.edtFullname.error = "Enter your full name"
                 return@setOnClickListener
             }
-            viewModel.RegisterUsers(email,fullName,password, roleID)
+            viewModel.RegisterUsers(email, fullName, password, roleID)
 
             binding.edtemail.setText("")
             binding.edtPassword.setText("")
             binding.edtFullname.setText("")
         }
-        binding.txtlogin.setOnClickListener{
+        binding.txtlogin.setOnClickListener {
             val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
+
     }
-
-
 }
+
+

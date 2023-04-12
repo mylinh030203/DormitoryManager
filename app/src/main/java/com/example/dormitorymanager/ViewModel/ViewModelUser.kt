@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.*
 import com.example.dormitorymanager.MainActivity
+import com.example.dormitorymanager.Model.StudentInfor
 import com.example.dormitorymanager.Model.Users
 import com.example.dormitorymanager.View.RegisterActivity
 import com.google.firebase.FirebaseException
@@ -40,7 +41,30 @@ class ViewModelUser(application: Application) : AndroidViewModel(application) {
     private val _user = MutableLiveData<FirebaseUser?>()
     val user: MutableLiveData<FirebaseUser?> get() = _user
 
+    val _users = MutableLiveData<List<Users>>()
+    val users: LiveData<List<Users>>
+        get() = _users
+
+    fun getUser(): MutableList<Users> {
+        //lấy hết document trong colection students chuyển nó thành đối tượng StudentInfor rồi thêm vào list, sau đó cập nhật cho multablelivedata
+        usersCollection.get().addOnSuccessListener { snapshot ->
+            val usersList = mutableListOf<Users>()
+            for (doc in snapshot!!) {
+                val user = doc.toObject(Users::class.java)
+                user._id = doc.id
+                usersList.add(user)
+            }
+            _users.value = usersList
+        }.addOnFailureListener { exception ->
+            Log.w("TAG", "Error getting documents: ", exception)
+        }
+
+        return _users.value?.toMutableList() ?: mutableListOf()
+        //chuyển từ multablelivedata sang multablelist
+    }
+
     fun RegisterUsers(email: String, name: String, password: String, roleID: String) {
+        val viewModelStudent = ViewModelStudent()
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 //thêm user vào Realtime db
@@ -49,6 +73,7 @@ class ViewModelUser(application: Application) : AndroidViewModel(application) {
                     val userData = Users(id, email, name, password, roleID)
                     dbRef.child(id).setValue(userData)
                     _userCreated.value = true
+                    viewModelStudent.addStudent(id,name,"","","","","")
                 }
 
             } else {
@@ -61,6 +86,13 @@ class ViewModelUser(application: Application) : AndroidViewModel(application) {
                         val user = childSnapshot.getValue(Users::class.java)
                         user?.let {
                             usersCollection.document(user._id).set(user)
+                                .addOnSuccessListener {
+                                val list = _users.value?.toMutableList() ?: mutableListOf()
+                                list.add(user)
+                                    _users.value = list
+                                Log.d("TAG", "Đã thêm tài liệu mới với ID: ${it}")
+                            }.addOnFailureListener { error ->
+                                Log.e("TAG", "Lỗi khi thêm tài liệu: ", error) }
                         }
                     }
                 }
@@ -118,4 +150,9 @@ class ViewModelUser(application: Application) : AndroidViewModel(application) {
         Log.e("User current: ", getCurrentUser())
         return auth.currentUser != null;
     }
+
+//    fun checkRoleUser():String{
+//
+//        return
+//    }
 }

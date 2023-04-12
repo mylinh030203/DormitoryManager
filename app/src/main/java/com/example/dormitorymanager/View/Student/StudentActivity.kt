@@ -30,6 +30,7 @@ class StudentActivity : AppCompatActivity() {
     private lateinit var viewModel: ViewModelUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityStudentBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(ViewModelUser::class.java)
         setContentView(binding.root)
         setupDrawerLayout()
@@ -103,7 +104,7 @@ class StudentActivity : AppCompatActivity() {
                 }
                 R.id.info->{
                     if(viewModel.checkLogin()){
-                        val inten = Intent(this, RoomActivity::class.java)
+                        val inten = Intent(this, StudentFragment::class.java)
                         startActivity(inten)
                     }
                     else{

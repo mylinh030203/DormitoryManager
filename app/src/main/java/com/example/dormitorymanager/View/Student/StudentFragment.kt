@@ -1,60 +1,72 @@
 package com.example.dormitorymanager.View.Student
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.dormitorymanager.Model.StudentInfor
 import com.example.dormitorymanager.R
+import com.example.dormitorymanager.View.AdapterRoom
+import com.example.dormitorymanager.View.RegisterActivity
+import com.example.dormitorymanager.View.rvInter
+import com.example.dormitorymanager.ViewModel.ViewModelStudent
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [StudentFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class StudentFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private lateinit var adapter: AdapterStudent
+    private lateinit var rvStudent : RecyclerView
+    private lateinit var viewModelStudent: ViewModelStudent
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModelStudent = ViewModelProvider(this).get(ViewModelStudent::class.java)
+        var view:View = inflater.inflate(R.layout.fragment_student,container,false)
+        var btnaddSt = view.findViewById<Button>(R.id.btnAddStudent)
+        rvStudent = view.findViewById(R.id.rvStudent)
+        selectStudent(viewModelStudent.getStudent())
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_student, container, false)
+        btnaddSt.setOnClickListener {
+            var intent = Intent(activity,RegisterActivity::class.java)
+            startActivity(intent)
+        }
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment StudentFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            StudentFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    fun selectStudent(list: MutableList<StudentInfor>){
+        adapter = AdapterStudent(list,object : rvInter {
+            override fun onClickStudent(position: Int){
+                val bundle = Bundle()
+                bundle.putString("id", adapter.currentList[position]._id)
+                bundle.putString("fullname", adapter.currentList[position].fullname)
+                bundle.putString("phone", adapter.currentList[position].phone)
+                bundle.putString("gender", adapter.currentList[position].gender)
+                bundle.putString("idStudent", adapter.currentList[position].idStudent)
+                bundle.putString("classStd", adapter.currentList[position].classStd)
+                bundle.putString("avatar", adapter.currentList[position].avatar)
+                val navController = view?.findNavController()
+                navController?.navigate(R.id.action_studentFragment_to_updateStudentFragment, bundle)
+
             }
+        },this)
+        rvStudent.adapter = adapter
+        rvStudent.layoutManager = GridLayoutManager(context,
+            4,
+            GridLayoutManager.HORIZONTAL,
+            false)
+        //Hàm viewModelRoom.rooms.observe() được sử dụng để đăng ký một Observer cho LiveData được trả về từ ViewModel. Khi dữ liệu trong LiveData được cập nhật, Observer sẽ nhận được thông báo và có thể thực hiện một số hành động liên quan đến dữ liệu đó.
+        viewModelStudent.students.observe(viewLifecycleOwner, { students ->
+            adapter.setData(students.toMutableList())
+        })
+
     }
+
+
 }
