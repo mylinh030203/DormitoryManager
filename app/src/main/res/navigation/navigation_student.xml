@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_studentFragment_to_updateStudentFragment"
             app:destination="@id/updateStudentFragment" />
+        <action
+            android:id="@+id/action_studentFragment_to_addStudentFragment"
+            app:destination="@id/addStudentFragment" />
     </fragment>
     <fragment
         android:id="@+id/updateStudentFragment"
@@ -21,6 +24,15 @@
         tools:layout="@layout/fragment_update_student" >
         <action
             android:id="@+id/action_updateStudentFragment_to_studentFragment"
+            app:destination="@id/studentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addStudentFragment"
+        android:name="com.example.dormitorymanager.View.Student.AddStudentFragment"
+        android:label="fragment_add_student"
+        tools:layout="@layout/fragment_add_student" >
+        <action
+            android:id="@+id/action_addStudentFragment_to_studentFragment"
             app:destination="@id/studentFragment" />
     </fragment>
 </navigation>

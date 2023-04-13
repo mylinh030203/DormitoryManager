@@ -63,7 +63,7 @@ class ViewModelUser(application: Application) : AndroidViewModel(application) {
         //chuyển từ multablelivedata sang multablelist
     }
 
-    fun RegisterUsers(email: String, name: String, password: String, roleID: String) {
+    fun RegisterUsers(email: String, name: String, password: String, roleID: String, gender:String) {
         val viewModelStudent = ViewModelStudent()
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -72,8 +72,9 @@ class ViewModelUser(application: Application) : AndroidViewModel(application) {
                 if (id != null) {
                     val userData = Users(id, email, name, password, roleID)
                     dbRef.child(id).setValue(userData)
+                    //
                     _userCreated.value = true
-                    viewModelStudent.addStudent(id,name,"","","","","")
+                    viewModelStudent.addStudent(id,name,"",gender,"","","")
                 }
 
             } else {
@@ -105,6 +106,8 @@ class ViewModelUser(application: Application) : AndroidViewModel(application) {
         }
 
     }
+
+
 
     fun LoginUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->

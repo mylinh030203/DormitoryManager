@@ -57,13 +57,10 @@
             android:id="@+id/rgGender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/rbMale"
@@ -82,7 +79,7 @@
                     android:text="Female"
                     android:textColor="@color/black"
                     android:textSize="15dp" />
-            </LinearLayout>
+
         </RadioGroup>
 
         <Button

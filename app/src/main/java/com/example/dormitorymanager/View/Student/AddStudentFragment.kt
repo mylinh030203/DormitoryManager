@@ -1,60 +1,74 @@
 package com.example.dormitorymanager.View.Student
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.example.dormitorymanager.R
+import com.example.dormitorymanager.ViewModel.ViewModelUser
+import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.fragment_update_student.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AddStudentFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AddStudentFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var viewModel: ViewModelUser
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_student, container, false)
-    }
+        var view = inflater.inflate(R.layout.fragment_add_student, container, false)
+        var edtemail = view.findViewById<EditText>(R.id.edtemail)
+        var edtPassword = view.findViewById<EditText>(R.id.edtPassword)
+        var edtFullname = view.findViewById<EditText>(R.id.edtFullname)
+        var gender = view.findViewById<RadioGroup>(R.id.gender)
+        val rbMale = view.findViewById<RadioButton>(R.id.rbMale)
+        val rbFemale = view.findViewById<RadioButton>(R.id.rbFemale)
+        var btnAddAccount = view.findViewById<Button>(R.id.btnAddAccount)
+        viewModel = ViewModelProvider(this).get(ViewModelUser::class.java)
+        btnAddAccount.setOnClickListener {
+            var email = edtemail.text.toString()
+            var passwords = edtPassword.text.toString()
+            var fullNames = edtFullname.text.toString()
+            var roleID = "2"
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AddStudentFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AddStudentFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+            var selected: Int = gender.checkedRadioButtonId
+            var Gender: String = when (selected) {
+                R.id.rbMale -> "Male"
+                R.id.rbFemale -> "Female"
+                else -> "other"
             }
+            if (email.isEmpty()) {
+                edtemail.error = "Enter your email"
+                return@setOnClickListener
+            }
+            if (passwords.isEmpty()) {
+                edtPassword.error = "Enter your password"
+                return@setOnClickListener
+            }
+
+            if (fullNames.isEmpty()) {
+                edtFullname.error = "Enter your full name"
+                return@setOnClickListener
+            }
+
+            viewModel.RegisterUsers(email, fullNames, passwords, roleID, Gender)
+
+            edtemail.setText("")
+            edtPassword.setText("")
+            edtFullname.setText("")
+            val navController = view?.findNavController()
+            navController?.navigate(R.id.action_addStudentFragment_to_studentFragment)
+        }
+        return view
+
     }
 }

@@ -44,6 +44,13 @@ class RegisterActivity : AppCompatActivity() {
             var password = binding.edtPassword.text.toString()
             var fullName = binding.edtFullname.text.toString()
             var roleID = "2"
+
+            var selected : Int = binding.rgGender.checkedRadioButtonId
+            var Gender : String = when (selected){
+                R.id.rbMale -> "Male"
+                R.id.rbFemale -> "Female"
+                else -> "other"
+            }
             if (email.isEmpty()) {
                 binding.edtemail.error = "Enter your email"
                 return@setOnClickListener
@@ -56,11 +63,16 @@ class RegisterActivity : AppCompatActivity() {
                 binding.edtFullname.error = "Enter your full name"
                 return@setOnClickListener
             }
-            viewModel.RegisterUsers(email, fullName, password, roleID)
+
+            viewModel.RegisterUsers(email, fullName, password, roleID,Gender)
 
             binding.edtemail.setText("")
             binding.edtPassword.setText("")
             binding.edtFullname.setText("")
+
+            val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+            startActivity(intent)
+
         }
         binding.txtlogin.setOnClickListener {
             val intent = Intent(this@RegisterActivity, LoginActivity::class.java)

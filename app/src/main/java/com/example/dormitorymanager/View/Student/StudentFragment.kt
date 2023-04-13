@@ -34,8 +34,8 @@ class StudentFragment : Fragment() {
         selectStudent(viewModelStudent.getStudent())
         // Inflate the layout for this fragment
         btnaddSt.setOnClickListener {
-            var intent = Intent(activity,RegisterActivity::class.java)
-            startActivity(intent)
+            val navController = view?.findNavController()
+            navController?.navigate(R.id.action_studentFragment_to_addStudentFragment)
         }
         return view
     }
