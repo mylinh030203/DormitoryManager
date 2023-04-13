@@ -37,7 +37,7 @@ class ViewModelUser(application: Application) : AndroidViewModel(application) {
     private val _userCreated = MutableLiveData<Boolean>()
     val userCreated: LiveData<Boolean>
         get() = _userCreated
-
+    private lateinit var role_id:String
     private val _user = MutableLiveData<FirebaseUser?>()
     val user: MutableLiveData<FirebaseUser?> get() = _user
 
@@ -153,9 +153,40 @@ class ViewModelUser(application: Application) : AndroidViewModel(application) {
         Log.e("User current: ", getCurrentUser())
         return auth.currentUser != null;
     }
-
-//    fun checkRoleUser():String{
-//
-//        return
-//    }
+    fun checkRoleID():String{
+        _user.value = auth.currentUser
+        var id = _user.value?.uid.toString()
+        runBlocking {
+            launch {
+                usersCollection.document(id).get().addOnCompleteListener  {task->
+                    if (task.isSuccessful) {
+                        val documentSnapshot = task.result
+                        if (documentSnapshot != null && documentSnapshot.exists()) {
+                            // Lấy giá trị của trường roleid từ DocumentSnapshot
+                            val roleID = documentSnapshot.getString("role_id")
+                            // Kiểm tra nếu roleID không null thì sử dụng giá trị này
+                            if (roleID != null) {
+                                role_id = roleID
+                                return@addOnCompleteListener
+                            } else {
+                                Log.e("role","không lấy được role")
+                            }
+                        } else {
+                            Log.e("role","document không tồn tại")
+                            // Xử lý khi document không tồn tại
+                        }
+                    } else {
+                        // Xử lý khi có lỗi xảy ra
+                    }
+                }
+            }
+        }
+        return role_id
+    }
+    fun checkAdmin():Boolean{
+        if(checkRoleID()=="1")
+            return true
+        else
+            return false
+    }
 }
