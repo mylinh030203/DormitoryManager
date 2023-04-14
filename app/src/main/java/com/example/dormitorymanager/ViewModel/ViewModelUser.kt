@@ -27,6 +27,8 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 class ViewModelUser(application: Application) : AndroidViewModel(application) {
 
@@ -37,7 +39,6 @@ class ViewModelUser(application: Application) : AndroidViewModel(application) {
     private val _userCreated = MutableLiveData<Boolean>()
     val userCreated: LiveData<Boolean>
         get() = _userCreated
-    private lateinit var role_id:String
     private val _user = MutableLiveData<FirebaseUser?>()
     val user: MutableLiveData<FirebaseUser?> get() = _user
 
@@ -153,40 +154,38 @@ class ViewModelUser(application: Application) : AndroidViewModel(application) {
         Log.e("User current: ", getCurrentUser())
         return auth.currentUser != null;
     }
-    fun checkRoleID():String{
+    fun checkRoleID(callback: (String) -> Unit) {
         _user.value = auth.currentUser
-        var id = _user.value?.uid.toString()
-        runBlocking {
-            launch {
-                usersCollection.document(id).get().addOnCompleteListener  {task->
-                    if (task.isSuccessful) {
-                        val documentSnapshot = task.result
-                        if (documentSnapshot != null && documentSnapshot.exists()) {
-                            // Lấy giá trị của trường roleid từ DocumentSnapshot
-                            val roleID = documentSnapshot.getString("role_id")
-                            // Kiểm tra nếu roleID không null thì sử dụng giá trị này
-                            if (roleID != null) {
-                                role_id = roleID
-                                return@addOnCompleteListener
-                            } else {
-                                Log.e("role","không lấy được role")
-                            }
-                        } else {
-                            Log.e("role","document không tồn tại")
-                            // Xử lý khi document không tồn tại
-                        }
+        val id = _user.value?.uid.toString()
+        usersCollection.document(id).get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val documentSnapshot = task.result
+                if (documentSnapshot != null && documentSnapshot.exists()) {
+                    // Lấy giá trị của trường roleid từ DocumentSnapshot
+                    val roleID = documentSnapshot.getString("role_id")
+                    // Kiểm tra nếu roleID không null thì sử dụng giá trị này
+                    if (roleID != null) {
+                        callback.invoke(roleID) // Gọi callback với giá trị roleID
                     } else {
-                        // Xử lý khi có lỗi xảy ra
+                        Log.e("role", "không lấy được role")
                     }
+                } else {
+                    Log.e("role", "document không tồn tại")
+                    // Xử lý khi document không tồn tại
                 }
+            } else {
+                // Xử lý khi có lỗi xảy ra
             }
         }
-        return role_id
     }
-    fun checkAdmin():Boolean{
-        if(checkRoleID()=="1")
-            return true
-        else
-            return false
+
+    // Hàm checkAdmin
+    fun checkAdmin(callback: (Boolean) -> Unit) {
+        checkRoleID { roleID ->
+            val isAdmin = roleID == "1"
+            Log.e("login", roleID)
+            callback.invoke(isAdmin) // Gọi callback với giá trị isAdmin
+        }
     }
+
 }

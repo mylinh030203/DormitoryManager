@@ -47,5 +47,13 @@
         <action
             android:id="@+id/action_homeFragment_to_roomFragment"
             app:destination="@id/roomFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_updateStudentFragment2"
+            app:destination="@id/updateStudentFragment2" />
     </fragment>
+    <fragment
+        android:id="@+id/updateStudentFragment2"
+        android:name="com.example.dormitorymanager.View.Student.UpdateStudentFragment"
+        android:label="fragment_update_student"
+        tools:layout="@layout/fragment_update_student" />
 </navigation>

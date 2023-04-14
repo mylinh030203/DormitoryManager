@@ -132,4 +132,16 @@ class ViewModelStudent: ViewModel() {
     fun deleteStudent(_id:String){
 
     }
+    fun getStudentById(studentId: String): StudentInfor? {
+//        val studentList: MutableList<StudentInfor> = _student.value?.toMutableList() ?: mutableListOf()
+//        if (studentList != null) {
+//            for (student in studentList) {
+//                if (student._id == studentId) {
+//                    Log.e("st",student._id)
+//                    return student
+//                }
+//            }
+//        }
+        return _student.value?.find { student -> student._id == studentId }
+    }
 }

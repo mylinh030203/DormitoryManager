@@ -14,11 +14,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.example.dormitorymanager.Model.StudentInfor
 import com.example.dormitorymanager.View.HomeFragment
 import com.example.dormitorymanager.View.LoginActivity
 import com.example.dormitorymanager.View.RoomManager.RoomActivity
 import com.example.dormitorymanager.View.Student.StudentActivity
 import com.example.dormitorymanager.View.Student.StudentFragment
+import com.example.dormitorymanager.View.Student.UpdateStudentFragment
+import com.example.dormitorymanager.ViewModel.ViewModelStudent
 import com.example.dormitorymanager.ViewModel.ViewModelUser
 import com.example.dormitorymanager.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
@@ -30,11 +33,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var viewModel: ViewModelUser
+    private lateinit var viewModelStudent: ViewModelStudent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(ViewModelUser::class.java)
+        viewModelStudent = ViewModelProvider(this).get(ViewModelStudent::class.java)
         setContentView(binding.root)
+
+
         setupDrawerLayout()
         menu()
 
@@ -101,26 +108,56 @@ class MainActivity : AppCompatActivity() {
         binding.navLeftmenu.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> {
-                   var intent = Intent(this, HomeFragment::class.java)
+                    var intent = Intent(this, HomeFragment::class.java)
                     startActivity(intent)
                 }
-                R.id.info->{
-                    if(viewModel.checkLogin()){
-                        val inten = Intent(this, StudentActivity::class.java)
-                        startActivity(inten)
-                    }
-                    else{
-//                var intent = Intent(activity, loginActivity::class.java)
+                R.id.info -> {
+                    if (viewModel.checkLogin()) {
+                        viewModel.checkAdmin { isAdmin ->
+                            if (isAdmin) {
+                                val inten = Intent(this, StudentActivity::class.java)
+                                startActivity(inten)
+                            } else {
+                                var id = viewModel.getCurrentUser()
+                                viewModelStudent.getStudent()
+                                viewModelStudent.students.observe(this, { students ->
+                                    // Xử lý dữ liệu sinh viên đã được cập nhật
+                                    // Students là danh sách sinh viên
+                                    val studentId = id // Thay đổi giá trị studentId tùy vào nhu cầu
+                                    val student = viewModelStudent.getStudentById(studentId)
+                                    if (student != null) {
+
+                                        val bundle = Bundle()
+                                        bundle.putString("id", student?._id)
+                                        bundle.putString("fullname", student?.fullname)
+                                        bundle.putString("phone", student?.phone)
+                                        bundle.putString("gender", student?.gender)
+                                        bundle.putString("idStudent", student?.idStudent)
+                                        bundle.putString("classStd", student?.classStd)
+                                        bundle.putString("avatar", student?.avatar)
+                                        navController.navigate(R.id.action_homeFragment_to_updateStudentFragment2, bundle)
+
+                                    } else {
+                                        // Xử lý khi không tìm thấy sinh viên với studentId tương ứng
+                                    }
+                                })
+                                // Bắt đầu giao dịch FragmentTransaction
+
+
+                            }
+                        }
+
+                    } else {
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                     }
                 }
                 R.id.logout -> {
-                    Log.e("dc",viewModel.checkLogin().toString())
+                    Log.e("dc", viewModel.checkLogin().toString())
                     viewModel.Logout()
-                    Log.e("dd",viewModel.checkLogin().toString())
+                    Log.e("dd", viewModel.checkLogin().toString())
                     finish()
-                    val intent = Intent(this,LoginActivity::class.java)
+                    val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
 
                 }
@@ -169,9 +206,9 @@ class MainActivity : AppCompatActivity() {
 
     fun checkRole(RoleID: String): String {
         if (RoleID.equals("2")) {
-            return "Sinh Viên"
+            return "Student"
         } else if (RoleID.equals("1")) {
-            return "Quản lý"
+            return "Admin"
         }
         return ""
     }
