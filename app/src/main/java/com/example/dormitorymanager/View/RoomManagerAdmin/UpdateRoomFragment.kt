@@ -1,4 +1,4 @@
-package com.example.dormitorymanager.View.RoomManager
+package com.example.dormitorymanager.View.RoomManagerAdmin
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -15,15 +15,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.dormitorymanager.R
 import com.example.dormitorymanager.ViewModel.ViewModelRoom
+import com.example.dormitorymanager.ViewModel.ViewModelUser
 
 
 class updateRoomFragment : Fragment() {
     private lateinit var viewModelRoom: ViewModelRoom
+    private lateinit var viewModel: ViewModelUser
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+         viewModel = ViewModelProvider(this).get(ViewModelUser::class.java)
         viewModelRoom = ViewModelProvider(this).get(ViewModelRoom::class.java)
         val view: View = inflater.inflate(R.layout.fragment_update_room, container, false)
         var beds = view.findViewById<EditText>(R.id.bedUpdate)
@@ -62,17 +65,21 @@ class updateRoomFragment : Fragment() {
                 Toast.makeText(context, "Update failure", Toast.LENGTH_SHORT).show()
             }
         })
-        btnDelete.setOnClickListener {
-            viewModelRoom.deleteRoom(id.toString())
-            var ad = AlertDialog.Builder(requireContext())
-            ad.setTitle("Delete record")
-            ad.setMessage("Delete success")
-            ad.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
-                Toast.makeText(context, "Delete success", Toast.LENGTH_SHORT).show()
-            }).show()
-            view.findNavController().navigate(R.id.action_updateRoomFragment2_to_roomFragment2)
+        viewModel.checkAdmin { isAdmin ->
+            if (isAdmin) {
+                btnDelete.setOnClickListener {
+                    viewModelRoom.deleteRoom(id.toString())
+                    var ad = AlertDialog.Builder(requireContext())
+                    ad.setTitle("Delete record")
+                    ad.setMessage("Delete success")
+                    ad.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
+                        Toast.makeText(context, "Delete success", Toast.LENGTH_SHORT).show()
+                    }).show()
+                    view.findNavController()
+                        .navigate(R.id.action_updateRoomFragment2_to_roomFragment2)
+                }
+            }
         }
-
 
 
         return view

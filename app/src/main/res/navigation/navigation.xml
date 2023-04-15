@@ -21,12 +21,12 @@
     </activity>
     <fragment
         android:id="@+id/addRoomFragment"
-        android:name="com.example.dormitorymanager.View.RoomManager.AddRoomFragment"
+        android:name="com.example.dormitorymanager.View.RoomManagerAdmin.AddRoomFragment"
         android:label="fragment_add_room"
         tools:layout="@layout/fragment_add_room" />
     <fragment
         android:id="@+id/roomFragment"
-        android:name="com.example.dormitorymanager.View.RoomManager.RoomFragment"
+        android:name="com.example.dormitorymanager.View.RoomManagerAdmin.RoomFragment"
         android:label="RoomFragment"
         tools:layout="@layout/fragment_room" >
         <action
@@ -53,7 +53,7 @@
     </fragment>
     <fragment
         android:id="@+id/updateStudentFragment2"
-        android:name="com.example.dormitorymanager.View.Student.UpdateStudentFragment"
+        android:name="com.example.dormitorymanager.View.StudentManagerAdmin.UpdateStudentFragment"
         android:label="fragment_update_student"
         tools:layout="@layout/fragment_update_student" />
 </navigation>

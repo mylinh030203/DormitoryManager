@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dormitorymanager.Model.Rooms
 import com.example.dormitorymanager.R
-import com.example.dormitorymanager.View.RoomManager.RoomFragment
+import com.example.dormitorymanager.View.RoomManagerAdmin.RoomFragment
 import kotlinx.android.synthetic.main.layout_item_room.view.*
 
 class AdapterRoom(

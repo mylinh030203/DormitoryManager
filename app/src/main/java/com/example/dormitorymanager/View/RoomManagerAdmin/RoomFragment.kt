@@ -1,4 +1,4 @@
-package com.example.dormitorymanager.View.RoomManager
+package com.example.dormitorymanager.View.RoomManagerAdmin
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -35,15 +35,16 @@ class RoomFragment : Fragment() {
         viewModelRoom = ViewModelProvider(this).get(ViewModelRoom::class.java)
         rvRoom = view.findViewById(R.id.rvRoom)
         // Inflate the layout for this fragment
-        selectRoom(viewModelRoom.getRoom())
-        registerForContextMenu(rvRoom)
 
-        viewModel.checkAdmin { isAdmin->
+
+        viewModel.checkAdmin { isAdmin ->
             if (isAdmin) {
+                selectRoom(viewModelRoom.getRoom())
+                registerForContextMenu(rvRoom)
                 btnaddroom.setOnClickListener {
                     view.findNavController().navigate(R.id.action_roomFragment2_to_addRoomFragment2)
                 }
-            }else
+            } else
                 btnaddroom.visibility = View.GONE
         }
 
@@ -64,14 +65,18 @@ class RoomFragment : Fragment() {
                 bundle.putString("name", adapter.currentList[position].name)
                 bundle.putString("price", adapter.currentList[position].prices.toString())
                 bundle.putString("status", adapter.currentList[position].status)
-                viewModel.checkAdmin {
-                    isAdmin->
-                    if(isAdmin){
+                viewModel.checkAdmin { isAdmin ->
+                    if (isAdmin) {
                         val navController = view?.findNavController()
-                        navController?.navigate(R.id.action_roomFragment2_to_updateRoomFragment2, bundle)
-                    }else
-                        Toast.makeText(activity,"bạn đã click vào ${adapter.currentList[position].name}",
-                    Toast.LENGTH_SHORT).show()
+                        navController?.navigate(
+                            R.id.action_roomFragment2_to_updateRoomFragment2,
+                            bundle
+                        )
+                    } else
+                        Toast.makeText(
+                            activity, "bạn đã click vào ${adapter.currentList[position].name}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                 }
 
 //                fragmentManager?.beginTransaction()

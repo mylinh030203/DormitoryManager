@@ -1,4 +1,4 @@
-package com.example.dormitorymanager.View.Student
+package com.example.dormitorymanager.View.StudentManagerAdmin
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,11 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dormitorymanager.Model.Rooms
 import com.example.dormitorymanager.Model.StudentInfor
 import com.example.dormitorymanager.R
 import com.example.dormitorymanager.View.rvInter
-import kotlinx.android.synthetic.main.layout_item_room.view.*
 import kotlinx.android.synthetic.main.layout_item_room.view.img
 import kotlinx.android.synthetic.main.layout_item_room.view.tvName
 import kotlinx.android.synthetic.main.layout_item_student.view.*

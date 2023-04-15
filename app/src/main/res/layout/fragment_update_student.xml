@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".View.Student.UpdateStudentFragment">
+    tools:context=".View.StudentManagerAdmin.UpdateStudentFragment">
 
 
     <TextView
@@ -165,16 +165,16 @@
         android:textSize="20dp"
         android:textStyle="bold" />
 
-<!--    <Button-->
-<!--        android:id="@+id/btndelete"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:layout_marginTop="15dp"-->
-<!--        android:backgroundTint="@color/white"-->
-<!--        android:text="Delete"-->
-<!--        android:textColor="@color/black"-->
-<!--        android:textSize="20dp"-->
-<!--        android:textStyle="bold" />-->
+    <Button
+        android:id="@+id/btndeleteSt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/white"
+        android:text="Delete"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold" />
 </LinearLayout>
 

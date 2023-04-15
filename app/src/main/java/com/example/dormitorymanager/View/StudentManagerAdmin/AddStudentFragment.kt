@@ -1,4 +1,4 @@
-package com.example.dormitorymanager.View.Student
+package com.example.dormitorymanager.View.StudentManagerAdmin
 
 import android.annotation.SuppressLint
 import android.os.Bundle

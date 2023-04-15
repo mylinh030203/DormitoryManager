@@ -14,13 +14,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.example.dormitorymanager.Model.StudentInfor
 import com.example.dormitorymanager.View.HomeFragment
 import com.example.dormitorymanager.View.LoginActivity
-import com.example.dormitorymanager.View.RoomManager.RoomActivity
-import com.example.dormitorymanager.View.Student.StudentActivity
-import com.example.dormitorymanager.View.Student.StudentFragment
-import com.example.dormitorymanager.View.Student.UpdateStudentFragment
+import com.example.dormitorymanager.View.StudentManagerAdmin.StudentActivity
 import com.example.dormitorymanager.ViewModel.ViewModelStudent
 import com.example.dormitorymanager.ViewModel.ViewModelUser
 import com.example.dormitorymanager.databinding.ActivityMainBinding

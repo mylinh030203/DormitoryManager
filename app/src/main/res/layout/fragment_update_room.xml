@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".View.RoomManager.updateRoomFragment">
+    tools:context=".View.RoomManagerAdmin.updateRoomFragment">
 
     <TextView
         android:id="@+id/updateRoom"

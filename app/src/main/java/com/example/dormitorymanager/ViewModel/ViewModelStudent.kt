@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModel
 import com.example.dormitorymanager.Model.Rooms
 import com.example.dormitorymanager.Model.StudentInfor
 import com.example.dormitorymanager.Model.Users
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -16,10 +18,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ViewModelStudent: ViewModel() {
+class ViewModelStudent : ViewModel() {
     private val db = Firebase.firestore
+    val auth = FirebaseAuth.getInstance()
+    val dbRef = FirebaseDatabase.getInstance().getReference("User")
     val collectionStudent = db.collection("StudentInfo")
-
+    private val usersCollection = db.collection("Users")
 
     val _student = MutableLiveData<List<StudentInfor>>()
     val students: LiveData<List<StudentInfor>>
@@ -47,11 +51,20 @@ class ViewModelStudent: ViewModel() {
         //chuyển từ multablelivedata sang multablelist
     }
 
-    fun addStudent(_id:String, fullname:String,  phone : String, gender:String, idStudent:String, classStd: String,avatar : String) {
+    fun addStudent(
+        _id: String,
+        fullname: String,
+        phone: String,
+        gender: String,
+        idStudent: String,
+        classStd: String,
+        avatar: String
+    ) {
         val coroutineScope = CoroutineScope(Dispatchers.Main)
         coroutineScope.launch {
             try {
-                val student = StudentInfor(_id, fullname, phone, gender, idStudent, classStd, avatar)
+                val student =
+                    StudentInfor(_id, fullname, phone, gender, idStudent, classStd, avatar)
                 val studentDoc = hashMapOf(
                     "_id" to _id,
                     "fullname" to fullname,
@@ -68,17 +81,25 @@ class ViewModelStudent: ViewModel() {
                         _student.value = list
                         Log.d("TAG", "Đã thêm tài liệu mới với ID: ${it}")
                     }.addOnFailureListener { error ->
-                        Log.e("TAG", "Lỗi khi thêm tài liệu: ", error) }
+                        Log.e("TAG", "Lỗi khi thêm tài liệu: ", error)
+                    }
 
 
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 // Xử lý lỗi nếu có
             }
         }
     }
 
-    fun updateStudent(_id:String, fullname:String,  phone : String, gender:String, idStudent:String, classStd: String,avatar : String){
+    fun updateStudent(
+        _id: String,
+        fullname: String,
+        phone: String,
+        gender: String,
+        idStudent: String,
+        classStd: String,
+        avatar: String
+    ) {
         val coroutineScope = CoroutineScope(Dispatchers.Main)
         coroutineScope.launch {
             try {
@@ -94,54 +115,87 @@ class ViewModelStudent: ViewModel() {
                 val nameUser = hashMapOf("name" to fullname)
 
 
-                collectionStudent.document(_id).update(studentDoc as Map<String, Any>).addOnSuccessListener {
-                    _updateResultSt.value = true
-                    Log.d("TAG", "Đã cập nhật trường thành công!")
+                collectionStudent.document(_id).update(studentDoc as Map<String, Any>)
+                    .addOnSuccessListener {
+                        _updateResultSt.value = true
+                        Log.d("TAG", "Đã cập nhật trường thành công!")
 
-                    db.collection("Users").document(_id).update(nameUser as Map<String,Any>).addOnSuccessListener {
-                        Log.d("TAG", "Đã cập nhật username thành công!")
-                    }.addOnFailureListener{e->
-                        Log.e("TAG", "Lỗi khi cập nhật user: ", e)
+                        db.collection("Users").document(_id).update(nameUser as Map<String, Any>)
+                            .addOnSuccessListener {
+                                Log.d("TAG", "Đã cập nhật username thành công!")
+                            }.addOnFailureListener { e ->
+                                Log.e("TAG", "Lỗi khi cập nhật user: ", e)
+                            }
+
+                        FirebaseDatabase.getInstance().getReference("User").child(_id).child("name")
+                            .setValue(fullname).addOnSuccessListener {
+                                Log.d("TAG", "Đã cập nhật trường thành công trong realtime")
+                            }.addOnFailureListener { e ->
+                                Log.e("TAG", "Lỗi khi cập nhật realtime: ", e)
+                            }
+                    }.addOnFailureListener { error ->
+                        _updateResultSt.value = false
+                        Log.e("TAG", "Lỗi khi cập nhật trường: ", error)
+
                     }
-
-                    FirebaseDatabase.getInstance().getReference("User").child(_id).child("name").setValue(fullname).
-                    addOnSuccessListener{
-                        Log.d("TAG", "Đã cập nhật trường thành công trong realtime")
-                    }.addOnFailureListener{e->
-                        Log.e("TAG", "Lỗi khi cập nhật realtime: ", e)
-                    }
-                }.addOnFailureListener { error ->
-                    _updateResultSt.value = false
-                    Log.e("TAG", "Lỗi khi cập nhật trường: ", error)
-
-                }
-                val students = StudentInfor(_id, fullname, phone, gender, idStudent, classStd, avatar)
+                val students =
+                    StudentInfor(_id, fullname, phone, gender, idStudent, classStd, avatar)
                 val list = _student.value?.toMutableList() ?: mutableListOf()
-                val room =  list.find { it._id == _id }
+                val room = list.find { it._id == _id }
                 val index = _student.value?.indexOfFirst { it._id == room?._id } ?: return@launch
                 list[index] = students
                 _student.value = list
 
-            }catch(e:Exception){
+            } catch (e: Exception) {
 
             }
         }
 
     }
 
-    fun deleteStudent(_id:String){
+    fun deleteStudent(_id: String) {
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
+        coroutineScope.launch {
+            try {
+                var docDelete = collectionStudent.document(_id)
+                docDelete.delete().addOnSuccessListener {
+                    Log.d("TAG", "Đã xóa tài liệu thành công!")
+                    try {
+                        var docDelete = usersCollection.document(_id)
+                        docDelete.delete().addOnSuccessListener {
+                            Log.d("TAG", "Đã xóa tài liệu thành công!")
+                            val childIdToDelete = _id
+                            // Sử dụng phương thức removeValue() trên DatabaseReference để xóa phần tử
+                            dbRef.child(childIdToDelete).removeValue()
+                        }
+                            .addOnFailureListener { error ->
+                                Log.e("TAG", "Lỗi khi xóa tài liệu: ", error)
+                            }
+
+                    } catch (e: Exception) {
+
+                    }
+
+                }
+                .addOnFailureListener { error ->
+                        Log.e("TAG", "Lỗi khi xóa tài liệu: ", error)
+                    }
+                val list = _student.value?.toMutableList() ?: mutableListOf()
+                val removedSt =
+                    list.find { it._id == _id } // Tìm kiếm đối tượng có _id trùng với _id trong danh sách
+                if (removedSt != null) { // Nếu tìm thấy đối tượng cần xóa
+                    list.remove(removedSt) // Xóa đối tượng khỏi danh sách
+                    _student.value = list // Cập nhật lại giá trị của _rooms.value
+                }
+            } catch (e: Exception) {
+
+            }
+
+        }
 
     }
+
     fun getStudentById(studentId: String): StudentInfor? {
-//        val studentList: MutableList<StudentInfor> = _student.value?.toMutableList() ?: mutableListOf()
-//        if (studentList != null) {
-//            for (student in studentList) {
-//                if (student._id == studentId) {
-//                    Log.e("st",student._id)
-//                    return student
-//                }
-//            }
-//        }
         return _student.value?.find { student -> student._id == studentId }
     }
 }

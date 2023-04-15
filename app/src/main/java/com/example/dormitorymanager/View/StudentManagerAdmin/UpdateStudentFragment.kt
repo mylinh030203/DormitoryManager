@@ -1,6 +1,7 @@
-package com.example.dormitorymanager.View.Student
+package com.example.dormitorymanager.View.StudentManagerAdmin
 
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -44,6 +46,7 @@ class UpdateStudentFragment : Fragment() {
         var edtClass = view.findViewById<EditText>(R.id.edtClass)
         var edtAvatar = view.findViewById<EditText>(R.id.edtAvatar)
         var btnupdateSt = view.findViewById<Button>(R.id.btnupdateSt)
+        var btndeleteSt = view.findViewById<Button>(R.id.btndeleteSt)
         var id = arguments?.getString("id", "8")
         edtfullname.setText(arguments?.getString("fullname", "8"))
         edtphone.setText(arguments?.getString("phone", "8"))
@@ -80,17 +83,28 @@ class UpdateStudentFragment : Fragment() {
                     if (isAdmin)
                         view.findNavController()
                             .navigate(R.id.action_updateStudentFragment_to_studentFragment)
-                    else{
-                        var intent = Intent(activity,MainActivity::class.java)
-                        startActivity(intent)
-                    }
-
                 }
             } else {
                 Toast.makeText(context, "Update failure", Toast.LENGTH_SHORT).show()
             }
 
         })
+        viewModel.checkAdmin { isAdmin ->
+            if (isAdmin){
+                btndeleteSt.setOnClickListener {
+                    viewModelStudent.deleteStudent(id.toString())
+                    var ad = AlertDialog.Builder(requireContext())
+                    ad.setTitle("Delete record")
+                    ad.setMessage("Delete success")
+                    ad.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
+                        Toast.makeText(context, "Delete success", Toast.LENGTH_SHORT).show()
+                    }).show()
+                    view.findNavController().navigate(R.id.action_updateStudentFragment_to_studentFragment)
+                }
+            }
+
+        }
+
         return view
     }
 

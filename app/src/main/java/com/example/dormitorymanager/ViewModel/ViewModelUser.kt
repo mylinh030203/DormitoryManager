@@ -178,7 +178,33 @@ class ViewModelUser(application: Application) : AndroidViewModel(application) {
             }
         }
     }
+    fun deleteUser(_id:String){
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
+        coroutineScope.launch {
+            try {
+                var docDelete = usersCollection.document(_id)
+                docDelete.delete() .addOnSuccessListener {
+                    Log.d("TAG", "Đã xóa tài liệu thành công!")
+                    val childIdToDelete = getCurrentUser()
 
+        // Sử dụng phương thức removeValue() trên DatabaseReference để xóa phần tử
+                    dbRef.child(childIdToDelete).removeValue()
+                }
+                    .addOnFailureListener { error ->
+                        Log.e("TAG", "Lỗi khi xóa tài liệu: ", error)
+                    }
+                val list = _users.value?.toMutableList() ?: mutableListOf()
+                val removedUser = list.find { it._id == _id } // Tìm kiếm đối tượng có _id trùng với _id trong danh sách
+                if (removedUser != null) { // Nếu tìm thấy đối tượng cần xóa
+                    list.remove(removedUser) // Xóa đối tượng khỏi danh sách
+                    _users.value = list // Cập nhật lại giá trị của _users.value
+                }
+            }catch (e: Exception){
+
+            }
+
+        }
+    }
     // Hàm checkAdmin
     fun checkAdmin(callback: (Boolean) -> Unit) {
         checkRoleID { roleID ->

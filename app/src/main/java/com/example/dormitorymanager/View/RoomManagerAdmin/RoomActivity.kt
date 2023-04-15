@@ -1,4 +1,4 @@
-package com.example.dormitorymanager.View.RoomManager
+package com.example.dormitorymanager.View.RoomManagerAdmin
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +16,8 @@ import androidx.navigation.ui.NavigationUI
 import com.example.dormitorymanager.R
 import com.example.dormitorymanager.View.HomeFragment
 import com.example.dormitorymanager.View.LoginActivity
-import com.example.dormitorymanager.View.Student.StudentActivity
+import com.example.dormitorymanager.View.StudentManagerAdmin.StudentActivity
+import com.example.dormitorymanager.ViewModel.ViewModelStudent
 import com.example.dormitorymanager.ViewModel.ViewModelUser
 import com.example.dormitorymanager.databinding.ActivityRoomBinding
 import com.google.android.material.navigation.NavigationView
@@ -26,11 +27,13 @@ import com.google.firebase.database.ValueEventListener
 
 class RoomActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRoomBinding
+    private lateinit var viewModelStudent: ViewModelStudent
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var viewModel: ViewModelUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRoomBinding.inflate(layoutInflater)
+        viewModelStudent = ViewModelProvider(this).get(ViewModelStudent::class.java)
         viewModel = ViewModelProvider(this).get(ViewModelUser::class.java)
         setContentView(binding.root)
         setupDrawerLayout()
@@ -103,12 +106,42 @@ class RoomActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 R.id.info->{
-                    if(viewModel.checkLogin()){
-                        val inten = Intent(this, StudentActivity::class.java)
-                        startActivity(inten)
-                    }
-                    else{
-//                var intent = Intent(activity, loginActivity::class.java)
+                    if (viewModel.checkLogin()) {
+                        viewModel.checkAdmin { isAdmin ->
+                            if (isAdmin) {
+                                val inten = Intent(this, StudentActivity::class.java)
+                                startActivity(inten)
+                            } else {
+                                var id = viewModel.getCurrentUser()
+                                viewModelStudent.getStudent()
+                                viewModelStudent.students.observe(this, { students ->
+                                    // Xử lý dữ liệu sinh viên đã được cập nhật
+                                    // Students là danh sách sinh viên
+                                    val studentId = id // Thay đổi giá trị studentId tùy vào nhu cầu
+                                    val student = viewModelStudent.getStudentById(studentId)
+                                    if (student != null) {
+
+                                        val bundle = Bundle()
+                                        bundle.putString("id", student?._id)
+                                        bundle.putString("fullname", student?.fullname)
+                                        bundle.putString("phone", student?.phone)
+                                        bundle.putString("gender", student?.gender)
+                                        bundle.putString("idStudent", student?.idStudent)
+                                        bundle.putString("classStd", student?.classStd)
+                                        bundle.putString("avatar", student?.avatar)
+                                        navController.navigate(R.id.action_homeFragment_to_updateStudentFragment2, bundle)
+
+                                    } else {
+                                        // Xử lý khi không tìm thấy sinh viên với studentId tương ứng
+                                    }
+                                })
+                                // Bắt đầu giao dịch FragmentTransaction
+
+
+                            }
+                        }
+
+                    } else {
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                     }
@@ -134,9 +167,9 @@ class RoomActivity : AppCompatActivity() {
 
     fun checkRole(RoleID: String): String {
         if (RoleID.equals("2")) {
-            return "Sinh Viên"
+            return "Student"
         } else if (RoleID.equals("1")) {
-            return "Quản lý"
+            return "Admin"
         }
         return ""
     }

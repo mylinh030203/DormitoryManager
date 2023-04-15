@@ -1,4 +1,4 @@
-package com.example.dormitorymanager.View.RoomManager
+package com.example.dormitorymanager.View.RoomManagerAdmin
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

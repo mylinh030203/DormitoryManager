@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/studentFragment"
-        android:name="com.example.dormitorymanager.View.Student.StudentFragment"
+        android:name="com.example.dormitorymanager.View.StudentManagerAdmin.StudentFragment"
         android:label="fragment_student"
         tools:layout="@layout/fragment_student" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/updateStudentFragment"
-        android:name="com.example.dormitorymanager.View.Student.UpdateStudentFragment"
+        android:name="com.example.dormitorymanager.View.StudentManagerAdmin.UpdateStudentFragment"
         android:label="fragment_update_student"
         tools:layout="@layout/fragment_update_student" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/addStudentFragment"
-        android:name="com.example.dormitorymanager.View.Student.AddStudentFragment"
+        android:name="com.example.dormitorymanager.View.StudentManagerAdmin.AddStudentFragment"
         android:label="fragment_add_student"
         tools:layout="@layout/fragment_add_student" >
         <action
