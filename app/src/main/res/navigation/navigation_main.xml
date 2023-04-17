@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_roomFragment2_to_updateRoomFragment2"
             app:destination="@id/updateRoomFragment2" />
+        <action
+            android:id="@+id/action_roomFragment2_to_registerRMFragment"
+            app:destination="@id/registerRMFragment" />
     </fragment>
     <fragment
         android:id="@+id/addRoomFragment2"
@@ -30,4 +33,9 @@
             android:id="@+id/action_updateRoomFragment2_to_roomFragment2"
             app:destination="@id/roomFragment2" />
     </fragment>
+    <fragment
+        android:id="@+id/registerRMFragment"
+        android:name="com.example.dormitorymanager.View.RegisterRoomManagerAdmin.RegisterRMFragment"
+        android:label="fragment_register_r_m"
+        tools:layout="@layout/fragment_register_r_m" />
 </navigation>

@@ -8,12 +8,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dormitorymanager.Model.StudentInfor
 import com.example.dormitorymanager.R
+import com.example.dormitorymanager.View.RegisterRoomManagerAdmin.RegisterRMFragment
 import com.example.dormitorymanager.View.rvInter
 import kotlinx.android.synthetic.main.layout_item_room.view.img
 import kotlinx.android.synthetic.main.layout_item_room.view.tvName
 import kotlinx.android.synthetic.main.layout_item_student.view.*
 
-class AdapterStudent (
+class AdapterStudent(
     var list: MutableList<StudentInfor>,
     val onClickStudent: rvInter,
     val context: StudentFragment
@@ -46,6 +47,15 @@ class AdapterStudent (
                 //itemclick chọn
                 holder.itemView.setOnClickListener {
                     onClickStudent.onClickStudent(position)
+                }
+                holder.itemView.isFocusable = true
+                holder.itemView.isLongClickable = true
+
+                holder.itemView.setOnLongClickListener { view ->
+                    // Lấy vị trí của ViewHolder trong Adapter
+                    val position = holder.adapterPosition
+                    onClickStudent.onItemLongClick(position)
+                    return@setOnLongClickListener true
                 }
             }
         }

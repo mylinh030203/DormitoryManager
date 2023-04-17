@@ -44,6 +44,15 @@ class AdapterRoom(
             holder.itemView.setOnClickListener {
                 onClickRoom.onClickRoom(position)
             }
+            holder.itemView.isFocusable = true
+            holder.itemView.isLongClickable = true
+
+            holder.itemView.setOnLongClickListener { view ->
+                // Lấy vị trí của ViewHolder trong Adapter
+                val position = holder.adapterPosition
+                onClickRoom.onItemLongClick(position)
+                return@setOnLongClickListener true
+            }
         }
     }
 

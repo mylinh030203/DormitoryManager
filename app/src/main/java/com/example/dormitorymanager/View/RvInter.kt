@@ -7,4 +7,7 @@ interface rvInter {
     fun onClickStudent(position: Int){
 
     }
+    fun onItemLongClick(position: Int){
+
+    }
 }

@@ -3,6 +3,7 @@ package com.example.dormitorymanager.View.RoomManagerAdmin
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
+import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import android.widget.Button
 import android.widget.Toast
@@ -24,6 +25,7 @@ class RoomFragment : Fragment() {
     private lateinit var viewModel: ViewModelUser
     private lateinit var adapter: AdapterRoom
     private lateinit var rvRoom: RecyclerView
+    private var longClickedPosition: Int = -1
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,7 +42,6 @@ class RoomFragment : Fragment() {
         viewModel.checkAdmin { isAdmin ->
             if (isAdmin) {
                 selectRoom(viewModelRoom.getRoom())
-                registerForContextMenu(rvRoom)
                 btnaddroom.setOnClickListener {
                     view.findNavController().navigate(R.id.action_roomFragment2_to_addRoomFragment2)
                 }
@@ -79,11 +80,18 @@ class RoomFragment : Fragment() {
                         ).show()
                 }
 
-//                fragmentManager?.beginTransaction()
-//                    ?.replace(R.id.drawLayout, updateRoomFragment)
-//                    ?.addToBackStack(null)
-//                    ?.commit()
 
+            }
+
+            override fun onItemLongClick(position: Int) {
+                // Lưu trữ vị trí của item được long click
+                longClickedPosition = position
+
+                // Hiển thị context menu với vị trí position của item trong RecyclerView
+
+                registerForContextMenu(rvRoom)
+                rvRoom.showContextMenuForChild(rvRoom.getChildAt(position))
+                unregisterForContextMenu(rvRoom)
             }
         }, this)
 
@@ -102,29 +110,52 @@ class RoomFragment : Fragment() {
 
     }
 
+
     override fun onCreateContextMenu(
         menu: ContextMenu,
         v: View,
         menuInfo: ContextMenu.ContextMenuInfo?
     ) {
-        super.onCreateContextMenu(menu, v, menuInfo)
-        menu?.add(100, 11, 1, "Delete Room")
-        menu?.add(100, 12, 2, "Member of room")
+
+        // Lấy đối tượng MenuInflater từ Fragment
+        val inflater = requireActivity().menuInflater
+        val position = longClickedPosition
+        menu?.setHeaderTitle("Room ${adapter.currentList[position].name}")
+        // Sử dụng MenuInflater để inflate tập tin menu resource
+        inflater.inflate(R.menu.context_menu, menu)
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            11 -> {
-                viewModelRoom.deleteRoom(arguments?.getString("id").toString())
-                var ad = AlertDialog.Builder(requireContext())
-                ad.setTitle("Delete record")
-                ad.setMessage("Delete success")
-                ad.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
-                    Toast.makeText(context, "Delete success", Toast.LENGTH_SHORT).show()
-                }).show()
-            }
-            12 -> {
+            R.id.delete -> {
+                // Lấy vị trí của item được long click
+                val position = longClickedPosition
+                if (position != -1) {
+                    viewModelRoom.deleteRoom(adapter.currentList[position]._id)
+                    longClickedPosition = -1 // Reset giá trị của biến tạm
+                    var ad = AlertDialog.Builder(requireContext())
+                    ad.setTitle("Delete record")
+                    ad.setMessage("Delete success")
+                    ad.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
+                        Toast.makeText(context, "Delete success", Toast.LENGTH_SHORT).show()
+                    }).show()
+                    return true
+                }
 
+
+            }
+            R.id.member -> {
+                val position = longClickedPosition
+                if (position != -1) {
+                    val bundle = Bundle()
+                    bundle.putString("id", adapter.currentList[position]._id)
+                    val navController = view?.findNavController()
+                    navController?.navigate(
+                        R.id.action_roomFragment2_to_registerRMFragment,
+                        bundle
+                    )
+                    longClickedPosition = -1
+                }
             }
         }
         return super.onContextItemSelected(item)

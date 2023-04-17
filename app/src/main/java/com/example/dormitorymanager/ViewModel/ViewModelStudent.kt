@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,11 +24,16 @@ class ViewModelStudent : ViewModel() {
     val auth = FirebaseAuth.getInstance()
     val dbRef = FirebaseDatabase.getInstance().getReference("User")
     val collectionStudent = db.collection("StudentInfo")
+    val collectionRegisterRoom = db.collection("DetailRoomRegister")
     private val usersCollection = db.collection("Users")
 
     val _student = MutableLiveData<List<StudentInfor>>()
     val students: LiveData<List<StudentInfor>>
         get() = _student
+
+    val _studentByRoomID = MutableLiveData<List<StudentInfor>>()
+    val studentByRoomID: LiveData<List<StudentInfor>>
+        get() = _studentByRoomID
 
     private val _updateResultSt = MutableLiveData<Boolean>()
     val updateResultSt: LiveData<Boolean>
@@ -49,6 +55,34 @@ class ViewModelStudent : ViewModel() {
 
         return _student.value?.toMutableList() ?: mutableListOf()
         //chuyển từ multablelivedata sang multablelist
+    }
+
+    fun getStudentInRoom(roomID: String): MutableList<StudentInfor>{
+        collectionRegisterRoom.whereEqualTo("room_id", roomID).get().addOnSuccessListener {
+            registeRoomDoc->
+            if(!registeRoomDoc.isEmpty){
+                val userIdList = mutableListOf<String>()
+                for (registerRoomDocument in registeRoomDoc) {
+                    val userId = registerRoomDocument.getString("user_id")
+                    userId?.let { userIdList.add(it) }
+                }
+
+                collectionStudent.whereIn("_id",userIdList).get().addOnSuccessListener {
+                studentDoc->
+                    val studentList = mutableListOf<StudentInfor>()
+                    for(studentdoc in studentDoc){
+                        val student = studentdoc.toObject(StudentInfor::class.java)
+                        studentList.add(student)
+                    }
+                    _studentByRoomID.value = studentList
+                }
+                    .addOnFailureListener {  }
+            }else
+                _studentByRoomID.value = emptyList()
+        }.addOnFailureListener {
+
+        }
+     return _studentByRoomID.value?.toMutableList() ?: mutableListOf()
     }
 
     fun addStudent(
