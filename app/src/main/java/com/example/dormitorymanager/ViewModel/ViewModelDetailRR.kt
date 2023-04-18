@@ -48,12 +48,12 @@ class ViewModelDetailRR:ViewModel() {
         //chuyển từ multablelivedata sang multablelist
     }
 
-    fun RegisterRoom(_id: String, room_id: String, user_id:String, registerDate: Date, expirationDate: Date, status: String, price:Long){
+    fun RegisterRoom(room_id: String, user_id:String, registerDate: String, expirationDate: String, status: String, price:Long){
         val coroutineScope = CoroutineScope(Dispatchers.Main)
         coroutineScope.launch {
             try {
 //                val count = countDoc()+1
-//                val _id = (count).toString()
+                val _id = user_id
                 val detail = DetailRoomRegister(_id, room_id, user_id, registerDate, expirationDate, status, price)
                 val detailDoc = hashMapOf(
                     "_id" to _id,
@@ -106,7 +106,7 @@ class ViewModelDetailRR:ViewModel() {
     }
 
     fun updateDetail(
-        _id: String, room_id: String, user_id:String, registerDate: Date, expirationDate: Date, status: String, price:Long) {
+        _id: String, room_id: String, user_id:String, registerDate: String, expirationDate: String, status: String, price:Long) {
         val coroutineScope = CoroutineScope(Dispatchers.Main)
         coroutineScope.launch {
             try {

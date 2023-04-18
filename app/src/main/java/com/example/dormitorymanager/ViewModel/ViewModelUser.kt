@@ -214,4 +214,23 @@ class ViewModelUser(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun getIDDoccumentUser(value: String, callback: (String?) -> Unit) {
+        usersCollection
+            .whereEqualTo("email", value)
+            .get().addOnSuccessListener { UserDoc->
+                if (!UserDoc.isEmpty) {
+                        val documentID = UserDoc.documents[0].getString("_id")
+                        Log.e("iduser",documentID.toString())
+                    Log.e("email", value)
+                        callback(documentID)
+
+                } else {
+                    Log.e("iduser","")
+
+                    Log.e("email", value)
+                }
+            }
+    }
+
+
 }

@@ -33,13 +33,15 @@ class RegisterRMFragment : Fragment() {
         var btnaddSt = view.findViewById<Button>(R.id.btnAddStudent)
         var roomID = arguments?.getString("id", "8").toString()
         rvStudent = view.findViewById(R.id.rvStudent)
+        var bundle = Bundle()
+        bundle.putString("_id",roomID)
         viewModel.checkAdmin { isAdmin ->
             if (isAdmin) {
                 selectStudent(viewModelStudent.getStudentInRoom(roomID))
                 // Inflate the layout for this fragment
                 btnaddSt.setOnClickListener {
                     val navController = view?.findNavController()
-                    navController?.navigate(R.id.action_studentFragment_to_addStudentFragment)
+                    navController?.navigate(R.id.action_registerRMFragment_to_addStudentInRoomFragment,bundle)
                 }
             }
         }
