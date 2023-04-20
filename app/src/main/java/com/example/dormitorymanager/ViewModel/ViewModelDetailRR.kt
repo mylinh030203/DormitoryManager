@@ -1,6 +1,8 @@
 package com.example.dormitorymanager.ViewModel
 
+import android.annotation.SuppressLint
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,6 +26,10 @@ class ViewModelDetailRR:ViewModel() {
     val _detail = MutableLiveData<List<DetailRoomRegister>>()
     val details: LiveData<List<DetailRoomRegister>>
         get() = _detail
+
+    private val _detailRR = MutableLiveData<DetailRoomRegister?>()
+    val detailRR: LiveData<DetailRoomRegister?>
+        get() = _detailRR
 
     private val _updateResult = MutableLiveData<Boolean>()
     val updateResult: LiveData<Boolean>
@@ -70,6 +76,7 @@ class ViewModelDetailRR:ViewModel() {
                         list.add(detail)
                         _detail.value = list
                         Log.d("TAG", "Đã thêm tài liệu mới với ID: ${it}")
+
                     }.addOnFailureListener { error ->
                         Log.e("TAG", "Lỗi khi thêm tài liệu: ", error) }
             }
@@ -110,7 +117,7 @@ class ViewModelDetailRR:ViewModel() {
         val coroutineScope = CoroutineScope(Dispatchers.Main)
         coroutineScope.launch {
             try {
-                val roomDoc = hashMapOf(
+                val DetailDoc = hashMapOf(
                     "_id" to _id,
                     "room_id" to room_id,
                     "user_id" to user_id,
@@ -119,7 +126,7 @@ class ViewModelDetailRR:ViewModel() {
                     "status" to status,
                     "price" to price
                 )
-                collectionRoom.document(_id).update(roomDoc as Map<String, Any>).addOnSuccessListener {
+                collectionDetail.document(_id).update(DetailDoc as Map<String, Any>).addOnSuccessListener {
                     _updateResult.value = true
                     Log.d("TAG", "Đã cập nhật trường thành công!")
 
@@ -137,6 +144,22 @@ class ViewModelDetailRR:ViewModel() {
             }catch (e: Exception){
 
             }
+        }
+    }
+
+
+    fun getDeltail(_id: String){
+        _detailRR.value = DetailRoomRegister()
+        collectionDetail.document(_id).get().addOnSuccessListener {
+                documentSnapshot ->
+            if(documentSnapshot.exists()){
+                val detail = documentSnapshot.toObject(DetailRoomRegister::class.java)
+                _detailRR.value = detail
+            }else{
+                Log.d("getDetail", "Không tìm thấy tài liệu")
+            }
+        }.addOnFailureListener { exception ->
+            Log.w("getDetail", "Lỗi khi lấy tài liệu", exception)
         }
     }
 }

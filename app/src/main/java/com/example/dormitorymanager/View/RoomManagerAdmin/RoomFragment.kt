@@ -149,6 +149,7 @@ class RoomFragment : Fragment() {
                 if (position != -1) {
                     val bundle = Bundle()
                     bundle.putString("id", adapter.currentList[position]._id)
+                    bundle.putString("name", adapter.currentList[position].name)
                     val navController = view?.findNavController()
                     navController?.navigate(
                         R.id.action_roomFragment2_to_registerRMFragment,
