@@ -16,6 +16,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.dormitorymanager.View.HomeFragment
 import com.example.dormitorymanager.View.LoginActivity
+import com.example.dormitorymanager.View.RegisterRoomManagerAdmin.RegisterRoomManagerActivity
 import com.example.dormitorymanager.View.StudentManagerAdmin.StudentActivity
 import com.example.dormitorymanager.ViewModel.ViewModelStudent
 import com.example.dormitorymanager.ViewModel.ViewModelUser
@@ -157,6 +158,7 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
 
                 }
+
                 R.id.exit -> Toast.makeText(this, "exit", Toast.LENGTH_SHORT).show()
             }
             true

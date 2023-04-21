@@ -154,6 +154,7 @@ class RegisterRoomManagerActivity : AppCompatActivity() {
                     startActivity(intent)
 
                 }
+
                 R.id.exit -> Toast.makeText(this, "exit", Toast.LENGTH_SHORT).show()
             }
             true

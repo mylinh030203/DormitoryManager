@@ -23,7 +23,11 @@
         android:id="@+id/addRoomFragment2"
         android:name="com.example.dormitorymanager.View.RoomManagerAdmin.AddRoomFragment"
         android:label="fragment_add_room"
-        tools:layout="@layout/fragment_add_room" />
+        tools:layout="@layout/fragment_add_room" >
+        <action
+            android:id="@+id/action_addRoomFragment2_to_roomFragment2"
+            app:destination="@id/roomFragment2" />
+    </fragment>
     <fragment
         android:id="@+id/updateRoomFragment2"
         android:name="com.example.dormitorymanager.View.RoomManagerAdmin.updateRoomFragment"
@@ -44,6 +48,9 @@
         <action
             android:id="@+id/action_registerRMFragment_to_updateStudentInRoomFragment"
             app:destination="@id/updateStudentInRoomFragment" />
+        <action
+            android:id="@+id/action_registerRMFragment_to_roomFragment2"
+            app:destination="@id/roomFragment2" />
     </fragment>
     <fragment
         android:id="@+id/addStudentInRoomFragment"

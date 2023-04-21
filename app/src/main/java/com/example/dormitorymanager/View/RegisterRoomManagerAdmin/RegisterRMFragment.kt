@@ -104,7 +104,7 @@ class RegisterRMFragment : Fragment() {
         menuInfo: ContextMenu.ContextMenuInfo?
     ) {
         super.onCreateContextMenu(menu, v, menuInfo)
-        menu?.add(100, 11, 1, "delete")
+        menu?.add(100, 11, 1, "Delete register")
         menu?.add(100, 12, 2, "Detail register room")
         val position = longClickedPosition
         menu?.setHeaderTitle("Student ${adapter.currentList[position].fullname}")
@@ -116,7 +116,7 @@ class RegisterRMFragment : Fragment() {
                 // Lấy vị trí của item được long click
                 val position = longClickedPosition
                 if (position != -1) {
-                    viewModelStudent.deleteStudent(adapter.currentList[position]._id)
+                    viewModelDerailRR.deleteDetail(adapter.currentList[position]._id)
                     longClickedPosition = -1 // Reset giá trị của biến tạm
                     var ad = AlertDialog.Builder(requireContext())
                     ad.setTitle("Delete record")

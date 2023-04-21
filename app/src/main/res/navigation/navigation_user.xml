@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/navigation_user">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_user"
+    app:startDestination="@id/roomRegisterFragment">
 
+    <fragment
+        android:id="@+id/roomRegisterFragment"
+        android:name="com.example.dormitorymanager.View.StudentRegisterRoom.RoomRegisterFragment"
+        android:label="fragment_room_register"
+        tools:layout="@layout/fragment_room_register" />
 </navigation>

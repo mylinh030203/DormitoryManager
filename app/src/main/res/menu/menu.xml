@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/home"
+        android:id="@+id/homeUser"
         android:icon="@drawable/ic_home"
         android:title="Home" />
     <item
-        android:id="@+id/info"
+        android:id="@+id/infoUser"
         android:icon="@drawable/ic_person"
-        android:title="Information"
+        android:title="Informationn Student"
         />
+
     <item
-        android:id="@+id/logout"
+        android:id="@+id/logoutUser"
         android:icon="@drawable/ic_logout"
         android:title="Log Out" />
     <item
-        android:id="@+id/exit"
+        android:id="@+id/exitUser"
         android:icon="@drawable/ic_exit"
         android:title="Exit" />
 </menu>

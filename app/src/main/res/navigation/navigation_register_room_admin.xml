@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_register_room_admin"
+    app:startDestination="@id/registerRMFragment2">
+
+    <fragment
+        android:id="@+id/roomFragment3"
+        android:name="com.example.dormitorymanager.View.RoomManagerAdmin.RoomFragment"
+        android:label="fragment_room"
+        tools:layout="@layout/fragment_room" >
+        <action
+            android:id="@+id/action_roomFragment3_to_registerRMFragment2"
+            app:destination="@id/registerRMFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerRMFragment2"
+        android:name="com.example.dormitorymanager.View.RegisterRoomManagerAdmin.RegisterRMFragment"
+        android:label="fragment_register_r_m"
+        tools:layout="@layout/fragment_register_r_m" >
+        <action
+            android:id="@+id/action_registerRMFragment2_to_addStudentInRoomFragment2"
+            app:destination="@id/addStudentInRoomFragment2" />
+        <action
+            android:id="@+id/action_registerRMFragment2_to_updateStudentInRoomFragment2"
+            app:destination="@id/updateStudentInRoomFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/addStudentInRoomFragment2"
+        android:name="com.example.dormitorymanager.View.RegisterRoomManagerAdmin.AddStudentInRoomFragment"
+        android:label="fragment_add_student_in_room"
+        tools:layout="@layout/fragment_add_student_in_room" >
+        <action
+            android:id="@+id/action_addStudentInRoomFragment2_to_registerRMFragment2"
+            app:destination="@id/registerRMFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateStudentInRoomFragment2"
+        android:name="com.example.dormitorymanager.View.RegisterRoomManagerAdmin.UpdateStudentInRoomFragment"
+        android:label="fragment_update_student_in_room"
+        tools:layout="@layout/fragment_update_student_in_room" >
+        <action
+            android:id="@+id/action_updateStudentInRoomFragment2_to_registerRMFragment2"
+            app:destination="@id/registerRMFragment2" />
+    </fragment>
+</navigation>

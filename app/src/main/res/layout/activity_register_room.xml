@@ -30,7 +30,7 @@
 
     </FrameLayout>
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navLeftmenu_user"
+        android:id="@+id/navLeftmenuUser"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"

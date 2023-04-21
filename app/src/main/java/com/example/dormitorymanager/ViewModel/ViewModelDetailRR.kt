@@ -149,7 +149,6 @@ class ViewModelDetailRR:ViewModel() {
 
 
     fun getDeltail(_id: String){
-        _detailRR.value = DetailRoomRegister()
         collectionDetail.document(_id).get().addOnSuccessListener {
                 documentSnapshot ->
             if(documentSnapshot.exists()){
