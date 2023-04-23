@@ -176,12 +176,12 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btnSelectMemberinRoom"
+        android:id="@+id/btnRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
         android:layout_marginBottom="16dp"
-        android:text="Select member"
+        android:text="Register"
         android:textSize="24dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"

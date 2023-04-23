@@ -12,10 +12,36 @@
         <action
             android:id="@+id/action_roomRegisterFragment_to_infoRoomFragment"
             app:destination="@id/infoRoomFragment" />
+        <action
+            android:id="@+id/action_roomRegisterFragment_to_registerRMFragment3"
+            app:destination="@id/registerRMFragment3" />
+        <action
+            android:id="@+id/action_roomRegisterFragment_to_infoRoomFragment2"
+            app:destination="@id/infoRoomFragment" />
+        <action
+            android:id="@+id/action_roomRegisterFragment_to_infoRoomFragment3"
+            app:destination="@id/infoRoomFragment" />
     </fragment>
     <fragment
         android:id="@+id/infoRoomFragment"
         android:name="com.example.dormitorymanager.View.StudentRegisterRoom.InfoRoomFragment"
         android:label="fragment_info_room"
-        tools:layout="@layout/fragment_info_room" />
+        tools:layout="@layout/fragment_info_room" >
+        <action
+            android:id="@+id/action_infoRoomFragment_to_registerRMFragment3"
+            app:destination="@id/registerRMFragment3" />
+        <action
+            android:id="@+id/action_infoRoomFragment_to_addStudentInRoomFragment3"
+            app:destination="@id/addStudentInRoomFragment3" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerRMFragment3"
+        android:name="com.example.dormitorymanager.View.RegisterRoomManagerAdmin.RegisterRMFragment"
+        android:label="fragment_register_r_m"
+        tools:layout="@layout/fragment_register_r_m" />
+    <fragment
+        android:id="@+id/addStudentInRoomFragment3"
+        android:name="com.example.dormitorymanager.View.RegisterRoomManagerAdmin.AddStudentInRoomFragment"
+        android:label="fragment_add_student_in_room"
+        tools:layout="@layout/fragment_add_student_in_room" />
 </navigation>

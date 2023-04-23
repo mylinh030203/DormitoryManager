@@ -1,11 +1,15 @@
 package com.example.dormitorymanager.View.StudentRegisterRoom
 
+import android.app.DatePickerDialog
+import android.icu.util.Calendar
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.example.dormitorymanager.R
 import com.example.dormitorymanager.ViewModel.ViewModelDetailRR
 import com.example.dormitorymanager.ViewModel.ViewModelRoom
@@ -36,7 +40,16 @@ class InfoRoomFragment : Fragment() {
         binding.tvLoc.setText(arguments?.getString("loc","8"))
         binding.tvname.setText(arguments?.getString("name","8"))
         binding.tvPrice.setText(arguments?.getString("price", "9"))
+        val roomID = arguments?.getString("id","8")
+        val userID = viewModel.getCurrentUser()
         binding.tvnumberOfCurrentMenber.setText(arguments?.getString("status","8"))
+       val bundle = Bundle()
+        bundle.putString("room_id",roomID)
+        bundle.putString("user_id",userID)
+        bundle.putString("email",viewModel.getEmailCurrent())
+        binding.btnRegister.setOnClickListener {
+            view?.findNavController()?.navigate(R.id.action_infoRoomFragment_to_addStudentInRoomFragment3, bundle)
+        }
         return binding.root
     }
 

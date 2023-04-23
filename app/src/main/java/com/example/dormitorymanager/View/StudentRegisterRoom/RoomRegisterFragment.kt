@@ -15,6 +15,7 @@ import com.example.dormitorymanager.Model.Rooms
 import com.example.dormitorymanager.R
 import com.example.dormitorymanager.View.AdapterRoom
 import com.example.dormitorymanager.View.rvInter
+import com.example.dormitorymanager.ViewModel.ViewModelDetailRR
 import com.example.dormitorymanager.ViewModel.ViewModelRoom
 import com.example.dormitorymanager.ViewModel.ViewModelUser
 import com.example.dormitorymanager.databinding.FragmentRoomRegisterBinding
@@ -25,6 +26,7 @@ class RoomRegisterFragment : Fragment() {
     private lateinit var viewModel: ViewModelUser
     private lateinit var adapter: AdapterRoomUser
     private lateinit var rvRoom: RecyclerView
+    private lateinit var viewModelDerailRR: ViewModelDetailRR
     private var longClickedPosition: Int = -1
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +37,7 @@ class RoomRegisterFragment : Fragment() {
         rvRoom = view.findViewById(R.id.rvRoomUser)
         var btnAddRoomUser = view.findViewById<Button>(R.id.btnAddRoom)
         viewModelRoom = ViewModelProvider(this).get(ViewModelRoom::class.java)
+        viewModelDerailRR = ViewModelProvider(this).get(ViewModelDetailRR::class.java)
         // Inflate the layout for this fragment
         viewModel.checkAdmin { isAdmin ->
             if (isAdmin) {
@@ -125,10 +128,10 @@ class RoomRegisterFragment : Fragment() {
                     bundle.putString("id", adapter.currentList[position]._id)
                     bundle.putString("name", adapter.currentList[position].name)
                     val navController = view?.findNavController()
-//                    navController?.navigate(
-//                        R.id.action_roomRegisterFragment_to_registerRMFragment3,
-//                        bundle
-//                    )
+                    navController?.navigate(
+                        R.id.action_roomRegisterFragment_to_registerRMFragment3,
+                        bundle
+                    )
                     longClickedPosition = -1
                 }
             }

@@ -143,6 +143,10 @@ class ViewModelUser(application: Application) : AndroidViewModel(application) {
         return _user.value?.uid.toString()
         //        return this.user.toString()
     }
+    fun getEmailCurrent(): String{
+        _user.value = auth.currentUser
+        return _user.value?.email.toString()
+    }
 
     fun Logout() {
         auth.signOut()

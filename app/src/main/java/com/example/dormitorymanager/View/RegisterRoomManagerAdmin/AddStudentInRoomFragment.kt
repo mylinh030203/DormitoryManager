@@ -42,7 +42,7 @@ class AddStudentInRoomFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_add_student_in_room, container, false)
         val btnRegistDate = view.findViewById<Button>(R.id.btnRegistDate)
         val btnexpirate = view.findViewById<Button>(R.id.btnexpirate)
-
+        val btnStatus = view.findViewById<Button>(R.id.btnStatus)
 
         var edtEmail = view.findViewById<EditText>(R.id.edtEmailst)
         var room_id = arguments?.getString("_id", "8").toString()
@@ -93,25 +93,39 @@ class AddStudentInRoomFragment : Fragment() {
             )
             datePickerDialog.show()
         }
-
-
         val btnAddStToRoom = view.findViewById<Button>(R.id.btnAddStToRoom)
-        btnAddStToRoom.setOnClickListener {
-            viewModel.getIDDoccumentUser(edtEmail.text.toString()) { documentId ->
-                viewmodelDetailRRM.RegisterRoom(
-                    room_id,
-                    documentId.toString(),
-                    tvDateRegister.text.toString(),
-                    tvDateExpirate.text.toString(),
-                    "Đã Duyệt",
-                    100000
-                )
+        viewModel.checkAdmin { isAdmin->
+            if(isAdmin){
+                btnAddStToRoom.setOnClickListener {
+                    viewModel.getIDDoccumentUser(edtEmail.text.toString()) { documentId ->
+                        viewmodelDetailRRM.RegisterRoom(
+                            room_id,
+                            documentId.toString(),
+                            tvDateRegister.text.toString(),
+                            tvDateExpirate.text.toString(),
+                            "Đã Duyệt",
+                            100000
+                        )
+                    }
+                    Toast.makeText(context, "Add student Success", Toast.LENGTH_SHORT).show()
+                    val navController = view?.findNavController()
+                    navController?.navigate(
+                        R.id.action_addStudentInRoomFragment_to_registerRMFragment)
+                }
+            }else{
+                val room_id = arguments?.getString("room_id","")
+                val user_id = arguments?.getString("user_id","")
+                edtEmail.setText(arguments?.getString("email",""))
+                btnStatus.visibility = View.GONE
+                btnAddStToRoom.setOnClickListener {
+                    viewmodelDetailRRM.RegisterRoom(room_id.toString(),user_id.toString(),tvDateRegister.text.toString(),
+                        tvDateExpirate.text.toString(),"Chưa Duyệt",
+                        100000)
+                }
             }
-            Toast.makeText(context, "Add student Success", Toast.LENGTH_SHORT).show()
-            val navController = view?.findNavController()
-            navController?.navigate(
-                R.id.action_addStudentInRoomFragment_to_registerRMFragment)
         }
+
+
 
         return view
     }

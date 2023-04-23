@@ -50,6 +50,9 @@ class RegisterRMFragment : Fragment() {
                         bundle
                     )
                 }
+            }else{
+                selectStudent(viewModelStudent.getStudentInRoom(roomID))
+                btnaddSt.visibility = View.GONE
             }
         }
         return view
