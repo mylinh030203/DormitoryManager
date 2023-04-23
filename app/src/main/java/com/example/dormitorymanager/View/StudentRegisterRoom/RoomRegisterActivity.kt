@@ -9,7 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -19,20 +19,23 @@ import com.example.dormitorymanager.View.LoginActivity
 import com.example.dormitorymanager.View.StudentManagerAdmin.StudentActivity
 import com.example.dormitorymanager.ViewModel.ViewModelStudent
 import com.example.dormitorymanager.ViewModel.ViewModelUser
-import com.example.dormitorymanager.databinding.ActivityRegisterRoomBinding
+import com.example.dormitorymanager.databinding.ActivityRoomBinding
+import com.example.dormitorymanager.databinding.ActivityRoomRegisterBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
-class RegisterRoomActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityRegisterRoomBinding
+class RoomRegisterActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityRoomRegisterBinding
+    private lateinit var viewModelStudent: ViewModelStudent
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var viewModel: ViewModelUser
-    private lateinit var viewModelStudent: ViewModelStudent
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding =  ActivityRegisterRoomBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        binding = ActivityRoomRegisterBinding.inflate(layoutInflater)
+        viewModelStudent = ViewModelProvider(this).get(ViewModelStudent::class.java)
+        viewModel = ViewModelProvider(this).get(ViewModelUser::class.java)
         setContentView(binding.root)
         setupDrawerLayout()
         menu()
@@ -46,7 +49,7 @@ class RegisterRoomActivity : AppCompatActivity() {
             setHomeAsUpIndicator(R.drawable.ic_menu)
         }
 
-        drawerLayout = binding.drawerLayout
+        drawerLayout = binding.drawLayout
         val toggle = ActionBarDrawerToggle(
             this,
             drawerLayout,
@@ -60,16 +63,16 @@ class RegisterRoomActivity : AppCompatActivity() {
     fun menu() {
 
         val myNavHostFragment =
-            supportFragmentManager.findFragmentById(R.id.myNavHostFragment_user) as NavHostFragment
+            supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment
         val navController = myNavHostFragment.navController
 
-        val navView: NavigationView = binding.navLeftmenuUser
+        val navView: NavigationView = binding.navLeftmenu
         NavigationUI.setupWithNavController(navView, navController)
 
 
-        drawerLayout = binding.drawerLayout
+        drawerLayout = binding.drawLayout
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
-        val header: View = binding.navLeftmenuUser.getHeaderView(0)
+        val header: View = binding.navLeftmenu.getHeaderView(0)
         val textView = header.findViewById<TextView>(R.id.textView)
         val textView2 = header.findViewById<TextView>(R.id.textView2)
 
@@ -95,15 +98,15 @@ class RegisterRoomActivity : AppCompatActivity() {
         }
 
         //đổi màu cho các icon trong navleft
-        binding.navLeftmenuUser.itemIconTintList = null
+        binding.navLeftmenu.itemIconTintList = null
         //lắng nghe sự kiện click lên các sự kiện menu
-        binding.navLeftmenuUser.setNavigationItemSelectedListener {
+        binding.navLeftmenu.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.homeUser -> {
+                R.id.homeU -> {
                     var intent = Intent(this, HomeFragment::class.java)
                     startActivity(intent)
                 }
-                R.id.infoUser -> {
+                R.id.infoU->{
                     if (viewModel.checkLogin()) {
                         viewModel.checkAdmin { isAdmin ->
                             if (isAdmin) {
@@ -144,23 +147,24 @@ class RegisterRoomActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
                 }
-                R.id.logout -> {
-                    Log.e("dc", viewModel.checkLogin().toString())
+                R.id.logoutU -> {
+                    Log.e("dc",viewModel.checkLogin().toString())
                     viewModel.Logout()
-                    Log.e("dd", viewModel.checkLogin().toString())
+                    Log.e("dd",viewModel.checkLogin().toString())
                     finish()
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
 
                 }
 
-                R.id.exit -> Toast.makeText(this, "exit", Toast.LENGTH_SHORT).show()
+                R.id.exitU -> Toast.makeText(this, "exit", Toast.LENGTH_SHORT).show()
             }
             true
         }
         if (viewModel.checkLogin() == false) {
             header.findViewById<TextView>(R.id.textView).setText("")
         }
+
     }
 
     fun checkRole(RoleID: String): String {
@@ -173,7 +177,7 @@ class RegisterRoomActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = this.findNavController(R.id.myNavHostFragment_user)
+        val navController = this.findNavController(R.id.myNavHostFragment)
         return NavigationUI.navigateUp(navController, drawerLayout)
     }
 

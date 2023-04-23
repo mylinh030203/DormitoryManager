@@ -14,6 +14,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.dormitorymanager.R
 import com.example.dormitorymanager.View.RoomManagerAdmin.RoomActivity
+import com.example.dormitorymanager.View.StudentRegisterRoom.RoomRegisterActivity
 import com.example.dormitorymanager.ViewModel.ViewModelUser
 
 
@@ -29,14 +30,17 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(ViewModelUser::class.java)
         btnstart.setOnClickListener {
             Log.e("home", viewModel.getCurrentUser())
-            if(viewModel.checkLogin()){
+            if (viewModel.checkLogin()) {
                 viewModel.checkAdmin { isAdmin ->
-                    if(isAdmin){
-                        val inten = Intent(activity, RoomActivity::class.java)
+                    if (isAdmin) {
+                        val inten = Intent(context, RoomActivity::class.java)
                         startActivity(inten)
+                    } else {
+                        val intentuser = Intent(context, RoomRegisterActivity::class.java)
+                        startActivity(intentuser)
+
                     }
                 }
-
             }
             else{
 //                var intent = Intent(activity, loginActivity::class.java)

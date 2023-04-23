@@ -8,4 +8,5 @@ data class Rooms(var _id:String,var beds: String,
 
     // Hàm khởi tạo không đối số
     constructor() : this("", "", "8", "1000000.0", "", 100000, "")
+
 }

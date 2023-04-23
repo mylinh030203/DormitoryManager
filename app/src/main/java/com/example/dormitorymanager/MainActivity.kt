@@ -14,10 +14,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.example.dormitorymanager.View.HomeFragment
 import com.example.dormitorymanager.View.LoginActivity
-import com.example.dormitorymanager.View.RegisterRoomManagerAdmin.RegisterRoomManagerActivity
+import com.example.dormitorymanager.View.RoomManagerAdmin.RoomActivity
 import com.example.dormitorymanager.View.StudentManagerAdmin.StudentActivity
+import com.example.dormitorymanager.View.StudentRegisterRoom.RoomRegisterActivity
 import com.example.dormitorymanager.ViewModel.ViewModelStudent
 import com.example.dormitorymanager.ViewModel.ViewModelUser
 import com.example.dormitorymanager.databinding.ActivityMainBinding
@@ -105,8 +105,19 @@ class MainActivity : AppCompatActivity() {
         binding.navLeftmenu.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> {
-                    var intent = Intent(this, HomeFragment::class.java)
-                    startActivity(intent)
+                    if (viewModel.checkLogin()) {
+                        viewModel.checkAdmin { isAdmin ->
+                            if (isAdmin) {
+                                val inten = Intent(this, RoomActivity::class.java)
+                                startActivity(inten)
+                            } else {
+                                val intentuser = Intent(this, RoomRegisterActivity::class.java)
+                                startActivity(intentuser)
+
+                            }
+                        }
+
+                    }
                 }
                 R.id.info -> {
                     if (viewModel.checkLogin()) {

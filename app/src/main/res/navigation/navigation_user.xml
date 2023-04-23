@@ -4,10 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_user"
     app:startDestination="@id/roomRegisterFragment">
-
     <fragment
         android:id="@+id/roomRegisterFragment"
         android:name="com.example.dormitorymanager.View.StudentRegisterRoom.RoomRegisterFragment"
         android:label="fragment_room_register"
-        tools:layout="@layout/fragment_room_register" />
+        tools:layout="@layout/fragment_room_register" >
+        <action
+            android:id="@+id/action_roomRegisterFragment_to_infoRoomFragment"
+            app:destination="@id/infoRoomFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/infoRoomFragment"
+        android:name="com.example.dormitorymanager.View.StudentRegisterRoom.InfoRoomFragment"
+        android:label="fragment_info_room"
+        tools:layout="@layout/fragment_info_room" />
 </navigation>

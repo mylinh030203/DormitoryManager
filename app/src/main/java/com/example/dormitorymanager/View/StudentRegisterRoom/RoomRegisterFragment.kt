@@ -21,7 +21,6 @@ import com.example.dormitorymanager.databinding.FragmentRoomRegisterBinding
 
 
 class RoomRegisterFragment : Fragment() {
-    private lateinit var binding: FragmentRoomRegisterBinding
     private lateinit var viewModelRoom: ViewModelRoom
     private lateinit var viewModel: ViewModelUser
     private lateinit var adapter: AdapterRoomUser
@@ -31,21 +30,22 @@ class RoomRegisterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentRoomRegisterBinding.inflate(inflater, container, false)
+        var view = inflater.inflate(R.layout.fragment_room_register, container, false)
         viewModel = ViewModelProvider(this).get(ViewModelUser::class.java)
-        rvRoom = binding.rvRoomUser
+        rvRoom = view.findViewById(R.id.rvRoomUser)
+        var btnAddRoomUser = view.findViewById<Button>(R.id.btnAddRoom)
         viewModelRoom = ViewModelProvider(this).get(ViewModelRoom::class.java)
         // Inflate the layout for this fragment
-
-
         viewModel.checkAdmin { isAdmin ->
             if (isAdmin) {
                 selectRoom(viewModelRoom.getRoom())
-                binding.btnAddRoomUser.setOnClickListener {
-                    view?.findNavController()?.navigate(R.id.action_roomFragment2_to_addRoomFragment2)
+                btnAddRoomUser.setOnClickListener {
+                    view?.findNavController()
+                        ?.navigate(R.id.action_roomFragment2_to_addRoomFragment2)
                 }
             } else
-                binding.btnAddRoomUser.visibility = View.GONE
+                selectRoom(viewModelRoom.getRoom())
+            btnAddRoomUser.visibility = View.GONE
         }
 
         return view
@@ -65,20 +65,12 @@ class RoomRegisterFragment : Fragment() {
                 bundle.putString("name", adapter.currentList[position].name)
                 bundle.putString("price", adapter.currentList[position].prices.toString())
                 bundle.putString("status", adapter.currentList[position].status)
-                viewModel.checkAdmin { isAdmin ->
-                    if (isAdmin) {
-                        val navController = view?.findNavController()
-                        navController?.navigate(
-                            R.id.action_roomFragment2_to_updateRoomFragment2,
-                            bundle
-                        )
-                    } else
-                        Toast.makeText(
-                            activity, "bạn đã click vào ${adapter.currentList[position].name}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                }
 
+                val navController = view?.findNavController()
+                navController?.navigate(
+                    R.id.action_roomRegisterFragment_to_infoRoomFragment,
+                    bundle
+                )
 
             }
 
@@ -126,23 +118,6 @@ class RoomRegisterFragment : Fragment() {
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.delete -> {
-                // Lấy vị trí của item được long click
-//                val position = longClickedPosition
-//                if (position != -1) {
-//                    viewModelRoom.deleteRoom(adapter.currentList[position]._id)
-//                    longClickedPosition = -1 // Reset giá trị của biến tạm
-//                    var ad = AlertDialog.Builder(requireContext())
-//                    ad.setTitle("Delete record")
-//                    ad.setMessage("Delete success")
-//                    ad.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
-//                        Toast.makeText(context, "Delete success", Toast.LENGTH_SHORT).show()
-//                    }).show()
-//                    return true
-//                }
-
-
-            }
             R.id.member -> {
                 val position = longClickedPosition
                 if (position != -1) {
@@ -150,10 +125,10 @@ class RoomRegisterFragment : Fragment() {
                     bundle.putString("id", adapter.currentList[position]._id)
                     bundle.putString("name", adapter.currentList[position].name)
                     val navController = view?.findNavController()
-                    navController?.navigate(
-                        R.id.action_roomFragment2_to_registerRMFragment,
-                        bundle
-                    )
+//                    navController?.navigate(
+//                        R.id.action_roomRegisterFragment_to_registerRMFragment3,
+//                        bundle
+//                    )
                     longClickedPosition = -1
                 }
             }
