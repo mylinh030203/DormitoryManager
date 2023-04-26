@@ -60,7 +60,8 @@ class AddStudentInRoomFragment : Fragment() {
                     // Lưu giá trị ngày được chọn vào biến selectedDateRegist
                     selectedDateRegist = selectedDate
                     // Cập nhật giá trị của tvDateRegister
-                    tvDateRegister.text = if (selectedDateRegist != null) selectedDateRegist else "Please select a date"
+                    tvDateRegister.text =
+                        if (selectedDateRegist != null) selectedDateRegist else "Please select a date"
                 },
                 year,
                 month,
@@ -68,8 +69,6 @@ class AddStudentInRoomFragment : Fragment() {
             )
             datePickerDialog.show()
         }
-
-
 
 
         var tvDateExpirate = view.findViewById<TextView>(R.id.tvDateExpirate)
@@ -85,7 +84,8 @@ class AddStudentInRoomFragment : Fragment() {
                     // Lưu giá trị ngày được chọn vào biến selectedDateRegist
                     selectedDateExpirate = selectedDate
                     // Cập nhật giá trị của tvDateRegister
-                    tvDateExpirate.text = if (selectedDateExpirate != null) selectedDateExpirate else "Please select a date"
+                    tvDateExpirate.text =
+                        if (selectedDateExpirate != null) selectedDateExpirate else "Please select a date"
                 },
                 year,
                 month,
@@ -94,8 +94,8 @@ class AddStudentInRoomFragment : Fragment() {
             datePickerDialog.show()
         }
         val btnAddStToRoom = view.findViewById<Button>(R.id.btnAddStToRoom)
-        viewModel.checkAdmin { isAdmin->
-            if(isAdmin){
+        viewModel.checkAdmin { isAdmin ->
+            if (isAdmin) {
                 btnAddStToRoom.setOnClickListener {
                     viewModel.getIDDoccumentUser(edtEmail.text.toString()) { documentId ->
                         viewmodelDetailRRM.RegisterRoom(
@@ -110,23 +110,23 @@ class AddStudentInRoomFragment : Fragment() {
                     Toast.makeText(context, "Add student Success", Toast.LENGTH_SHORT).show()
                     val navController = view?.findNavController()
                     navController?.navigate(
-                        R.id.action_addStudentInRoomFragment_to_registerRMFragment)
+                        R.id.action_addStudentInRoomFragment_to_registerRMFragment
+                    )
                 }
-            }else{
-                val room_id = arguments?.getString("room_id","")
-                val user_id = arguments?.getString("user_id","")
-                edtEmail.setText(arguments?.getString("email",""))
+            } else {
+                val room_id = arguments?.getString("room_id", "")
+                val user_id = arguments?.getString("user_id", "")
+                edtEmail.setText(arguments?.getString("email", ""))
                 btnStatus.visibility = View.GONE
                 btnAddStToRoom.setOnClickListener {
-                    viewmodelDetailRRM.RegisterRoom(room_id.toString(),user_id.toString(),tvDateRegister.text.toString(),
-                        tvDateExpirate.text.toString(),"Chưa Duyệt",
-                        100000)
+                    viewmodelDetailRRM.RegisterRoom(
+                        room_id.toString(), user_id.toString(), tvDateRegister.text.toString(),
+                        tvDateExpirate.text.toString(), "Chưa duyệt",
+                        100000
+                    )
                 }
             }
         }
-
-
-
         return view
     }
 

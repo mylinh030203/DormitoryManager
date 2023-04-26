@@ -35,6 +35,10 @@ class ViewModelStudent : ViewModel() {
     val studentByRoomID: LiveData<List<StudentInfor>>
         get() = _studentByRoomID
 
+    val _studentUnapproved = MutableLiveData<List<StudentInfor>>()
+    val StudentUnapproved: LiveData<List<StudentInfor>>
+        get() = _studentUnapproved
+
     private val _updateResultSt = MutableLiveData<Boolean>()
     val updateResultSt: LiveData<Boolean>
         get() = _updateResultSt
@@ -57,33 +61,65 @@ class ViewModelStudent : ViewModel() {
         //chuyển từ multablelivedata sang multablelist
     }
 
-    fun getStudentInRoom(roomID: String): MutableList<StudentInfor>{
-        collectionRegisterRoom.whereEqualTo("room_id", roomID).get().addOnSuccessListener {
-            registeRoomDoc->
-            if(!registeRoomDoc.isEmpty){
-                val userIdList = mutableListOf<String>()
-                for (registerRoomDocument in registeRoomDoc) {
-                    val userId = registerRoomDocument.getString("user_id")
-                    userId?.let { userIdList.add(it) }
-                }
-
-                collectionStudent.whereIn("_id",userIdList).get().addOnSuccessListener {
-                studentDoc->
-                    val studentList = mutableListOf<StudentInfor>()
-                    for(studentdoc in studentDoc){
-                        val student = studentdoc.toObject(StudentInfor::class.java)
-                        studentList.add(student)
+    fun getStudentInRoom(roomID: String): MutableList<StudentInfor> {
+        collectionRegisterRoom.whereEqualTo("room_id", roomID).get()
+            .addOnSuccessListener { registeRoomDoc ->
+                if (!registeRoomDoc.isEmpty) {
+                    val userIdList = mutableListOf<String>()
+                    for (registerRoomDocument in registeRoomDoc) {
+                        val userId = registerRoomDocument.getString("user_id")
+                        userId?.let { userIdList.add(it) }
                     }
-                    _studentByRoomID.value = studentList
-                }
-                    .addOnFailureListener {  }
-            }else
-                _studentByRoomID.value = emptyList()
-        }.addOnFailureListener {
 
-        }
-     return _studentByRoomID.value?.toMutableList() ?: mutableListOf()
+                    collectionStudent.whereIn("_id", userIdList).get()
+                        .addOnSuccessListener { studentDoc ->
+                            val studentList = mutableListOf<StudentInfor>()
+                            for (studentdoc in studentDoc) {
+                                val student = studentdoc.toObject(StudentInfor::class.java)
+                                studentList.add(student)
+                            }
+                            _studentByRoomID.value = studentList
+                        }
+                        .addOnFailureListener { }
+                } else
+                    _studentByRoomID.value = emptyList()
+            }.addOnFailureListener {
+
+            }
+        return _studentByRoomID.value?.toMutableList() ?: mutableListOf()
     }
+
+
+    fun getStudentUnapproved(): MutableList<StudentInfor> {
+        collectionRegisterRoom.whereEqualTo("status", "Chưa duyệt").get()
+            .addOnSuccessListener { registerRoomDoc ->
+                if (!registerRoomDoc.isEmpty) {
+                    Log.e("status", "abc")
+                    val userIdList = mutableListOf<String>()
+                    for (registerRoomDocument in registerRoomDoc) {
+                        val userId = registerRoomDocument.getString("user_id")
+                        userId?.let { userIdList.add(it) }
+                    }
+                    collectionStudent.whereIn("_id", userIdList).get()
+                        .addOnSuccessListener { studentDoc ->
+                            val studentList = mutableListOf<StudentInfor>()
+                            for (studentdoc in studentDoc) {
+                                val student = studentdoc.toObject(StudentInfor::class.java)
+                                studentList.add(student)
+                            }
+                            _studentUnapproved.value = studentList
+                            Log.e("status", "abc")
+                        }
+                        .addOnFailureListener { }
+                } else
+                    _studentUnapproved.value = emptyList()
+            }.addOnFailureListener {
+
+            }
+
+        return _studentUnapproved.value?.toMutableList() ?: mutableListOf()
+    }
+
 
     fun addStudent(
         _id: String,
@@ -211,7 +247,7 @@ class ViewModelStudent : ViewModel() {
                     }
 
                 }
-                .addOnFailureListener { error ->
+                    .addOnFailureListener { error ->
                         Log.e("TAG", "Lỗi khi xóa tài liệu: ", error)
                     }
                 val list = _student.value?.toMutableList() ?: mutableListOf()
