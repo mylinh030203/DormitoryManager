@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.dormitorymanager.Model.StudentInfor
 import com.example.dormitorymanager.R
 import com.example.dormitorymanager.View.rvInter
+import com.example.dormitorymanager.ViewModel.ViewModelDetailRR
+import com.example.dormitorymanager.ViewModel.ViewModelRoom
 import com.example.dormitorymanager.ViewModel.ViewModelStudent
 import com.example.dormitorymanager.ViewModel.ViewModelUser
 
@@ -22,6 +24,8 @@ class StudentFragment : Fragment() {
     private lateinit var rvStudent: RecyclerView
     private lateinit var viewModel: ViewModelUser
     private lateinit var viewModelStudent: ViewModelStudent
+    private lateinit var viewModelDetailRR: ViewModelDetailRR
+    private lateinit var viewModelRoom: ViewModelRoom
     private var longClickedPosition: Int = -1
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +33,8 @@ class StudentFragment : Fragment() {
     ): View? {
         viewModelStudent = ViewModelProvider(this).get(ViewModelStudent::class.java)
         viewModel = ViewModelProvider(this).get(ViewModelUser::class.java)
+        viewModelDetailRR = ViewModelProvider(this).get(ViewModelDetailRR::class.java)
+        viewModelRoom = ViewModelProvider(this).get(ViewModelRoom::class.java)
         var view: View = inflater.inflate(R.layout.fragment_student, container, false)
         var btnaddSt = view.findViewById<Button>(R.id.btnAddStudent)
         var btnsearch = view.findViewById<Button>(R.id.btnSearch)
@@ -69,6 +75,7 @@ class StudentFragment : Fragment() {
                 )
 
             }
+
             override fun onItemLongClick(position: Int) {
                 // Lưu trữ vị trí của item được long click
                 longClickedPosition = position
@@ -97,21 +104,35 @@ class StudentFragment : Fragment() {
     fun selectStudentByStutus(list: MutableList<StudentInfor>) {
         adapter = AdapterStudent(list, object : rvInter {
             override fun onClickStudent(position: Int) {
-                val bundle = Bundle()
-                bundle.putString("id", adapter.currentList[position]._id)
-                bundle.putString("fullname", adapter.currentList[position].fullname)
-                bundle.putString("phone", adapter.currentList[position].phone)
-                bundle.putString("gender", adapter.currentList[position].gender)
-                bundle.putString("idStudent", adapter.currentList[position].idStudent)
-                bundle.putString("classStd", adapter.currentList[position].classStd)
-                bundle.putString("avatar", adapter.currentList[position].avatar)
-                val navController = view?.findNavController()
-                navController?.navigate(
-                    R.id.action_studentFragment_to_updateStudentInRoomFragment3,
-                    bundle
-                )
+                val detailId = adapter.currentList[position]._id
+                if (detailId != null) {
+                    viewModelDetailRR.getDeltail(detailId)
+                }
 
+                viewModelDetailRR.detailRR.observe(viewLifecycleOwner) { detail ->
+                    if (detail != null) {
+                        // Cập nhật giao diện tương ứng với giá trị của đối tượng DetailRoomRegister
+                        val bundle = Bundle()
+                        bundle.putString("id", adapter.currentList[position]._id)
+                        bundle.putString("fullname", adapter.currentList[position].fullname)
+                        bundle.putString("room_id", detail.room_id.toString())
+                        viewModelRoom.getRoomName(adapter.currentList[position]._id){
+                                roomName->
+                            bundle.putString("room_name", roomName)
+                        }
+                        bundle.putString("registrationDate", detail.registerDate.toString())
+                        bundle.putString("expirationDate", detail.expirationDate.toString())
+                        bundle.putString("status", detail.status.toString())
+                        bundle.putString("price", detail.price.toString())
+                        val navController = view?.findNavController()
+                        navController?.navigate(
+                            R.id.action_studentFragment_to_updateStudentInRoomFragment3,
+                            bundle
+                        )
+                    }
+                }
             }
+
             override fun onItemLongClick(position: Int) {
                 // Lưu trữ vị trí của item được long click
                 longClickedPosition = position
@@ -143,8 +164,8 @@ class StudentFragment : Fragment() {
         menuInfo: ContextMenu.ContextMenuInfo?
     ) {
         super.onCreateContextMenu(menu, v, menuInfo)
-        menu?.add(100,11,1,"delete")
-        menu?.add(100,12,2,"Detail")
+        menu?.add(100, 11, 1, "delete")
+        menu?.add(100, 12, 2, "Detail")
         val position = longClickedPosition
         menu?.setHeaderTitle("Student ${adapter.currentList[position].fullname}")
     }

@@ -18,6 +18,7 @@ import com.example.dormitorymanager.View.AdapterRoom
 import com.example.dormitorymanager.View.rvInter
 import com.example.dormitorymanager.ViewModel.ViewModelRoom
 import com.example.dormitorymanager.ViewModel.ViewModelUser
+import kotlinx.android.synthetic.main.fragment_room.*
 
 
 class RoomFragment : Fragment() {
@@ -33,6 +34,7 @@ class RoomFragment : Fragment() {
 
         var view: View = inflater.inflate(R.layout.fragment_room, container, false)
         var btnaddroom = view.findViewById<Button>(R.id.btnAddRoom)
+        var btnemptyRoom = view.findViewById<Button>(R.id.btnemptyRoom)
         viewModel = ViewModelProvider(this).get(ViewModelUser::class.java)
         viewModelRoom = ViewModelProvider(this).get(ViewModelRoom::class.java)
         rvRoom = view.findViewById(R.id.rvRoom)
@@ -44,6 +46,9 @@ class RoomFragment : Fragment() {
                 selectRoom(viewModelRoom.getRoom())
                 btnaddroom.setOnClickListener {
                     view.findNavController().navigate(R.id.action_roomFragment2_to_addRoomFragment2)
+                }
+                btnemptyRoom.setOnClickListener {
+                    selectRoomIsEmpty(viewModelRoom.roomIsEmpty())
                 }
             } else
                 btnaddroom.visibility = View.GONE
@@ -105,6 +110,64 @@ class RoomFragment : Fragment() {
         )
         //Hàm viewModelRoom.rooms.observe() được sử dụng để đăng ký một Observer cho LiveData được trả về từ ViewModel. Khi dữ liệu trong LiveData được cập nhật, Observer sẽ nhận được thông báo và có thể thực hiện một số hành động liên quan đến dữ liệu đó.
         viewModelRoom.rooms.observe(viewLifecycleOwner, { rooms ->
+            adapter.setData(rooms.toMutableList())
+        })
+
+    }
+
+    fun selectRoomIsEmpty(list: MutableList<Rooms>) {
+        adapter = AdapterRoom(list, object : rvInter {
+            override fun onClickRoom(position: Int) {
+//                Toast.makeText(activity,"bạn đã click vào ${adapter.currentList[position].name}",
+//                    Toast.LENGTH_SHORT).show()
+
+                val bundle = Bundle()
+                bundle.putString("id", adapter.currentList[position]._id)
+                bundle.putString("bed", adapter.currentList[position].beds)
+                bundle.putString("decs", adapter.currentList[position].description)
+                bundle.putString("loc", adapter.currentList[position].location)
+                bundle.putString("name", adapter.currentList[position].name)
+                bundle.putString("price", adapter.currentList[position].prices.toString())
+                bundle.putString("status", adapter.currentList[position].status)
+                viewModel.checkAdmin { isAdmin ->
+                    if (isAdmin) {
+                        val navController = view?.findNavController()
+                        navController?.navigate(
+                            R.id.action_roomFragment2_to_updateRoomFragment2,
+                            bundle
+                        )
+                    } else
+                        Toast.makeText(
+                            activity, "bạn đã click vào ${adapter.currentList[position].name}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                }
+
+
+            }
+
+            override fun onItemLongClick(position: Int) {
+                // Lưu trữ vị trí của item được long click
+                longClickedPosition = position
+
+                // Hiển thị context menu với vị trí position của item trong RecyclerView
+
+                registerForContextMenu(rvRoom)
+                rvRoom.showContextMenuForChild(rvRoom.getChildAt(position))
+                unregisterForContextMenu(rvRoom)
+            }
+        }, this)
+
+
+        rvRoom.adapter = adapter
+        rvRoom.layoutManager = GridLayoutManager(
+            context,
+            4,
+            GridLayoutManager.HORIZONTAL,
+            false
+        )
+        //Hàm viewModelRoom.rooms.observe() được sử dụng để đăng ký một Observer cho LiveData được trả về từ ViewModel. Khi dữ liệu trong LiveData được cập nhật, Observer sẽ nhận được thông báo và có thể thực hiện một số hành động liên quan đến dữ liệu đó.
+        viewModelRoom.roomsIsEmpty.observe(viewLifecycleOwner, { rooms ->
             adapter.setData(rooms.toMutableList())
         })
 

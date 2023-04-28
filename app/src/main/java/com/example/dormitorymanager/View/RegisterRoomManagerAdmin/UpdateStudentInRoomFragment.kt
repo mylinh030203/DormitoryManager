@@ -90,9 +90,9 @@ class UpdateStudentInRoomFragment : Fragment() {
             viewmodelDetailRRM.updateDetail(id,room_id, id,binding.tvDateRegisterup.text.toString(),
                 binding.tvDateExpirateup.text.toString(), binding.tvStatusRRMup.text.toString(), (binding.tvPriceOfStUp.text.toString()).toLong() )
             Toast.makeText(context, "Update student Success", Toast.LENGTH_SHORT).show()
-            val navController = view?.findNavController()
-            navController?.navigate(
-                R.id.action_updateStudentInRoomFragment_to_registerRMFragment)
+//            val navController = view?.findNavController()
+//            navController?.navigate(
+//                R.id.action_updateStudentInRoomFragment_to_registerRMFragment)
         }
         return binding.root
     }

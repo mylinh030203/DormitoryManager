@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.dormitorymanager.Model.Rooms
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
@@ -16,9 +17,12 @@ class ViewModelRoom : ViewModel() {
     private val db = Firebase.firestore
     val collectionRoom = db.collection("Rooms")
     val _rooms = MutableLiveData<List<Rooms>>()
-
     val rooms: LiveData<List<Rooms>>
         get() = _rooms
+
+    val _roomsIsEmpty = MutableLiveData<List<Rooms>>()
+    val roomsIsEmpty: LiveData<List<Rooms>>
+        get() = _roomsIsEmpty
 
     private val _updateResult = MutableLiveData<Boolean>()
     val updateResult: LiveData<Boolean>
@@ -50,6 +54,22 @@ class ViewModelRoom : ViewModel() {
 //    return roomsList
     //dùng để test
 //    }
+
+    fun getRoomName(id:String, callback: (String?) -> Unit){
+        collectionRoom.document(id).get().addOnSuccessListener {
+            doccumentSnapshot->
+            if(doccumentSnapshot.exists()){
+                val roomName = doccumentSnapshot.getString("name")
+                callback(roomName)
+            }else{
+                callback(null)
+                Log.e("roomname","null")
+            }
+        }.addOnFailureListener {
+            exception->callback(null)
+            Log.e("roomName", "exception")
+        }
+    }
 
 
     fun addRoom( beds:String, description:String, location: String, name:String, prices:Long, status: String) {
@@ -147,5 +167,34 @@ class ViewModelRoom : ViewModel() {
     suspend fun countDoc(): Int {
         val querySnapshot = collectionRoom.get().await()
         return querySnapshot.size()
+    }
+
+
+    fun roomIsEmpty():MutableList<Rooms>{
+        collectionRoom
+            .get().addOnSuccessListener {
+                val roomsListEmp = mutableListOf<Rooms>()
+                for(document in it!!){
+                    val statusStr = document.getString("status") // lấy giá trị trường "status" dưới dạng String
+                    val bedStr = document.getString("beds") // lấy giá trị trường "bed" dưới dạng String
+
+                    // Chuyển đổi giá trị của "status" và "bed" thành số
+                    val statusNum = statusStr?.toInt()?:0
+                    val bedNum = bedStr?.toInt()?:0
+                    Log.e("roomcompare", statusNum.toString())
+                    if (statusNum < bedNum) {
+                        val room = document.toObject(Rooms::class.java)
+                        room._id = document.id
+                        roomsListEmp.add(room)
+                        Log.w("roomcompare", "ok")
+                    }
+                }
+                _roomsIsEmpty.value = roomsListEmp
+                Log.w("roomisempty", "ok")
+            }.addOnFailureListener { exception ->
+                Log.w("TAG", "Error getting documents: ", exception)
+            }
+        return _roomsIsEmpty.value?.toMutableList() ?: mutableListOf()
+        //chuyển từ multablelivedata sang multablelist
     }
 }
