@@ -23,8 +23,8 @@
         android:layout_height="wrap_content"
         android:text="Revenue: $0"/>
 
-    <com.github.mikephil.charting.charts.CombinedChart
-        android:id="@+id/combinedChart"
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/piechart"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_marginTop="20dp"
