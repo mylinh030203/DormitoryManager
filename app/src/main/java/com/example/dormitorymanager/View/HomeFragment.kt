@@ -34,8 +34,8 @@ class HomeFragment : Fragment() {
             if (viewModel.checkLogin()) {
                 viewModel.checkAdmin { isAdmin ->
                     if (isAdmin) {
-//                        val inten = Intent(context, RoomActivity::class.java)
-                        val inten = Intent(context, ChartActivity::class.java)
+                        val inten = Intent(context, RoomActivity::class.java)
+//                        val inten = Intent(context, ChartActivity::class.java)
                         startActivity(inten)
                     } else {
                         val intentuser = Intent(context, RoomRegisterActivity::class.java)

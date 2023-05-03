@@ -46,7 +46,7 @@ class AdapterStudentRRM
             tvIdStdrr.text = list[position].idStudent
             tvclassrr.text = list[position].classStd
             tvphonerr.text = list[position].phone
-            imgrr.setImageResource(R.drawable.phong)
+            imgrr.setImageResource(R.drawable.ic_person)
 
             //itemclick chọn
             holder.itemView.setOnClickListener {

@@ -5,29 +5,37 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvTotalRooms"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Total Rooms: 0"/>
-
-    <TextView
-        android:id="@+id/tvOccupiedRooms"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Occupied Rooms: 0"/>
-
-    <TextView
-        android:id="@+id/tvRevenue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Revenue: $0"/>
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/piechart"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="150dp"
         />
+
+
+    <TextView
+        android:id="@+id/tvTotalRooms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Rooms: 135"/>
+
+    <TextView
+        android:id="@+id/tvOccupiedRooms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="8 member: 70"/>
+
+    <TextView
+        android:id="@+id/tvRevenue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="7 member: 40"/>
+
+    <TextView
+        android:id="@+id/tvRevenz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="6 member: 25"/>
 
 </LinearLayout>

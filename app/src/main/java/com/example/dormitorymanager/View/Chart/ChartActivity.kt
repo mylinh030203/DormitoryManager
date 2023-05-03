@@ -63,7 +63,7 @@ class ChartActivity: AppCompatActivity(), OnChartValueSelectedListener{
             xEntrys.add(xData[i])
         }
 
-        val pieDataSet = PieDataSet(yEntrys, "Employee Sales")
+        val pieDataSet = PieDataSet(yEntrys, "")
         pieDataSet.sliceSpace = 2f
         pieDataSet.valueTextSize = 12f
 

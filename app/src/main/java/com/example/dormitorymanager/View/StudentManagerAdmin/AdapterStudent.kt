@@ -42,7 +42,7 @@ class AdapterStudent(
                 tvIdStd.text = list[position].idStudent
                 tvclass.text = list[position].classStd
                 tvphone.text = list[position].phone
-                img.setImageResource(R.drawable.phong)
+                img.setImageResource(R.drawable.ic_person)
 
                 //itemclick chọn
                 holder.itemView.setOnClickListener {
