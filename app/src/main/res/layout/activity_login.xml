@@ -51,11 +51,11 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
-        android:background="@drawable/custom_edt"
-        android:drawableLeft="@drawable/ic_lock"
         android:ems="10"
         android:hint=" Password"
         android:inputType="textPassword"
+        android:drawableLeft="@drawable/ic_lock"
+        android:background="@drawable/custom_edt"
         android:paddingLeft="10dp"
         android:textColorHint="@color/white" />
 
@@ -71,9 +71,9 @@
         android:drawableLeft="@drawable/ic_done"
         android:paddingLeft="90dp"
         android:paddingRight="85dp"
-        android:text="Login"
         android:textSize="20dp"
-        app:backgroundTint="@null" />
+        app:backgroundTint="@null"
+        android:text="Login"/>
 
     <TextView
         android:id="@+id/txtregis"

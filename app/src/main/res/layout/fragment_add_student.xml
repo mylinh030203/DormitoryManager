@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".View.StudentManagerAdmin.AddStudentFragment">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/logo"
+        android:layout_width="159dp"
+        android:layout_height="153dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="30dp"
+        android:src="@mipmap/ic_dm" />
+
     <TextView
         android:id="@+id/AddAccount"
+        android:background="@drawable/custom_title"
+        android:paddingTop="7dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
         android:text="Creater account Student"
-        android:textColor="@color/black"
+        android:textColor="#ED9478"
         android:textSize="24dp"
         android:textStyle="bold" />
 
@@ -21,8 +32,13 @@
         android:id="@+id/edtemail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/custom_edt"
+        android:drawableLeft="@drawable/ic_baseline_email_24"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress" />
@@ -31,8 +47,13 @@
         android:id="@+id/edtPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/custom_edt"
+        android:drawableLeft="@drawable/ic_lock"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword" />
@@ -41,8 +62,13 @@
         android:id="@+id/edtFullname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/custom_edt"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/ic_account"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
         android:ems="10"
         android:hint="FullName"
         android:inputType="textPersonName" />
@@ -52,11 +78,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp">
 
 
             <RadioButton
+                android:background="@drawable/custom_radio"
                 android:id="@+id/rbMale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -66,6 +94,7 @@
                 android:textSize="15dp" />
 
             <RadioButton
+                android:background="@drawable/custom_radio"
                 android:id="@+id/rbFemale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -81,11 +110,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
-        android:backgroundTint="@color/white"
+        android:background="@drawable/custom_btn"
+        android:drawableLeft="@drawable/ic_done"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
         android:text="Create"
-        android:textColor="@color/black"
         android:textSize="20dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:backgroundTint="@null" />
 
 
 </LinearLayout>

@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".View.RoomManagerAdmin.AddRoomFragment">
-
-
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/logo"
+        android:layout_width="159dp"
+        android:layout_height="153dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="30dp"
+        android:src="@mipmap/ic_dm" />
     <TextView
         android:id="@+id/addRoom"
+        android:background="@drawable/custom_title"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24dp"
+        android:paddingTop="7dp"
+        android:paddingLeft="50dp"
         android:textStyle="bold"
-        android:textColor="@color/black"
+        android:textColor="#ED9478"
         android:text="Add Room" />
 
     <EditText
@@ -25,11 +34,17 @@
         android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/custom_edt"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
         android:hint="Enter number of bed"
         />
 
     <EditText
         android:id="@+id/desc"
+        android:background="@drawable/custom_edt"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="15dp"
@@ -40,6 +55,9 @@
 
     <EditText
         android:id="@+id/loc"
+        android:background="@drawable/custom_edt"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="15dp"
@@ -50,6 +68,9 @@
 
     <EditText
         android:id="@+id/nameR"
+        android:background="@drawable/custom_edt"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="15dp"
@@ -60,6 +81,10 @@
 
     <EditText
         android:id="@+id/price"
+        android:background="@drawable/custom_edt"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColorHint="@color/white"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="15dp"
@@ -70,6 +95,9 @@
 
     <EditText
         android:id="@+id/status"
+        android:background="@drawable/custom_edt"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="15dp"
@@ -82,12 +110,15 @@
         android:id="@+id/btnadd"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
-        android:backgroundTint="@color/white"
-        android:textColor="@color/black"
-        android:textSize="20dp"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/custom_btn"
+        android:drawableLeft="@drawable/ic_add"
+        android:paddingLeft="90dp"
+        android:paddingRight="85dp"
+        android:textSize="20dp"
+        app:backgroundTint="@null"
         android:text="Add" />
 
 </LinearLayout>

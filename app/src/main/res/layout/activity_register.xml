@@ -6,20 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".View.RegisterActivity">
 
+
     <LinearLayout
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/logo"
+            android:layout_width="199dp"
+            android:layout_height="193dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="30dp"
+            android:src="@mipmap/ic_dm" />
 
         <TextView
             android:id="@+id/Register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="Register"
-            android:textColor="@color/black"
+            android:layout_marginTop="15dp"
+            android:text="Dormitory Manager App"
+            android:textColor="#ED9478"
             android:textSize="24dp"
             android:textStyle="bold" />
 
@@ -27,8 +37,13 @@
             android:id="@+id/edtemail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/custom_edt"
+            android:drawableLeft="@drawable/ic_baseline_email_24"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:paddingLeft="10dp"
+            android:textColorHint="@color/white"
             android:ems="10"
             android:hint="Email"
             android:inputType="textEmailAddress" />
@@ -37,8 +52,13 @@
             android:id="@+id/edtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/custom_edt"
+            android:drawableLeft="@drawable/ic_lock"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
+            android:paddingLeft="10dp"
+            android:textColorHint="@color/white"
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword" />
@@ -47,8 +67,13 @@
             android:id="@+id/edtFullname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/custom_edt"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/ic_account"
+            android:paddingLeft="10dp"
+            android:textColorHint="@color/white"
             android:ems="10"
             android:hint="FullName"
             android:inputType="textPersonName" />
@@ -58,11 +83,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp">
 
 
                 <RadioButton
+                    android:background="@drawable/custom_radio"
                     android:id="@+id/rbMale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -72,6 +99,7 @@
                     android:textSize="15dp" />
 
                 <RadioButton
+                    android:background="@drawable/custom_radio"
                     android:id="@+id/rbFemale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -84,20 +112,26 @@
 
         <Button
             android:id="@+id/btnRegister"
-            android:layout_width="wrap_content"
+            android:layout_width="277dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/teal_200"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/custom_btn"
+            android:drawableLeft="@drawable/ic_done"
+            android:paddingLeft="60dp"
+            android:paddingRight="60dp"
             android:text="Regitster"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            app:backgroundTint="@null"  />
 
         <TextView
             android:id="@+id/txtlogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:textStyle="italic"
             android:textSize="15dp"
             android:textColor="#345955"

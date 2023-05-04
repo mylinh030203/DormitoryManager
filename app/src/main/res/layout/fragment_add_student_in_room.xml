@@ -9,11 +9,15 @@
 
     <TextView
         android:id="@+id/tvRoomName"
+        android:background="@drawable/custom_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:textSize="25dp"
+        android:layout_marginTop="200dp"
         android:text="Room Name"
+        android:textSize="25dp"
+        android:paddingTop="7dp"
+        android:textColor="#ED9478"
+        android:paddingLeft="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,9 +25,9 @@
 
     <LinearLayout
         android:layout_width="128dp"
-        android:layout_height="263dp"
-        android:layout_marginTop="76dp"
+        android:layout_height="280dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="270dp"
         android:orientation="vertical"
 
         app:layout_constraintEnd_toStartOf="@+id/linearLayout"
@@ -35,8 +39,10 @@
             android:id="@+id/tvUserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/custom_title"
+            android:paddingLeft="25dp"
+            android:paddingTop="7dp"
             android:text="Email:"
             android:textSize="20dp"
             android:textStyle="italic" />
@@ -45,7 +51,10 @@
             android:id="@+id/lbPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/custom_title"
+            android:paddingLeft="25dp"
+            android:paddingTop="7dp"
             android:text="Price:"
             android:textSize="20dp"
             android:textStyle="italic" />
@@ -55,8 +64,9 @@
             android:id="@+id/lbRegistDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/custom_title"
+            android:paddingTop="7dp"
             android:text="Registe Date: "
             android:textSize="20dp"
             android:textStyle="italic" />
@@ -65,7 +75,10 @@
             android:id="@+id/lbStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/custom_title"
+            android:paddingLeft="25dp"
+            android:paddingTop="7dp"
             android:text="Status:"
             android:textSize="20dp"
             android:textStyle="italic" />
@@ -74,7 +87,9 @@
             android:id="@+id/lbExpirateDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/custom_title"
+            android:paddingTop="7dp"
             android:text="Expirate Date:"
             android:textSize="20dp"
             android:textStyle="italic" />
@@ -84,8 +99,8 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="265dp"
-        android:layout_height="263dp"
-        android:layout_marginTop="76dp"
+        android:layout_height="280dp"
+        android:layout_marginTop="270dp"
         android:layout_marginEnd="4dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -95,23 +110,31 @@
             android:id="@+id/edtEmailst"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/custom_edt"
+            android:drawableLeft="@drawable/ic_baseline_email_24"
             android:ems="10"
             android:hint="Email"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:paddingLeft="10dp"
+            android:textColorHint="@color/white" />
 
         <TextView
             android:id="@+id/tvPriceOfSt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/custom_edt"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:drawableLeft="@drawable/ic_money"
             android:text="Price"
-            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:textSize="20dp"
             android:textStyle="normal" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
 
@@ -120,6 +143,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/custom_edt"
+                android:paddingLeft="10dp"
+                android:paddingTop="15dp"
+                android:textColor="@color/white"
                 android:text="dd/mm/yyyy"
                 android:textSize="15dp"
                 android:textStyle="normal" />
@@ -128,13 +155,18 @@
                 android:id="@+id/btnRegistDate"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="Select" />
+                android:layout_marginTop="5dp"
+                android:background="@drawable/custom_btn"
+                android:drawableLeft="@drawable/ic_calendar"
+                android:text="Select"
+                android:textSize="20dp"
+                app:backgroundTint="@null" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
             <TextView
@@ -142,6 +174,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/custom_edt"
+                android:paddingLeft="10dp"
+                android:paddingTop="15dp"
+                android:textColor="@color/white"
                 android:text="Status"
                 android:textSize="15dp"
                 android:textStyle="normal" />
@@ -150,14 +186,18 @@
                 android:id="@+id/btnStatus"
                 android:layout_width="150dp"
                 android:layout_height="45dp"
-                android:text="Browse" />
+                android:background="@drawable/custom_btn"
+                android:layout_marginTop="5dp"
+                android:text="Browse"
+                android:textSize="20dp"
+                app:backgroundTint="@null" />
         </LinearLayout>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
 
@@ -166,6 +206,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/custom_edt"
+                android:paddingLeft="10dp"
+                android:paddingTop="15dp"
+                android:textColor="@color/white"
                 android:text="dd/mm/yyyy"
                 android:textSize="15dp"
                 android:textStyle="normal" />
@@ -174,7 +218,12 @@
                 android:id="@+id/btnexpirate"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="Select" />
+                android:layout_marginTop="5dp"
+                android:background="@drawable/custom_btn"
+                android:drawableLeft="@drawable/ic_calendar"
+                android:text="Select"
+                android:textSize="20dp"
+                app:backgroundTint="@null" />
         </LinearLayout>
 
     </LinearLayout>
@@ -194,5 +243,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         app:layout_constraintVertical_bias="1.0" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/logo"
+        android:layout_width="159dp"
+        android:layout_height="153dp"
+        android:src="@mipmap/ic_dm"
+        app:layout_constraintBottom_toTopOf="@+id/tvRoomName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
