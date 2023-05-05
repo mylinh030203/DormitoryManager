@@ -3,16 +3,21 @@ package com.example.dormitorymanager.View.StudentManagerAdmin
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -26,6 +31,17 @@ import kotlinx.android.synthetic.main.fragment_update_student.*
 class UpdateStudentFragment : Fragment() {
     private lateinit var viewModelStudent: ViewModelStudent
     private lateinit var viewModel: ViewModelUser
+    private lateinit var imageUri: Uri
+    private lateinit var imageBitmap: Bitmap
+    private lateinit var imageView: ImageView
+
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri != null) {
+            imageUri = uri
+            imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, uri)
+            imageView.setImageBitmap(imageBitmap)
+        }
+    }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
@@ -35,6 +51,7 @@ class UpdateStudentFragment : Fragment() {
         viewModelStudent = ViewModelProvider(this).get(ViewModelStudent::class.java)
         viewModel = ViewModelProvider(this).get(ViewModelUser::class.java)
         var view = inflater.inflate(R.layout.fragment_update_student, container, false)
+        imageView = view.findViewById(R.id.imgSt)
         var rgGenderSt = view.findViewById<RadioGroup>(R.id.rgGenderSt)
         val rbMaleSt = view.findViewById<RadioButton>(R.id.rbMaleSt)
         val rbFemaleSt = view.findViewById<RadioButton>(R.id.rbFemaleSt)
@@ -44,7 +61,7 @@ class UpdateStudentFragment : Fragment() {
         var edtphone = view.findViewById<EditText>(R.id.phoneSt)
         var edtidst = view.findViewById<EditText>(R.id.edtIdSt)
         var edtClass = view.findViewById<EditText>(R.id.edtClass)
-        var edtAvatar = view.findViewById<EditText>(R.id.edtAvatar)
+        var edtAvatar = view.findViewById<Button>(R.id.edtAvatar)
         var btnupdateSt = view.findViewById<Button>(R.id.btnupdateSt)
         var btndeleteSt = view.findViewById<Button>(R.id.btndeleteSt)
         var id = arguments?.getString("id", "8")
@@ -58,7 +75,9 @@ class UpdateStudentFragment : Fragment() {
         }
         edtidst.setText(arguments?.getString("idStudent", "8"))
         edtClass.setText(arguments?.getString("classStd", "8"))
-        edtAvatar.setText(arguments?.getString("avatar", "8"))
+        edtAvatar.setOnClickListener {
+            pickImageLauncher.launch("image/*")
+        }
         btnupdateSt.setOnClickListener {
             var selected: Int = rgGenderSt.checkedRadioButtonId
             var Gender: String = when (selected) {

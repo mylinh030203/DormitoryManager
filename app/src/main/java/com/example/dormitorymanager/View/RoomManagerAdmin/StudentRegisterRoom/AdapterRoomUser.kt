@@ -1,4 +1,4 @@
-package com.example.dormitorymanager.View.StudentRegisterRoom
+package com.example.dormitorymanager.View.RoomManagerAdmin.StudentRegisterRoom
 
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +22,7 @@ class AdapterRoomUser(
 
     inner class RoomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomViewHolder{
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.layout_item_room, parent, false)
 

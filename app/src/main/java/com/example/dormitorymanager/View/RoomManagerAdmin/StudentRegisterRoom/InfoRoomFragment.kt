@@ -1,4 +1,4 @@
-package com.example.dormitorymanager.View.StudentRegisterRoom
+package com.example.dormitorymanager.View.RoomManagerAdmin.StudentRegisterRoom
 
 import android.app.DatePickerDialog
 import android.icu.util.Calendar

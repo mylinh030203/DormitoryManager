@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -134,47 +135,79 @@
         android:layout_marginRight="10dp"
         android:hint="Enter Class" />
 
-    <TextView
-        android:id="@+id/avata"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="10dp"
-        android:text="Avatar"
-        android:textColor="@color/black"
-        android:textSize="17dp" />
-
-    <EditText
-        android:id="@+id/edtAvatar"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:hint="Enter Avatar" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btnupdateSt"
+<!--        <TextView-->
+<!--            android:id="@+id/avata"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Avatar"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="17dp" />-->
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            app:cardCornerRadius="30dp"
+            android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgSt"
+            android:layout_width="141dp"
+            android:layout_height="124dp"
+            android:layout_marginTop="5dp"
+            app:srcCompat="@drawable/ic_person" />
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/edtAvatar"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_btn"
+            android:layout_marginTop="40dp"
+            android:drawableLeft="@drawable/ic_photo_camera"
+            android:paddingLeft="20dp"
+            android:text="Enter Avatar"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:backgroundTint="@null" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
-        android:backgroundTint="@color/white"
-        android:text="Update"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        android:textStyle="bold" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btndeleteSt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:backgroundTint="@color/white"
-        android:text="Delete"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        android:textStyle="bold" />
+        <Button
+            android:id="@+id/btnupdateSt"
+            android:layout_width="190dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/custom_btn"
+            android:drawableLeft="@drawable/ic_update"
+            android:text="Update"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/btndeleteSt"
+            android:layout_width="190dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/custom_btn"
+            android:drawableLeft="@drawable/ic_delete"
+            android:text="Delete"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:backgroundTint="@null" />
+    </LinearLayout>
+
 </LinearLayout>
 

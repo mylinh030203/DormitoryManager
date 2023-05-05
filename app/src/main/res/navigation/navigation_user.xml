@@ -6,7 +6,7 @@
     app:startDestination="@id/roomRegisterFragment">
     <fragment
         android:id="@+id/roomRegisterFragment"
-        android:name="com.example.dormitorymanager.View.StudentRegisterRoom.RoomRegisterFragment"
+        android:name="com.example.dormitorymanager.View.RoomManagerAdmin.StudentRegisterRoom.RoomRegisterFragment"
         android:label="fragment_room_register"
         tools:layout="@layout/fragment_room_register" >
         <action
@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/infoRoomFragment"
-        android:name="com.example.dormitorymanager.View.StudentRegisterRoom.InfoRoomFragment"
+        android:name="com.example.dormitorymanager.View.RoomManagerAdmin.StudentRegisterRoom.InfoRoomFragment"
         android:label="fragment_info_room"
         tools:layout="@layout/fragment_info_room" >
         <action

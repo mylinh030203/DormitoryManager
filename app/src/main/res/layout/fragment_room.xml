@@ -37,23 +37,25 @@
 
                 <Button
                     android:id="@+id/btnAddRoom"
-                    android:layout_width="wrap_content"
+                    android:layout_width="198dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:backgroundTint="@color/white"
+                    android:background="@drawable/custom_btn"
+                    android:drawableLeft="@drawable/ic_add"
                     android:text="Add Room"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:backgroundTint="@null" />
 
                 <Button
                     android:id="@+id/btnemptyRoom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_marginLeft="150dp"
-                    android:backgroundTint="@color/white"
+                    android:layout_marginLeft="20dp"
+                    app:backgroundTint="@null"
                     android:text="Empty Room"
-                    android:textColor="@color/black"
+                    android:background="@drawable/custom_btn"
+                    android:drawableLeft="@drawable/ic_list"
                     android:textStyle="bold" />
 
             </LinearLayout>

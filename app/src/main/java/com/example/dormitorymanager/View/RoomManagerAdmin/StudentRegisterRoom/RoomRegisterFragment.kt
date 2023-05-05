@@ -1,4 +1,4 @@
-package com.example.dormitorymanager.View.StudentRegisterRoom
+package com.example.dormitorymanager.View.RoomManagerAdmin.StudentRegisterRoom
 
 import android.content.DialogInterface
 import android.os.Bundle
