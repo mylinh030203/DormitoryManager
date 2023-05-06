@@ -1,7 +1,9 @@
 package com.example.dormitorymanager.ViewModel
 
 import android.app.Application
+import android.net.Uri
 import android.util.Log
+import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,6 +29,7 @@ class ViewModelStudent : ViewModel() {
     val collectionStudent = db.collection("StudentInfo")
     val collectionRegisterRoom = db.collection("DetailRoomRegister")
     private val usersCollection = db.collection("Users")
+    private val storageRef = FirebaseStorage.getInstance().reference.child("images")
 
     val _student = MutableLiveData<List<StudentInfor>>()
     val students: LiveData<List<StudentInfor>>
@@ -168,57 +172,81 @@ class ViewModelStudent : ViewModel() {
         gender: String,
         idStudent: String,
         classStd: String,
-        avatar: String
+        avatar: Uri
     ) {
-        val coroutineScope = CoroutineScope(Dispatchers.Main)
-        coroutineScope.launch {
-            try {
-                val studentDoc = hashMapOf(
-                    "_id" to _id,
-                    "fullname" to fullname,
-                    "phone" to phone,
-                    "gender" to gender,
-                    "idStudent" to idStudent,
-                    "classStd" to classStd,
-                    "avatar" to avatar
-                )
-                val nameUser = hashMapOf("name" to fullname)
+        val uploadTask = storageRef.putFile(avatar)
+        uploadTask.addOnSuccessListener { task ->
+            // Nếu upload ảnh thành công, lấy đường dẫn ảnh từ task
+            storageRef.downloadUrl.addOnSuccessListener { Uri ->
+// Lưu đường dẫn ảnh vào Firestore
+                val coroutineScope = CoroutineScope(Dispatchers.Main)
+                coroutineScope.launch {
+                    try {
+                        val studentDoc = hashMapOf(
+                            "_id" to _id,
+                            "fullname" to fullname,
+                            "phone" to phone,
+                            "gender" to gender,
+                            "idStudent" to idStudent,
+                            "classStd" to classStd,
+                            "avatar" to Uri.toString()
+                        )
+
+                        val nameUser = hashMapOf("name" to fullname)
 
 
-                collectionStudent.document(_id).update(studentDoc as Map<String, Any>)
-                    .addOnSuccessListener {
-                        _updateResultSt.value = true
-                        Log.d("TAG", "Đã cập nhật trường thành công!")
-
-                        db.collection("Users").document(_id).update(nameUser as Map<String, Any>)
+                        collectionStudent.document(_id).update(studentDoc as Map<String, Any>)
                             .addOnSuccessListener {
-                                Log.d("TAG", "Đã cập nhật username thành công!")
-                            }.addOnFailureListener { e ->
-                                Log.e("TAG", "Lỗi khi cập nhật user: ", e)
-                            }
+                                _updateResultSt.value = true
+                                Log.d("TAG", "Đã cập nhật trường thành công!")
 
-                        FirebaseDatabase.getInstance().getReference("User").child(_id).child("name")
-                            .setValue(fullname).addOnSuccessListener {
-                                Log.d("TAG", "Đã cập nhật trường thành công trong realtime")
-                            }.addOnFailureListener { e ->
-                                Log.e("TAG", "Lỗi khi cập nhật realtime: ", e)
+                                db.collection("Users").document(_id)
+                                    .update(nameUser as Map<String, Any>)
+                                    .addOnSuccessListener {
+                                        Log.d("TAG", "Đã cập nhật username thành công!")
+                                    }.addOnFailureListener { e ->
+                                        Log.e("TAG", "Lỗi khi cập nhật user: ", e)
+                                    }
+
+                                FirebaseDatabase.getInstance().getReference("User").child(_id)
+                                    .child("name")
+                                    .setValue(fullname).addOnSuccessListener {
+                                        Log.d("TAG", "Đã cập nhật trường thành công trong realtime")
+                                    }.addOnFailureListener { e ->
+                                        Log.e("TAG", "Lỗi khi cập nhật realtime: ", e)
+                                    }
+                            }.addOnFailureListener { error ->
+                                _updateResultSt.value = false
+                                Log.e("TAG", "Lỗi khi cập nhật trường: ", error)
+
                             }
-                    }.addOnFailureListener { error ->
-                        _updateResultSt.value = false
-                        Log.e("TAG", "Lỗi khi cập nhật trường: ", error)
+                        val students =
+                            StudentInfor(
+                                _id,
+                                fullname,
+                                phone,
+                                gender,
+                                idStudent,
+                                classStd,
+                                avatar.toString()
+                            )
+                        val list = _student.value?.toMutableList() ?: mutableListOf()
+                        val room = list.find { it._id == _id }
+                        val index =
+                            _student.value?.indexOfFirst { it._id == room?._id } ?: return@launch
+                        list[index] = students
+                        _student.value = list
+
+                    } catch (e: Exception) {
 
                     }
-                val students =
-                    StudentInfor(_id, fullname, phone, gender, idStudent, classStd, avatar)
-                val list = _student.value?.toMutableList() ?: mutableListOf()
-                val room = list.find { it._id == _id }
-                val index = _student.value?.indexOfFirst { it._id == room?._id } ?: return@launch
-                list[index] = students
-                _student.value = list
-
-            } catch (e: Exception) {
-
+                }
             }
+
+        }.addOnFailureListener { exception ->
+            // Nếu upload ảnh thất bại, hiển thị thông báo lỗi
+            Log.e("img", "Error uploading image", exception)
+            // ...
         }
 
     }
@@ -270,4 +298,6 @@ class ViewModelStudent : ViewModel() {
     fun getStudentById(studentId: String): StudentInfor? {
         return _student.value?.find { student -> student._id == studentId }
     }
+
+
 }

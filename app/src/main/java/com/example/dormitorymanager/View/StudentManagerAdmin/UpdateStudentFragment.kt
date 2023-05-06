@@ -26,6 +26,7 @@ import com.example.dormitorymanager.MainActivity
 import com.example.dormitorymanager.R
 import com.example.dormitorymanager.ViewModel.ViewModelStudent
 import com.example.dormitorymanager.ViewModel.ViewModelUser
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_update_student.*
 
 class UpdateStudentFragment : Fragment() {
@@ -75,9 +76,15 @@ class UpdateStudentFragment : Fragment() {
         }
         edtidst.setText(arguments?.getString("idStudent", "8"))
         edtClass.setText(arguments?.getString("classStd", "8"))
+
+        var avt = arguments?.getString("avatar", "null")
+        val imageUrl = avt
+        Picasso.get().load(imageUrl).into(imageView)
         edtAvatar.setOnClickListener {
             pickImageLauncher.launch("image/*")
         }
+
+
         btnupdateSt.setOnClickListener {
             var selected: Int = rgGenderSt.checkedRadioButtonId
             var Gender: String = when (selected) {
@@ -85,15 +92,18 @@ class UpdateStudentFragment : Fragment() {
                 R.id.rbFemaleSt -> "Female"
                 else -> "other"
             }
-            viewModelStudent.updateStudent(
-                id.toString(),
-                edtfullname.text.toString(),
-                edtphone.text.toString(),
-                Gender.toString(),
-                edtidst.text.toString(),
-                edtClass.text.toString(),
-                edtAvatar.text.toString()
-            )
+                    // Gọi hàm update để upload ảnh lên Firebase
+                    viewModelStudent.updateStudent(
+                        id.toString(),
+                        edtfullname.text.toString(),
+                        edtphone.text.toString(),
+                        Gender.toString(),
+                        edtidst.text.toString(),
+                        edtClass.text.toString(),
+                        imageUri
+                    )
+
+
         }
         viewModelStudent.updateResultSt.observe(viewLifecycleOwner, Observer { updateSuccess ->
             if (updateSuccess == true) {
