@@ -1,4 +1,4 @@
-package com.example.dormitorymanager.View.RoomManagerAdmin.StudentRegisterRoom
+package com.example.dormitorymanager.View.StudentRegisterRoom
 
 import android.view.LayoutInflater
 import android.view.View

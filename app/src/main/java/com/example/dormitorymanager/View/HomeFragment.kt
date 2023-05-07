@@ -15,7 +15,7 @@ import androidx.navigation.ui.NavigationUI
 import com.example.dormitorymanager.R
 import com.example.dormitorymanager.View.Chart.ChartActivity
 import com.example.dormitorymanager.View.RoomManagerAdmin.RoomActivity
-import com.example.dormitorymanager.View.RoomManagerAdmin.StudentRegisterRoom.RoomRegisterActivity
+import com.example.dormitorymanager.View.StudentRegisterRoom.RoomRegisterActivity
 import com.example.dormitorymanager.ViewModel.ViewModelUser
 
 

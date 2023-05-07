@@ -21,6 +21,7 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class ViewModelStudent : ViewModel() {
     private val db = Firebase.firestore
@@ -29,7 +30,7 @@ class ViewModelStudent : ViewModel() {
     val collectionStudent = db.collection("StudentInfo")
     val collectionRegisterRoom = db.collection("DetailRoomRegister")
     private val usersCollection = db.collection("Users")
-    private val storageRef = FirebaseStorage.getInstance().reference.child("images")
+
 
     val _student = MutableLiveData<List<StudentInfor>>()
     val students: LiveData<List<StudentInfor>>
@@ -174,6 +175,7 @@ class ViewModelStudent : ViewModel() {
         classStd: String,
         avatar: Uri
     ) {
+        val storageRef = FirebaseStorage.getInstance().reference.child("images/${_id}")
         val uploadTask = storageRef.putFile(avatar)
         uploadTask.addOnSuccessListener { task ->
             // Nếu upload ảnh thành công, lấy đường dẫn ảnh từ task

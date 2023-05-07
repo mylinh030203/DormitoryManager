@@ -17,7 +17,7 @@ import androidx.navigation.ui.NavigationUI
 import com.example.dormitorymanager.View.LoginActivity
 import com.example.dormitorymanager.View.RoomManagerAdmin.RoomActivity
 import com.example.dormitorymanager.View.StudentManagerAdmin.StudentActivity
-import com.example.dormitorymanager.View.RoomManagerAdmin.StudentRegisterRoom.RoomRegisterActivity
+import com.example.dormitorymanager.View.StudentRegisterRoom.RoomRegisterActivity
 import com.example.dormitorymanager.ViewModel.ViewModelStudent
 import com.example.dormitorymanager.ViewModel.ViewModelUser
 import com.example.dormitorymanager.databinding.ActivityMainBinding
