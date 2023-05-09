@@ -103,7 +103,7 @@ class AddStudentInRoomFragment : Fragment() {
                             documentId.toString(),
                             tvDateRegister.text.toString(),
                             tvDateExpirate.text.toString(),
-                            "Đã Duyệt",
+                            "Đã duyệt",
                             100000
                         )
                     }

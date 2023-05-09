@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import com.example.dormitorymanager.Model.DetailRoomRegister
 import com.example.dormitorymanager.Model.Rooms
 import com.example.dormitorymanager.Model.StudentInfor
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
@@ -16,7 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
 
-class ViewModelDetailRR:ViewModel() {
+class ViewModelDetailRR : ViewModel() {
     private val db = Firebase.firestore
     private val collectionDetail = db.collection("DetailRoomRegister")
     private val collectionStudent = db.collection("StudentInfo")
@@ -54,13 +55,28 @@ class ViewModelDetailRR:ViewModel() {
         //chuyển từ multablelivedata sang multablelist
     }
 
-    fun RegisterRoom(room_id: String, user_id:String, registerDate: String, expirationDate: String, status: String, price:Long){
+    fun RegisterRoom(
+        room_id: String,
+        user_id: String,
+        registerDate: String,
+        expirationDate: String,
+        status: String,
+        price: Long
+    ) {
         val coroutineScope = CoroutineScope(Dispatchers.Main)
         coroutineScope.launch {
             try {
 //                val count = countDoc()+1
                 val _id = user_id
-                val detail = DetailRoomRegister(_id, room_id, user_id, registerDate, expirationDate, status, price)
+                val detail = DetailRoomRegister(
+                    _id,
+                    room_id,
+                    user_id,
+                    registerDate,
+                    expirationDate,
+                    status,
+                    price
+                )
                 val detailDoc = hashMapOf(
                     "_id" to _id,
                     "room_id" to room_id,
@@ -76,35 +92,93 @@ class ViewModelDetailRR:ViewModel() {
                         list.add(detail)
                         _detail.value = list
                         Log.d("TAG", "Đã thêm tài liệu mới với ID: ${it}")
+                        if (status.equals("Đã duyệt")) {
+                            collectionRoom.document(room_id).get().addOnSuccessListener {
+                                val currentStString = it.getString("status") ?: "0"
+                                val curentSt = currentStString.toInt()
+
+                                // Cộng thêm 1 vào giá trị của trường current_students
+                                val newCurrentStudents = curentSt + 1
+
+                                collectionRoom.document(room_id)
+                                    .update("status", newCurrentStudents.toString())
+                                    .addOnSuccessListener {
+                                        Log.d("statusRoom", "Update status Room successfully")
+                                    }.addOnFailureListener { e ->
+                                        Log.e("statusRoom", "Update status Room failed", e)
+                                    }
+                            }.addOnFailureListener { e ->
+                                Log.e("statusRoom", "Get document failed", e)
+                            }
+                        }
 
                     }.addOnFailureListener { error ->
-                        Log.e("TAG", "Lỗi khi thêm tài liệu: ", error) }
-            }
-            catch (e: Exception) {
+                        Log.e("TAG", "Lỗi khi thêm tài liệu: ", error)
+                    }
+            } catch (e: Exception) {
                 // Xử lý lỗi nếu có
             }
         }
 
     }
+    fun getRoomID(id: String, callback: (String?) -> Unit) {
+        collectionDetail.document(id).get().addOnSuccessListener { doccumentSnapshot ->
+            if (doccumentSnapshot.exists()) {
+                val roomID = doccumentSnapshot.getString("room_id")
+                callback(roomID)
+            } else {
+                callback(null)
+                Log.e("roomID", "null")
+            }
+        }.addOnFailureListener { exception ->
+            callback(null)
+            Log.e("roomID", "exception")
+        }
+    }
+
 
     fun deleteDetail(_id: String) {
         val coroutineScope = CoroutineScope(Dispatchers.Main)
         coroutineScope.launch {
             try {
                 var docDelete = collectionDetail.document(_id)
-                docDelete.delete() .addOnSuccessListener {
+                docDelete.delete().addOnSuccessListener {
                     Log.d("TAG", "Đã xóa tài liệu thành công!")
+                    getRoomID(_id) { room_id ->
+                        if (room_id != null) {
+                            collectionRoom.document(room_id).get().addOnSuccessListener {
+                                val currentStString = it.getString("status") ?: "0"
+                                val curentSt = currentStString.toInt()
+
+                                // Cộng thêm 1 vào giá trị của trường current_students
+                                val newCurrentStudents = curentSt - 1
+
+                                collectionRoom.document(room_id)
+                                    .update("status", newCurrentStudents.toString())
+                                    .addOnSuccessListener {
+                                        Log.d("statusRoom", "Update status Room successfully")
+                                    }.addOnFailureListener { e ->
+                                        Log.e("statusRoom", "Update status Room failed", e)
+                                    }
+                            }.addOnFailureListener { e ->
+                                Log.e("statusRoom", "Get document failed", e)
+                            }
+                        }
+                    }
                 }
+
+
                     .addOnFailureListener { error ->
                         Log.e("TAG", "Lỗi khi xóa tài liệu: ", error)
                     }
                 val list = _detail.value?.toMutableList() ?: mutableListOf()
-                val removedDetail = list.find { it._id == _id } // Tìm kiếm đối tượng có _id trùng với _id trong danh sách
+                val removedDetail =
+                    list.find { it._id == _id } // Tìm kiếm đối tượng có _id trùng với _id trong danh sách
                 if (removedDetail != null) { // Nếu tìm thấy đối tượng cần xóa
                     list.remove(removedDetail) // Xóa đối tượng khỏi danh sách
                     _detail.value = list // Cập nhật lại giá trị của _rooms.value
                 }
-            }catch (e: Exception){
+            } catch (e: Exception) {
 
             }
 
@@ -112,8 +186,16 @@ class ViewModelDetailRR:ViewModel() {
 
     }
 
+
     fun updateDetail(
-        _id: String, room_id: String, user_id:String, registerDate: String, expirationDate: String, status: String, price:Long) {
+        _id: String,
+        room_id: String,
+        user_id: String,
+        registerDate: String,
+        expirationDate: String,
+        status: String,
+        price: Long
+    ) {
         val coroutineScope = CoroutineScope(Dispatchers.Main)
         coroutineScope.launch {
             try {
@@ -126,35 +208,63 @@ class ViewModelDetailRR:ViewModel() {
                     "status" to status,
                     "price" to price
                 )
-                collectionDetail.document(_id).update(DetailDoc as Map<String, Any>).addOnSuccessListener {
-                    _updateResult.value = true
-                    Log.d("TAG", "Đã cập nhật trường thành công!")
+                collectionDetail.document(_id).update(DetailDoc as Map<String, Any>)
+                    .addOnSuccessListener {
+                        _updateResult.value = true
+                        Log.d("TAG", "Đã cập nhật trường thành công!")
 
-                }.addOnFailureListener { error ->
+                        if (status.equals("Đã duyệt")) {
+                            collectionRoom.document(room_id).get().addOnSuccessListener {
+                                val currentStString = it.getString("status") ?: "0"
+                                val curentSt = currentStString.toInt()
+
+                                // Cộng thêm 1 vào giá trị của trường current_students
+                                val newCurrentStudents = curentSt + 1
+
+                                collectionRoom.document(room_id)
+                                    .update("status", newCurrentStudents.toString())
+                                    .addOnSuccessListener {
+                                        Log.d("statusRoom", "Update status Room successfully")
+                                    }.addOnFailureListener { e ->
+                                        Log.e("statusRoom", "Update status Room failed", e)
+                                    }
+                            }.addOnFailureListener { e ->
+                                Log.e("statusRoom", "Get document failed", e)
+                            }
+                        }
+
+                    }.addOnFailureListener { error ->
                     _updateResult.value = false
                     Log.e("TAG", "Lỗi khi cập nhật trường: ", error)
 
                 }
-                val detail = DetailRoomRegister(_id, room_id, user_id, registerDate, expirationDate, status, price)
+                val detail = DetailRoomRegister(
+                    _id,
+                    room_id,
+                    user_id,
+                    registerDate,
+                    expirationDate,
+                    status,
+                    price
+                )
                 val list = _detail.value?.toMutableList() ?: mutableListOf()
-                val details =  list.find { it._id == _id }
+                val details = list.find { it._id == _id }
                 val index = _detail.value?.indexOfFirst { it._id == details?._id } ?: return@launch
                 list[index] = detail
                 _detail.value = list
-            }catch (e: Exception){
+            } catch (e: Exception) {
 
             }
         }
     }
 
 
-    fun getDeltail(_id: String){
-        collectionDetail.document(_id).get().addOnSuccessListener {
-                documentSnapshot ->
-            if(documentSnapshot.exists()){
+    fun getDeltail(_id: String) {
+        collectionDetail.document(_id).get().addOnSuccessListener { documentSnapshot ->
+            if (documentSnapshot.exists()) {
                 val detail = documentSnapshot.toObject(DetailRoomRegister::class.java)
                 _detailRR.value = detail
-            }else{
+            } else {
                 Log.d("getDetail", "Không tìm thấy tài liệu")
             }
         }.addOnFailureListener { exception ->

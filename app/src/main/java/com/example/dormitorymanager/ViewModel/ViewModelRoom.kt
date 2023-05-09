@@ -32,6 +32,39 @@ class ViewModelRoom : ViewModel() {
         _updateResult.value = result
     }
 
+    private val _enoughRooms = MutableLiveData<Int>()
+    val enoughRooms: LiveData<Int> = _enoughRooms
+
+    private val _nearEnoughRooms = MutableLiveData<Int>()
+    val nearEnoughRooms: LiveData<Int> = _nearEnoughRooms
+
+    private val _lackRooms = MutableLiveData<Int>()
+    val lackRooms: LiveData<Int> = _lackRooms
+
+
+   fun getRoomData() {
+            collectionRoom.get()
+                .addOnSuccessListener { documents ->
+                    var enoughCount = 0
+                    var nearEnoughCount = 0
+                    var lackCount = 0
+                    for (doc in documents) {
+                        val currentSt = doc.getString("status") ?: "0"
+                        val currentStudents = currentSt.toInt()
+                        val maxSt = doc.getString("beds") ?: "0"
+                        val maxStudents = maxSt.toInt()
+                        when {
+                            currentStudents >= maxStudents -> enoughCount++
+                            currentStudents >= maxStudents * 0.8 -> nearEnoughCount++
+                            else -> lackCount++
+                        }
+                    }
+                    _enoughRooms.value = enoughCount
+                    _nearEnoughRooms.value = nearEnoughCount
+                    _lackRooms.value = lackCount
+                }
+    }
+
     fun getRoom(): MutableList<Rooms> {
         //lấy hết document trong colection room chuyển nó thành đối tượng Rooms rồi thêm vào list, sau đó cập nhật cho multablelivedata
         collectionRoom.get().addOnSuccessListener { snapshot ->
