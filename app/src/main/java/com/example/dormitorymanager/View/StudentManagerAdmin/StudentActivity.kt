@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.example.dormitorymanager.MainActivity
 import com.example.dormitorymanager.R
 import com.example.dormitorymanager.View.HomeFragment
 import com.example.dormitorymanager.View.LoginActivity
@@ -102,7 +103,7 @@ class StudentActivity : AppCompatActivity() {
         binding.navLeftmenu.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> {
-                    var intent = Intent(this, HomeFragment::class.java)
+                    var intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                 }
                 R.id.info->{

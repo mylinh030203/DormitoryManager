@@ -110,7 +110,7 @@ class AddStudentInRoomFragment : Fragment() {
                     Toast.makeText(context, "Add student Success", Toast.LENGTH_SHORT).show()
                     val navController = view?.findNavController()
                     navController?.navigate(
-                        R.id.action_addStudentInRoomFragment_to_registerRMFragment
+                        R.id.action_addStudentInRoomFragment_to_roomFragment2
                     )
                 }
             } else {

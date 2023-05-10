@@ -212,8 +212,8 @@ class ViewModelRoom : ViewModel() {
                     val bedStr = document.getString("beds") // lấy giá trị trường "bed" dưới dạng String
 
                     // Chuyển đổi giá trị của "status" và "bed" thành số
-                    val statusNum = statusStr?.toInt()?:0
-                    val bedNum = bedStr?.toInt()?:0
+                    val statusNum = statusStr?.trim()?.toInt()?:0
+                    val bedNum = bedStr?.trim()?.toInt()?:0
                     Log.e("roomcompare", statusNum.toString())
                     if (statusNum < bedNum) {
                         val room = document.toObject(Rooms::class.java)

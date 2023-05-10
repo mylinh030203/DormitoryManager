@@ -76,11 +76,10 @@ class AdapterStudentRRM
 
 private class StudentDiffCallback : DiffUtil.ItemCallback<StudentInfor>() {
     override fun areItemsTheSame(oldItem: StudentInfor, newItem: StudentInfor): Boolean {
-        return oldItem._id == newItem._id
+        return oldItem._id == newItem._id && oldItem.fullname == newItem.fullname && oldItem.idStudent == newItem.idStudent
     }
 
     override fun areContentsTheSame(oldItem: StudentInfor, newItem: StudentInfor): Boolean {
-        TODO("Not yet implemented")
-        return oldItem._id == newItem._id
+        return oldItem._id == newItem._id && oldItem.fullname == newItem.fullname && oldItem.idStudent == newItem.idStudent
     }
 }
