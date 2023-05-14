@@ -10,6 +10,11 @@
         android:title="Information"
         />
     <item
+        android:id="@+id/chartU"
+        android:icon="@drawable/ic_chart"
+        android:title="Statistical"
+        />
+    <item
         android:id="@+id/logoutU"
         android:icon="@drawable/ic_logout"
         android:title="Log Out" />

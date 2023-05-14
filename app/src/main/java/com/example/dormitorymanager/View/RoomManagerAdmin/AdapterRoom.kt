@@ -37,8 +37,9 @@ class AdapterRoom(
     override fun onBindViewHolder(holder: RoomViewHolder, position: Int) {
         holder.itemView.apply {
             tvName.text = list[position].name
-            tvDes.text = list[position].description
+            tvLocation.text = list[position].location
             tvStatus.text = list[position].status
+            tvbeds.text = list[position].beds
             img.setImageResource(R.drawable.phong)
 
             //itemclick chọn

@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.example.dormitorymanager.View.Chart.ChartActivity
 import com.example.dormitorymanager.View.LoginActivity
 import com.example.dormitorymanager.View.RoomManagerAdmin.RoomActivity
 import com.example.dormitorymanager.View.StudentManagerAdmin.StudentActivity
@@ -159,6 +160,10 @@ class MainActivity : AppCompatActivity() {
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                     }
+                }
+                R.id.chart->{
+                    val intent = Intent(this, ChartActivity::class.java)
+                    startActivity(intent)
                 }
                 R.id.logout -> {
                     Log.e("dc", viewModel.checkLogin().toString())

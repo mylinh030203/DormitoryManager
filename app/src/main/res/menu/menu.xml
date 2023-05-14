@@ -9,6 +9,11 @@
         android:icon="@drawable/ic_person"
         android:title="Informationn Student"
         />
+    <item
+        android:id="@+id/chart"
+        android:icon="@drawable/ic_chart"
+        android:title="Statistical"
+        />
 
     <item
         android:id="@+id/logout"
