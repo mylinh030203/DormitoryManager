@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
@@ -26,6 +27,7 @@ class StudentFragment : Fragment() {
     private lateinit var viewModelStudent: ViewModelStudent
     private lateinit var viewModelDetailRR: ViewModelDetailRR
     private lateinit var viewModelRoom: ViewModelRoom
+    private lateinit var text: TextView
     private var longClickedPosition: Int = -1
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +41,7 @@ class StudentFragment : Fragment() {
         var btnaddSt = view.findViewById<Button>(R.id.btnAddStudent)
         var btnsearch = view.findViewById<Button>(R.id.btnSearch)
         rvStudent = view.findViewById(R.id.rvStudent)
+        text = view.findViewById(R.id.no_dataSt)
         viewModel.checkAdmin { isAdmin ->
             if (isAdmin) {
                 selectStudent(viewModelStudent.getStudent())
@@ -94,9 +97,15 @@ class StudentFragment : Fragment() {
             GridLayoutManager.HORIZONTAL,
             false
         )
-        //Hàm viewModelRoom.rooms.observe() được sử dụng để đăng ký một Observer cho LiveData được trả về từ ViewModel. Khi dữ liệu trong LiveData được cập nhật, Observer sẽ nhận được thông báo và có thể thực hiện một số hành động liên quan đến dữ liệu đó.
+            //Hàm viewModelRoom.rooms.observe() được sử dụng để đăng ký một Observer cho LiveData được trả về từ ViewModel. Khi dữ liệu trong LiveData được cập nhật, Observer sẽ nhận được thông báo và có thể thực hiện một số hành động liên quan đến dữ liệu đó.
+
         viewModelStudent.students.observe(viewLifecycleOwner, { students ->
-            adapter.setData(students.toMutableList())
+            if (students.isEmpty()) {
+                text.visibility = View.VISIBLE
+            } else {
+                adapter.setData(students.toMutableList())
+                text.visibility = View.GONE
+            }
         })
 
     }
@@ -145,16 +154,22 @@ class StudentFragment : Fragment() {
             }
         }, this)
         rvStudent.adapter = adapter
-        rvStudent.layoutManager = GridLayoutManager(
+        this.rvStudent.layoutManager = GridLayoutManager(
             context,
             4,
             GridLayoutManager.HORIZONTAL,
             false
         )
-        //Hàm viewModelRoom.rooms.observe() được sử dụng để đăng ký một Observer cho LiveData được trả về từ ViewModel. Khi dữ liệu trong LiveData được cập nhật, Observer sẽ nhận được thông báo và có thể thực hiện một số hành động liên quan đến dữ liệu đó.
-        viewModelStudent.StudentUnapproved.observe(viewLifecycleOwner, { students ->
-            adapter.setData(students.toMutableList())
-        })
+
+            //Hàm viewModelRoom.rooms.observe() được sử dụng để đăng ký một Observer cho LiveData được trả về từ ViewModel. Khi dữ liệu trong LiveData được cập nhật, Observer sẽ nhận được thông báo và có thể thực hiện một số hành động liên quan đến dữ liệu đó.
+            viewModelStudent.StudentUnapproved.observe(viewLifecycleOwner, { students ->
+                if (students.isEmpty()) {
+                    text.visibility = View.VISIBLE
+                } else {
+                    adapter.setData(students.toMutableList())
+                    text.visibility = View.GONE
+                }
+            })
 
     }
 

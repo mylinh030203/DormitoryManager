@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.dormitorymanager.Model.Rooms
+import com.example.dormitorymanager.Model.StudentInfor
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -16,6 +17,8 @@ import kotlinx.coroutines.tasks.await
 class ViewModelRoom : ViewModel() {
     private val db = Firebase.firestore
     val collectionRoom = db.collection("Rooms")
+    val collectionRegisterRoom = db.collection("DetailRoomRegister")
+    val collectionStudent = db.collection("StudentInfo")
     val _rooms = MutableLiveData<List<Rooms>>()
     val rooms: LiveData<List<Rooms>>
         get() = _rooms
@@ -72,6 +75,7 @@ class ViewModelRoom : ViewModel() {
             for (doc in snapshot!!) {
                 val room = doc.toObject(Rooms::class.java)
                 room._id = doc.id
+                Log.e("room", "${room.prices}, ${room.name}")
                 roomsList.add(room)
             }
             _rooms.value = roomsList
@@ -118,7 +122,7 @@ class ViewModelRoom : ViewModel() {
                     "description" to description,
                     "location" to location,
                     "name" to name,
-                    "price" to prices,
+                    "prices" to prices,
                     "status" to status
                 )
                 collectionRoom.document(_id)
@@ -163,7 +167,8 @@ class ViewModelRoom : ViewModel() {
 
     fun updateRoom(
         _id: String,
-        beds:String, description:String, location: String, name:String, prices:Long, status: String) {
+        beds:String, description:String, location: String, name:String, prices:Long,status:String) {
+
         val coroutineScope = CoroutineScope(Dispatchers.Main)
         coroutineScope.launch {
             try {
@@ -173,12 +178,13 @@ class ViewModelRoom : ViewModel() {
                     "description" to description,
                     "location" to location,
                     "name" to name,
-                    "price" to prices,
+                    "prices" to prices,
                     "status" to status
                 )
+
                 collectionRoom.document(_id).update(roomDoc as Map<String, Any>).addOnSuccessListener {
                     _updateResult.value = true
-                    Log.d("TAG", "Đã cập nhật trường thành công!")
+                    Log.d("TAG", "Đã cập nhật trường thành công!  ")
 
                 }.addOnFailureListener { error ->
                     _updateResult.value = false

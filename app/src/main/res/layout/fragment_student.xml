@@ -73,6 +73,16 @@
             android:layout_marginTop="10dp"
 
             />
+        <TextView
+            android:id="@+id/no_dataSt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:textSize="25dp"
+            android:textStyle="italic|bold"
+            android:textColor="@color/black"
+            android:text="No data" />
 
         <!--end room layout-->
     </LinearLayout>

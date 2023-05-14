@@ -1,11 +1,13 @@
 package com.example.dormitorymanager.View.RoomManagerAdmin
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
@@ -26,6 +28,7 @@ class RoomFragment : Fragment() {
     private lateinit var viewModel: ViewModelUser
     private lateinit var adapter: AdapterRoom
     private lateinit var rvRoom: RecyclerView
+    private lateinit var text:TextView
     private var longClickedPosition: Int = -1
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +41,7 @@ class RoomFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(ViewModelUser::class.java)
         viewModelRoom = ViewModelProvider(this).get(ViewModelRoom::class.java)
         rvRoom = view.findViewById(R.id.rvRoom)
+        text = view.findViewById(R.id.text_no_data)
         // Inflate the layout for this fragment
 
 
@@ -102,16 +106,24 @@ class RoomFragment : Fragment() {
 
 
         rvRoom.adapter = adapter
-        rvRoom.layoutManager = GridLayoutManager(
+        this.rvRoom.layoutManager = GridLayoutManager(
             context,
             4,
             GridLayoutManager.HORIZONTAL,
             false
         )
-        //Hàm viewModelRoom.rooms.observe() được sử dụng để đăng ký một Observer cho LiveData được trả về từ ViewModel. Khi dữ liệu trong LiveData được cập nhật, Observer sẽ nhận được thông báo và có thể thực hiện một số hành động liên quan đến dữ liệu đó.
-        viewModelRoom.rooms.observe(viewLifecycleOwner, { rooms ->
-            adapter.setData(rooms.toMutableList())
-        })
+
+
+            //Hàm viewModelRoom.rooms.observe() được sử dụng để đăng ký một Observer cho LiveData được trả về từ ViewModel. Khi dữ liệu trong LiveData được cập nhật, Observer sẽ nhận được thông báo và có thể thực hiện một số hành động liên quan đến dữ liệu đó.
+            viewModelRoom.rooms.observe(viewLifecycleOwner, { rooms ->
+                if(rooms.isEmpty()){
+                    text.visibility = View.VISIBLE
+                }else{
+                    adapter.setData(rooms.toMutableList())
+                    text.visibility = View.GONE
+                }
+            })
+
 
     }
 
@@ -166,9 +178,14 @@ class RoomFragment : Fragment() {
             GridLayoutManager.HORIZONTAL,
             false
         )
-        //Hàm viewModelRoom.rooms.observe() được sử dụng để đăng ký một Observer cho LiveData được trả về từ ViewModel. Khi dữ liệu trong LiveData được cập nhật, Observer sẽ nhận được thông báo và có thể thực hiện một số hành động liên quan đến dữ liệu đó.
+
         viewModelRoom.roomsIsEmpty.observe(viewLifecycleOwner, { rooms ->
-            adapter.setData(rooms.toMutableList())
+            if(rooms.isEmpty()){
+                text.visibility = View.VISIBLE
+            }else{
+                adapter.setData(rooms.toMutableList())
+                text.visibility = View.GONE
+            }
         })
 
     }

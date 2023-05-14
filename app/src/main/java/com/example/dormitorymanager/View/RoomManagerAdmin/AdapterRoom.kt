@@ -33,6 +33,7 @@ class AdapterRoom(
         submitList(list)
     }
 
+
     override fun onBindViewHolder(holder: RoomViewHolder, position: Int) {
         holder.itemView.apply {
             tvName.text = list[position].name

@@ -40,6 +40,10 @@ class ViewModelStudent : ViewModel() {
     val studentByRoomID: LiveData<List<StudentInfor>>
         get() = _studentByRoomID
 
+    val _CountstudentByRoomID = MutableLiveData<Int>()
+    val CountstudentByRoomID: LiveData<Int>
+        get() = _CountstudentByRoomID
+
     val _studentUnapproved = MutableLiveData<List<StudentInfor>>()
     val StudentUnapproved: LiveData<List<StudentInfor>>
         get() = _studentUnapproved
@@ -55,6 +59,8 @@ class ViewModelStudent : ViewModel() {
             for (doc in snapshot!!) {
                 val student = doc.toObject(StudentInfor::class.java)
                 student._id = doc.id
+//student._id = doc.id để lưu trữ ID của tài liệu trong đối tượng StudentInfor. Việc này cho phép chúng ta lưu trữ thông tin của sinh viên liên quan đến tài liệu cụ thể đó, chẳng hạn như ID của sinh viên.
+//Nếu không sử dụng câu lệnh này, thuộc tính _id của đối tượng StudentInfor sẽ không được gán giá trị, gây ra lỗi khi truy xuất thông tin của sinh viên hoặc thực hiện các thao tác khác trên cơ sở dữ liệu.
                 studentsList.add(student)
             }
             _student.value = studentsList
@@ -260,23 +266,11 @@ class ViewModelStudent : ViewModel() {
             try {
                 var docDelete = collectionStudent.document(_id)
                 docDelete.delete().addOnSuccessListener {
+                    val ViewModelUser = ViewModelUser(Application())
+                    ViewModelUser.deleteUser(_id)
+                    val viewmodeldetail = ViewModelDetailRR()
+                    viewmodeldetail.deleteDetail(_id)
                     Log.d("TAG", "Đã xóa tài liệu thành công!")
-                    try {
-                        var docDelete = usersCollection.document(_id)
-                        docDelete.delete().addOnSuccessListener {
-                            Log.d("TAG", "Đã xóa tài liệu thành công!")
-                            val childIdToDelete = _id
-                            // Sử dụng phương thức removeValue() trên DatabaseReference để xóa phần tử
-                            dbRef.child(childIdToDelete).removeValue()
-                        }
-                            .addOnFailureListener { error ->
-                                Log.e("TAG", "Lỗi khi xóa tài liệu: ", error)
-                            }
-
-                    } catch (e: Exception) {
-
-                    }
-
                 }
                     .addOnFailureListener { error ->
                         Log.e("TAG", "Lỗi khi xóa tài liệu: ", error)
@@ -296,7 +290,36 @@ class ViewModelStudent : ViewModel() {
 
     }
 
+    fun countStudentInRoom(roomID: String): Int? {
+        collectionRegisterRoom.whereEqualTo("room_id", roomID).get()
+            .addOnSuccessListener { registeRoomDoc ->
+                if (!registeRoomDoc.isEmpty) {
+                    val userIdList = mutableListOf<String>()
+                    for (registerRoomDocument in registeRoomDoc) {
+                        val userId = registerRoomDocument.getString("user_id")
+                        userId?.let { userIdList.add(it) }
+                    }
 
+                    collectionStudent.whereIn("_id", userIdList).get()
+                        .addOnSuccessListener { studentDoc ->
+                            val studentList = mutableListOf<StudentInfor>()
+                            var count = 0
+                            for (studentdoc in studentDoc) {
+                                val student = studentdoc.toObject(StudentInfor::class.java)
+                                count++
+                                studentList.add(student)
+                            }
+                            _CountstudentByRoomID.value = count
+                        }
+                        .addOnFailureListener { }
+                } else
+                    _CountstudentByRoomID.value = 0
+            }.addOnFailureListener {
+
+            }
+        val count = _CountstudentByRoomID.value
+        return count
+    }
     fun getStudentById(studentId: String): StudentInfor? {
         return _student.value?.find { student -> student._id == studentId }
     }

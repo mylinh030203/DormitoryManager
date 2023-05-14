@@ -81,7 +81,6 @@ class AdapterStudent(
         }
 
         override fun areContentsTheSame(oldItem: StudentInfor, newItem: StudentInfor): Boolean {
-            TODO("Not yet implemented")
             return oldItem._id == newItem._id
         }
     }

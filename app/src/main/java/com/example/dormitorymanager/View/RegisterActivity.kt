@@ -52,8 +52,8 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            viewModel.RegisterUsers(email, fullName, password, roleID,Gender)
-
+            viewModel.RegisterUsers(email.toString(), fullName.toString(), password.toString(), roleID.toString(),Gender.toString())
+//            viewModel.RegisterUsers("linh456789@gmail.com","aaaaa", "123456789","2","Male")
             binding.edtemail.setText("")
             binding.edtPassword.setText("")
             binding.edtFullname.setText("")
