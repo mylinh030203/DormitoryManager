@@ -36,6 +36,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:background="@drawable/custom_edt"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
         android:hint="Enter Full Name" />
 
     <TextView
@@ -56,6 +59,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:background="@drawable/custom_edt"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
         android:hint="Enter phone number" />
 
     <TextView
@@ -114,6 +120,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:background="@drawable/custom_edt"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
         android:hint="Enter id student" />
 
     <TextView
@@ -133,6 +142,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:background="@drawable/custom_edt"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
         android:hint="Enter Class" />
 
     <LinearLayout
@@ -181,7 +193,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <Button

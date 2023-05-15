@@ -14,9 +14,13 @@
         android:layout_marginTop="80dp"
         android:layout_marginEnd="61dp"
         android:layout_marginBottom="20dp"
+        android:background="@drawable/custom_title"
         android:text="Room"
         android:textSize="34dp"
+        android:paddingTop="2dp"
+        android:paddingLeft="50dp"
         android:textStyle="bold"
+        android:textColor="#ED9478"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.564"
@@ -26,9 +30,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout4"
-        android:layout_width="190dp"
+        android:layout_width="220dp"
         android:layout_height="485dp"
-        android:layout_marginTop="400dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,49 +44,49 @@
             android:id="@+id/lbBed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
             android:text="Number of beds"
             android:textSize="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="15dp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/lbDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
             android:text="Description"
             android:textSize="20dp"
-            android:layout_marginLeft="15dp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/lbLoc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Location"
-            android:textSize="20dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
+            android:text="Location"
+            android:textSize="20dp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/lbname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Name Room"
-            android:textSize="20dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
+            android:text="Name Room"
+            android:textSize="20dp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/lbPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Price/Room"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
+            android:text="Price/Room"
             android:textSize="20dp"
             android:textStyle="bold" />
 
@@ -101,7 +104,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout5"
-        android:layout_width="222dp"
+        android:layout_width="192dp"
         android:layout_height="484dp"
         android:layout_marginTop="400dp"
         android:orientation="vertical"
@@ -120,7 +123,7 @@
             android:layout_marginTop="10dp"
             android:text="Number of beds"
             android:textSize="20dp"
-            android:textStyle="italic|bold" />
+            android:textStyle="italic" />
 
         <TextView
             android:id="@+id/tvDescription"
@@ -131,7 +134,7 @@
             android:layout_marginTop="10dp"
             android:text="Description"
             android:textSize="20dp"
-            android:textStyle="italic|bold" />
+            android:textStyle="italic" />
 
         <TextView
             android:id="@+id/tvLoc"
@@ -141,7 +144,7 @@
             android:layout_marginTop="10dp"
             android:text="Location"
             android:textSize="20dp"
-            android:textStyle="italic|bold" />
+            android:textStyle="italic" />
 
         <TextView
             android:id="@+id/tvname"
@@ -151,7 +154,7 @@
             android:layout_marginTop="10dp"
             android:text="Name Room"
             android:textSize="20dp"
-            android:textStyle="italic|bold" />
+            android:textStyle="italic" />
 
         <TextView
             android:id="@+id/tvPrice"
@@ -161,7 +164,7 @@
             android:layout_marginTop="10dp"
             android:text="Price/Room"
             android:textSize="20dp"
-            android:textStyle="italic|bold" />
+            android:textStyle="italic" />
 
         <TextView
             android:id="@+id/tvnumberOfCurrentMenber"
@@ -171,7 +174,7 @@
             android:layout_marginTop="10dp"
             android:text="Number of current member"
             android:textSize="20dp"
-            android:textStyle="italic|bold" />
+            android:textStyle="italic" />
 
     </LinearLayout>
 
@@ -184,6 +187,9 @@
         android:text="Register"
         android:textSize="24dp"
         android:textStyle="bold"
+        android:background="@drawable/custom_btn"
+        android:drawableLeft="@drawable/ic_add"
+        app:backgroundTint="@null"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.986"

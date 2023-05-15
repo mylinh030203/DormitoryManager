@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.example.dormitorymanager.R
 import com.example.dormitorymanager.ViewModel.ViewModelRoom
 
@@ -41,6 +42,8 @@ class AddRoomFragment : Fragment() {
                     edtName.setText("")
                     edtprice.setText("")
                     edtStatus.setText("")
+
+                view.findNavController().navigate(R.id.action_addRoomFragment2_to_roomFragment2)
 
             }.addOnFailureListener { error ->
                 Toast.makeText(activity, "Add room failer", Toast.LENGTH_SHORT).show()

@@ -24,8 +24,11 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:textSize="25dp"
-                android:textStyle="italic|bold"
-                android:textColor="@color/black"
+                android:background="@drawable/custom_title"
+                android:paddingTop="7dp"
+                android:paddingLeft="50dp"
+                android:textStyle="bold"
+                android:textColor="#ED9478"
                 android:text="List Room" />
 
             <Button
@@ -33,10 +36,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:textColor="@color/black"
-                android:backgroundTint="@color/white"
+                android:background="@drawable/custom_btn"
+                android:drawableLeft="@drawable/ic_add"
+                app:backgroundTint="@null"
                 android:textStyle="bold"
-                android:layout_marginLeft="290dp"
+                android:layout_marginLeft="220dp"
                 android:text="Add Room" />
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView

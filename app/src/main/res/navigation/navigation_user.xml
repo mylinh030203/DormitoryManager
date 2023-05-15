@@ -43,5 +43,12 @@
         android:id="@+id/addStudentInRoomFragment3"
         android:name="com.example.dormitorymanager.View.RegisterRoomManagerAdmin.AddStudentInRoomFragment"
         android:label="fragment_add_student_in_room"
-        tools:layout="@layout/fragment_add_student_in_room" />
+        tools:layout="@layout/fragment_add_student_in_room" >
+        <action
+            android:id="@+id/action_addStudentInRoomFragment3_to_registerRMFragment3"
+            app:destination="@id/registerRMFragment3" />
+        <action
+            android:id="@+id/action_addStudentInRoomFragment3_to_roomRegisterFragment"
+            app:destination="@id/roomRegisterFragment" />
+    </fragment>
 </navigation>

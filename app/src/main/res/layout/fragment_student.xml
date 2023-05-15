@@ -20,13 +20,16 @@
 
             <TextView
                 android:id="@+id/listStudent"
+                android:background="@drawable/custom_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
+                android:paddingTop="7dp"
+                android:paddingLeft="30dp"
+                android:textColor="#ED9478"
                 android:textSize="25dp"
                 android:textStyle="italic|bold"
-                android:textColor="@color/black"
                 android:text="List Student" />
 
             <LinearLayout
@@ -36,25 +39,29 @@
 
                 <Button
                     android:id="@+id/btnAddStudent"
-                    android:layout_width="wrap_content"
+                    android:layout_width="181dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="10dp"
-                    android:backgroundTint="@color/white"
+                    android:background="@drawable/custom_btn"
+                    android:drawableLeft="@drawable/ic_add"
                     android:text="Add Student"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null" />
 
                 <Button
                     android:id="@+id/btnSearch"
-                    android:layout_width="wrap_content"
+                    android:layout_width="175dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
                     android:layout_marginTop="10dp"
-                    android:backgroundTint="@color/white"
-                    android:layout_marginLeft="100dp"
+                    android:background="@drawable/custom_btn"
+                    android:drawableLeft="@drawable/ic_hourglass"
                     android:text="Unapproved"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null" />
             </LinearLayout>
 
             <androidx.appcompat.widget.SearchView

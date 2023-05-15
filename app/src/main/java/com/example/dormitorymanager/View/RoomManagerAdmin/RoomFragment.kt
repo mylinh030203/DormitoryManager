@@ -61,6 +61,7 @@ class RoomFragment : Fragment() {
         return view
     }
 
+    @SuppressLint("SuspiciousIndentation")
     fun selectRoom(list: MutableList<Rooms>) {
         adapter = AdapterRoom(list, object : rvInter {
             override fun onClickRoom(position: Int) {

@@ -23,10 +23,13 @@
                 android:id="@+id/listRoom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/custom_title"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:text="List Room"
-                android:textColor="@color/black"
+                android:paddingTop="7dp"
+                android:paddingLeft="50dp"
+                android:textColor="#ED9478"
                 android:textSize="25dp"
                 android:textStyle="italic|bold" />
 

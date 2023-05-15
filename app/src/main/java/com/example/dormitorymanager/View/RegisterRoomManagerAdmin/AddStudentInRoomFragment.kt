@@ -124,6 +124,10 @@ class AddStudentInRoomFragment : Fragment() {
                         tvDateExpirate.text.toString(), "Chưa duyệt",
                         100000
                     )
+                    val navController = view?.findNavController()
+                    navController?.navigate(
+                        R.id.action_addStudentInRoomFragment3_to_roomRegisterFragment
+                    )
                 }
             }
         }

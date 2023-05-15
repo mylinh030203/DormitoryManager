@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_updateStudentFragment_to_studentFragment"
             app:destination="@id/studentFragment" />
+        <action
+            android:id="@+id/action_updateStudentFragment_to_registerRMFragment4"
+            app:destination="@id/registerRMFragment4" />
     </fragment>
     <fragment
         android:id="@+id/addStudentFragment"
@@ -42,5 +45,17 @@
         android:id="@+id/updateStudentInRoomFragment3"
         android:name="com.example.dormitorymanager.View.RegisterRoomManagerAdmin.UpdateStudentInRoomFragment"
         android:label="fragment_update_student_in_room"
-        tools:layout="@layout/fragment_update_student_in_room" />
+        tools:layout="@layout/fragment_update_student_in_room" >
+        <action
+            android:id="@+id/action_updateStudentInRoomFragment3_to_registerRMFragment4"
+            app:destination="@id/registerRMFragment4" />
+        <action
+            android:id="@+id/action_updateStudentInRoomFragment3_to_studentFragment"
+            app:destination="@id/studentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerRMFragment4"
+        android:name="com.example.dormitorymanager.View.RegisterRoomManagerAdmin.RegisterRMFragment"
+        android:label="fragment_register_r_m"
+        tools:layout="@layout/fragment_register_r_m" />
 </navigation>

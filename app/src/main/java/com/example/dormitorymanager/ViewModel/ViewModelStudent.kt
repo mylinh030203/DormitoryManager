@@ -21,6 +21,7 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
 import java.util.UUID
 
 class ViewModelStudent : ViewModel() {
@@ -168,6 +169,44 @@ class ViewModelStudent : ViewModel() {
 
             } catch (e: Exception) {
                 // Xử lý lỗi nếu có
+            }
+        }
+    }
+    interface ImageUriCallback {
+        fun onImageUriReceived(imageUri: Uri?)
+        fun onError(message: String)
+    }
+
+    fun getUriImage(id:String, callback: ImageUriCallback){
+        collectionStudent.document(id).get().addOnCompleteListener  {
+            if(it.isSuccessful){
+                val document = it.result
+                if(document!=null && document.exists()){
+                    val imagePath = document.getString("avatar")
+                    if(!imagePath.isNullOrEmpty()){
+//                        var imageUri = Uri.parse(imagePath)
+//                        callback(imageUri)
+                        val storageRef = FirebaseStorage.getInstance().reference
+                        val tempFileName = "${id}.jpeg"
+                        val tempFile = File.createTempFile(tempFileName, "jpeg")
+
+                        storageRef.child(imagePath).getFile(tempFile)
+                            .addOnSuccessListener {
+                                val imageUri = tempFile.toUri()
+                                tempFile.delete()
+                                callback.onImageUriReceived(imageUri)
+                            }
+                            .addOnFailureListener { exception ->
+                                callback.onError("Error downloading image: ${exception.message}")
+                            }
+                    } else {
+                        callback.onError("Image path is empty")
+                    }
+                } else {
+                    callback.onError("Document does not exist")
+                }
+            } else {
+                callback.onError("Error getting document: ${it.exception?.message}")
             }
         }
     }

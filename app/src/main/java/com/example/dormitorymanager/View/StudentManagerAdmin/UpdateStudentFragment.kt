@@ -36,13 +36,6 @@ class UpdateStudentFragment : Fragment() {
     private lateinit var imageBitmap: Bitmap
     private lateinit var imageView: ImageView
 
-    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri != null) {
-            imageUri = uri
-            imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, uri)
-            imageView.setImageBitmap(imageBitmap)
-        }
-    }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
@@ -66,6 +59,31 @@ class UpdateStudentFragment : Fragment() {
         var btnupdateSt = view.findViewById<Button>(R.id.btnupdateSt)
         var btndeleteSt = view.findViewById<Button>(R.id.btndeleteSt)
         var id = arguments?.getString("id", "8")
+         val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+////
+//        if (id != null) {
+//            viewModelStudent.getUriImage(id!!, object : ViewModelStudent.ImageUriCallback {
+//                override fun onImageUriReceived(imageUrii: Uri?) {
+//                    if (imageUrii != null) {
+//                        imageUri = imageUrii
+//                    }
+//                }
+//
+//                override fun onError(message: String) {
+//                    // Xử lý khi có lỗi xảy ra
+//                    // Ví dụ: Log.e(TAG, "Error: $message")
+//                }
+//            })
+//        }
+
+            if (uri != null) {
+                imageUri = uri
+                imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, uri)
+                imageView.setImageBitmap(imageBitmap)
+            }
+
+        }
+
         edtfullname.setText(arguments?.getString("fullname", "8"))
         edtphone.setText(arguments?.getString("phone", "8"))
         var genderst = arguments?.getString("gender", "other")
