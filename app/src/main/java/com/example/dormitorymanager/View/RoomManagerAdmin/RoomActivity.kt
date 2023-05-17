@@ -28,12 +28,15 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 
 class RoomActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRoomBinding
     private lateinit var viewModelStudent: ViewModelStudent
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var viewModel: ViewModelUser
+    private lateinit var imageView: CircleImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRoomBinding.inflate(layoutInflater)
@@ -78,6 +81,7 @@ class RoomActivity : AppCompatActivity() {
         val header: View = binding.navLeftmenu.getHeaderView(0)
         val textView = header.findViewById<TextView>(R.id.textView)
         val textView2 = header.findViewById<TextView>(R.id.textView2)
+        imageView = header.findViewById(R.id.profile_image)
 
         if (viewModel.checkLogin()) {
             val uid = viewModel.user.value?.uid
@@ -88,6 +92,9 @@ class RoomActivity : AppCompatActivity() {
                     if (snapshot.exists()) {
                         val name: String = snapshot.child("name").value.toString()
                         var role_id: String = snapshot.child("role_id").value.toString()
+                        viewModelStudent.getAvatar(uid.toString(), {
+                                avatar ->Picasso.get().load(avatar).into(imageView)
+                        })
                         textView.text = name
                         textView2.text = checkRole(role_id)
                     }

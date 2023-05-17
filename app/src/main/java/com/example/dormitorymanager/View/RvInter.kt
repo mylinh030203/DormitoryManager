@@ -10,4 +10,7 @@ interface rvInter {
     fun onItemLongClick(position: Int){
 
     }
+    fun onClickNotification(position: Int){
+
+    }
 }

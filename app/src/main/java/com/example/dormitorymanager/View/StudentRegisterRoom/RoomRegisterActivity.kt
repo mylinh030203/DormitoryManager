@@ -1,6 +1,7 @@
 package com.example.dormitorymanager.View.StudentRegisterRoom
 
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -29,12 +30,15 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 
 class RoomRegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRoomRegisterBinding
     private lateinit var viewModelStudent: ViewModelStudent
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var viewModel: ViewModelUser
+    private lateinit var imageView: CircleImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRoomRegisterBinding.inflate(layoutInflater)
@@ -51,6 +55,7 @@ class RoomRegisterActivity : AppCompatActivity() {
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_menu)
+
         }
 
         drawerLayout = binding.drawLayout
@@ -79,6 +84,7 @@ class RoomRegisterActivity : AppCompatActivity() {
         val header: View = binding.navLeftmenu.getHeaderView(0)
         val textView = header.findViewById<TextView>(R.id.textView)
         val textView2 = header.findViewById<TextView>(R.id.textView2)
+        imageView = header.findViewById(R.id.profile_image)
 
         if (viewModel.checkLogin()) {
             val uid = viewModel.user.value?.uid
@@ -89,6 +95,10 @@ class RoomRegisterActivity : AppCompatActivity() {
                     if (snapshot.exists()) {
                         val name: String = snapshot.child("name").value.toString()
                         var role_id: String = snapshot.child("role_id").value.toString()
+                        viewModelStudent.getAvatar(uid.toString(), {
+                                avatar ->
+                            Picasso.get().load(avatar).into(imageView)
+                        })
                         textView.text = name
                         textView2.text = checkRole(role_id)
                     }

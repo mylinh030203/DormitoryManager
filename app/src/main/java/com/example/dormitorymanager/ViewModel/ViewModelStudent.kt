@@ -177,6 +177,22 @@ class ViewModelStudent : ViewModel() {
         fun onError(message: String)
     }
 
+    fun getAvatar(id:String, callback: (String?)->Unit){
+        collectionStudent.document(id).get().addOnSuccessListener {
+                doccumentSnapshot->
+            if(doccumentSnapshot.exists()){
+                val avatar = doccumentSnapshot.getString("avatar")
+                callback(avatar)
+            }else{
+                callback(null)
+                Log.e("avatar","null")
+            }
+        }.addOnFailureListener {
+                exception->callback(null)
+            Log.e("avatar", "exception")
+        }
+    }
+
     fun getUriImage(id:String, callback: ImageUriCallback){
         collectionStudent.document(id).get().addOnCompleteListener  {
             if(it.isSuccessful){

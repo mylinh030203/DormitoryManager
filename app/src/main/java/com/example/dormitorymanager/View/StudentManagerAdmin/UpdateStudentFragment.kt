@@ -19,6 +19,7 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.net.toUri
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -99,10 +100,8 @@ class UpdateStudentFragment : Fragment() {
         val imageUrl = avt
         Picasso.get().load(imageUrl).into(imageView)
         edtAvatar.setOnClickListener {
-            pickImageLauncher.launch("image/*")
+                pickImageLauncher.launch("image/*")
         }
-
-
         btnupdateSt.setOnClickListener {
             var selected: Int = rgGenderSt.checkedRadioButtonId
             var Gender: String = when (selected) {

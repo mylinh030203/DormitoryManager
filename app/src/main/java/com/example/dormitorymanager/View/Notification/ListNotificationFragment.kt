@@ -21,13 +21,13 @@ class ListNotificationFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_list_notification, container, false)
         recyclerView = view.findViewById(R.id.recyclerViewNotifications)
-
-        // Khởi tạo danh sách thông báo (notifications)
-        // ...
-
-        notificationAdapter = AdapterNotification(notifications)
-        recyclerView.adapter = notificationAdapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+//
+//        // Khởi tạo danh sách thông báo (notifications)
+//        // ...
+//
+//        notificationAdapter = AdapterNotification(notifications)
+//        recyclerView.adapter = notificationAdapter
+//        recyclerView.layoutManager = LinearLayoutManager(requireContext())
         return view
     }
 
