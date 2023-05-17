@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.dormitorymanager.R
@@ -24,7 +25,7 @@ class ChartFragment : Fragment() {
 
     private lateinit var viewModel: ViewModelRoom
     private lateinit var pieChart: PieChart
-    @SuppressLint("ResourceType")
+    @SuppressLint("ResourceType", "MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,6 +33,10 @@ class ChartFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_chart, container, false)
         viewModel = ViewModelProvider(requireActivity()).get(ViewModelRoom::class.java)
         pieChart = view.findViewById(R.id.piechart)
+        var tt = view.findViewById<TextView>(R.id.ttr)
+        var enough = view.findViewById<TextView>(R.id.enough)
+        var nenough = view.findViewById<TextView>(R.id.nenough)
+        var lack = view.findViewById<TextView>(R.id.lack)
         viewModel.getRoomData()
 
         viewModel.enoughRooms.observe(viewLifecycleOwner, { enoughRooms ->
@@ -42,7 +47,10 @@ class ChartFragment : Fragment() {
                         PieEntry(nearEnoughRooms.toFloat(), "Gần đủ sinh viên"),
                         PieEntry(lackRooms.toFloat(), "Thiếu sinh viên")
                     )
-
+                    tt.text = (enoughRooms.toFloat()+nearEnoughRooms.toFloat()+lackRooms.toFloat()).toString()
+                    enough.text = enoughRooms.toFloat().toString()
+                    nenough.text = nearEnoughRooms.toFloat().toString()
+                    lack.text = lackRooms.toFloat().toString()
                     val colors = listOf(
                         ContextCompat.getColor(requireContext(), R.color.teal_200),
                         ContextCompat.getColor(requireContext(), R.color.purple_200),

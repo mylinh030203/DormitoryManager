@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_notification"
+    app:startDestination="@id/sendNotificationFragment">
+
+    <fragment
+        android:id="@+id/sendNotificationFragment"
+        android:name="com.example.dormitorymanager.View.Notification.SendNotificationFragment"
+        android:label="fragment_send_notification"
+        tools:layout="@layout/fragment_send_notification" />
+</navigation>

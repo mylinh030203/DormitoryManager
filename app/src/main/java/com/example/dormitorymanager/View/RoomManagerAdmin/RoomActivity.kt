@@ -17,6 +17,7 @@ import com.example.dormitorymanager.MainActivity
 import com.example.dormitorymanager.R
 import com.example.dormitorymanager.View.Chart.ChartActivity
 import com.example.dormitorymanager.View.HomeFragment
+import com.example.dormitorymanager.View.InformationUser.InformationUserActivity
 import com.example.dormitorymanager.View.LoginActivity
 import com.example.dormitorymanager.View.RegisterRoomManagerAdmin.RegisterRoomManagerActivity
 import com.example.dormitorymanager.View.StudentManagerAdmin.StudentActivity
@@ -125,14 +126,16 @@ class RoomActivity : AppCompatActivity() {
                                     if (student != null) {
 
                                         val bundle = Bundle()
-                                        bundle.putString("id", student?._id)
-                                        bundle.putString("fullname", student?.fullname)
-                                        bundle.putString("phone", student?.phone)
-                                        bundle.putString("gender", student?.gender)
-                                        bundle.putString("idStudent", student?.idStudent)
-                                        bundle.putString("classStd", student?.classStd)
-                                        bundle.putString("avatar", student?.avatar)
-                                        navController.navigate(R.id.action_homeFragment_to_updateStudentFragment2, bundle)
+                                        bundle.putString("id", student._id)
+                                        bundle.putString("fullname", student.fullname)
+                                        bundle.putString("phone", student.phone)
+                                        bundle.putString("gender", student.gender)
+                                        bundle.putString("idStudent", student.idStudent)
+                                        bundle.putString("classStd", student.classStd)
+                                        bundle.putString("avatar", student.avatar)
+                                        val inten = Intent(this, InformationUserActivity::class.java)
+//                                        inten.putExtras(bundle)
+                                        startActivity(inten)
 
                                     } else {
                                         // Xử lý khi không tìm thấy sinh viên với studentId tương ứng

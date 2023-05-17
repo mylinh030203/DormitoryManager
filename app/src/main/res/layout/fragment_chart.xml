@@ -15,32 +15,98 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_marginTop="150dp"
-            />
+            >
 
+        </com.github.mikephil.charting.charts.PieChart>
 
-        <TextView
-            android:id="@+id/tvTotalRooms"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Total Rooms: 135"/>
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tvOccupiedRooms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="8 member: 70"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvRevenue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="7 member: 40"/>
+                <TextView
+                    android:id="@+id/tvTotalRooms"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total Rooms:" />
 
-        <TextView
-            android:id="@+id/tvRevenz"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="6 member: 25"/>
+                <TextView
+                    android:id="@+id/tvOccupiedRooms"
+                    android:layout_width="wrap_content"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/teal_200"
+                    android:layout_height="wrap_content"
+                    android:text="Enough Rooms" />
+
+                <TextView
+                    android:id="@+id/tvRevenue"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/purple_200"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Near Enough Rooms" />
+
+                <TextView
+                    android:id="@+id/tvRevenz"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/ic_dm_background"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lack Rooms" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/ttr"
+                    android:layout_width="match_parent"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"
+                    android:text="Total" />
+
+                <TextView
+                    android:id="@+id/enough"
+                    android:layout_width="match_parent"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"
+                    android:text="enough" />
+
+                <TextView
+                    android:id="@+id/nenough"
+                    android:layout_width="match_parent"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"
+                    android:text="nenough" />
+
+                <TextView
+                    android:id="@+id/lack"
+                    android:layout_width="match_parent"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"
+                    android:text="lack" />
+            </LinearLayout>
+        </LinearLayout>
+
 
     </LinearLayout>
 

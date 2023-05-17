@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.dormitorymanager.R
 import com.example.dormitorymanager.ViewModel.ViewModelDetailRR
+import com.example.dormitorymanager.ViewModel.ViewModelRoom
 import com.example.dormitorymanager.ViewModel.ViewModelStudent
 import com.example.dormitorymanager.ViewModel.ViewModelUser
 import kotlinx.coroutines.launch
@@ -96,16 +98,38 @@ class AddStudentInRoomFragment : Fragment() {
         val btnAddStToRoom = view.findViewById<Button>(R.id.btnAddStToRoom)
         viewModel.checkAdmin { isAdmin ->
             if (isAdmin) {
+                viewModelStudent.countStudentInRoom(room_id.toString())
+                val viewModelRoom = ViewModelRoom()
                 btnAddStToRoom.setOnClickListener {
+
                     viewModel.getIDDoccumentUser(edtEmail.text.toString()) { documentId ->
-                        viewmodelDetailRRM.RegisterRoom(
-                            room_id,
-                            documentId.toString(),
-                            tvDateRegister.text.toString(),
-                            tvDateExpirate.text.toString(),
-                            "Đã duyệt",
-                            100000
-                        )
+                        val member =viewModelStudent.CountstudentByRoomID.value?.toInt()?.plus(1)
+                        viewmodelDetailRRM.getDate(tvDateRegister.text.toString(),tvDateExpirate.text.toString(),{daysDiff ->
+                            viewModelRoom.getRoomPrice(room_id.toString(), {price->
+                                val priceInADayforaStudent = member?.let { it1 ->
+                                    (price?.toDouble()?.div(30))?.div(
+                                        it1
+                                    )
+                                }
+                                Log.e("price",price.toString())
+                                Log.e("daysDiff",daysDiff.toString())
+                                Log.e("documentId",documentId.toString())
+                                Log.e("priceInADayforaStudent",priceInADayforaStudent.toString())
+                                priceInADayforaStudent?.let { it1 -> daysDiff?.times(it1)
+                                Log.e("daysDiff",daysDiff?.times(it1).toString())
+
+                                viewmodelDetailRRM.RegisterRoom(
+                                    room_id,
+                                    documentId.toString(),
+                                    tvDateRegister.text.toString(),
+                                    tvDateExpirate.text.toString(),
+                                    "Đã duyệt",
+                                    daysDiff?.times(it1)?.toLong() ?: 100000
+                                )
+                                }
+                            })
+                        })
+
                     }
                     Toast.makeText(context, "Add student Success", Toast.LENGTH_SHORT).show()
                     val navController = view?.findNavController()
@@ -118,16 +142,39 @@ class AddStudentInRoomFragment : Fragment() {
                 val user_id = arguments?.getString("user_id", "")
                 edtEmail.setText(arguments?.getString("email", ""))
                 btnStatus.visibility = View.GONE
+                viewModelStudent.countStudentInRoom(room_id.toString())
+                val viewModelRoom = ViewModelRoom()
                 btnAddStToRoom.setOnClickListener {
-                    viewmodelDetailRRM.RegisterRoom(
-                        room_id.toString(), user_id.toString(), tvDateRegister.text.toString(),
-                        tvDateExpirate.text.toString(), "Chưa duyệt",
-                        100000
-                    )
+                    val member =viewModelStudent.CountstudentByRoomID.value?.toInt()?.plus(1)
+                    viewmodelDetailRRM.getDate(tvDateRegister.text.toString(),tvDateExpirate.text.toString(),{daysDiff ->
+                        viewModelRoom.getRoomPrice(room_id.toString(), {price->
+                            val priceInADayforaStudent = member?.let { it1 ->
+                                (price?.toDouble()?.div(30))?.div(
+                                    it1
+                                )
+
+                            }
+                            Log.e("price",price.toString())
+                            Log.e("daysDiff",daysDiff.toString())
+                            Log.e("priceInADayforaStudent",priceInADayforaStudent.toString())
+
+                           priceInADayforaStudent?.let { it1 -> daysDiff?.times(it1)
+                            Log.e("daysDiff",daysDiff?.times(it1).toString())
+                            viewmodelDetailRRM.RegisterRoom(
+                                room_id.toString(), user_id.toString(), tvDateRegister.text.toString(),
+                                tvDateExpirate.text.toString(), "Chưa duyệt",
+                                daysDiff?.times(it1)?.toLong() ?: 100000
+                            )
+                           }
+                        })
+                    })
+
+                    Toast.makeText(context, "Wait for the administrator to approve", Toast.LENGTH_LONG).show()
                     val navController = view?.findNavController()
                     navController?.navigate(
                         R.id.action_addStudentInRoomFragment3_to_roomRegisterFragment
                     )
+
                 }
             }
         }

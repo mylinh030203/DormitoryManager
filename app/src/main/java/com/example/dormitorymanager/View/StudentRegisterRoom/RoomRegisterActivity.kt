@@ -17,8 +17,10 @@ import com.example.dormitorymanager.MainActivity
 import com.example.dormitorymanager.R
 import com.example.dormitorymanager.View.Chart.ChartActivity
 import com.example.dormitorymanager.View.HomeFragment
+import com.example.dormitorymanager.View.InformationUser.InformationUserActivity
 import com.example.dormitorymanager.View.LoginActivity
 import com.example.dormitorymanager.View.StudentManagerAdmin.StudentActivity
+import com.example.dormitorymanager.View.StudentManagerAdmin.UpdateStudentFragment
 import com.example.dormitorymanager.ViewModel.ViewModelStudent
 import com.example.dormitorymanager.ViewModel.ViewModelUser
 import com.example.dormitorymanager.databinding.ActivityRoomBinding
@@ -132,7 +134,9 @@ class RoomRegisterActivity : AppCompatActivity() {
                                         bundle.putString("idStudent", student?.idStudent)
                                         bundle.putString("classStd", student?.classStd)
                                         bundle.putString("avatar", student?.avatar)
-                                        navController.navigate(R.id.action_homeFragment_to_updateStudentFragment2, bundle)
+//                                        navController.navigate(R.id.action_homeFragment_to_updateStudentFragment2, bundle)
+                                        val inten = Intent(this, InformationUserActivity::class.java)
+                                        startActivity(inten, bundle)
 
                                     } else {
                                         // Xử lý khi không tìm thấy sinh viên với studentId tương ứng

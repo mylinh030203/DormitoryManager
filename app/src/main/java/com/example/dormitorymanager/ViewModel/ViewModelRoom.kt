@@ -58,7 +58,7 @@ class ViewModelRoom : ViewModel() {
                         val maxStudents = maxSt.toInt()
                         when {
                             currentStudents >= maxStudents -> enoughCount++
-                            currentStudents >= maxStudents * 0.8 -> nearEnoughCount++
+                            currentStudents >= maxStudents * 0.75 -> nearEnoughCount++
                             else -> lackCount++
                         }
                     }
@@ -105,6 +105,22 @@ class ViewModelRoom : ViewModel() {
         }.addOnFailureListener {
             exception->callback(null)
             Log.e("roomName", "exception")
+        }
+    }
+
+    fun getRoomPrice(id:String, callback: (Long?) -> Unit){
+        collectionRoom.document(id).get().addOnSuccessListener {
+                doccumentSnapshot->
+            if(doccumentSnapshot.exists()){
+                val roomPrice = doccumentSnapshot.getLong("prices")
+                callback(roomPrice)
+            }else{
+                callback(null)
+                Log.e("roomPrice","null")
+            }
+        }.addOnFailureListener {
+                exception->callback(null)
+            Log.e("roomPrice", "exception")
         }
     }
 

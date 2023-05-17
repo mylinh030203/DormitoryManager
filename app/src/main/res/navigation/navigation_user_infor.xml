@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_user_infor"
+    app:startDestination="@id/informationUserUpdateFragment">
+    <fragment
+        android:id="@+id/informationUserUpdateFragment"
+        android:name="com.example.dormitorymanager.View.InformationUser.InformationUserUpdateFragment"
+        android:label="fragment_information_user_update"
+        tools:layout="@layout/fragment_information_user_update" >
+        <action
+            android:id="@+id/action_informationUserUpdateFragment_to_roomFragment5"
+            app:destination="@id/roomFragment5" />
+    </fragment>
+    <fragment
+        android:id="@+id/roomFragment5"
+        android:name="com.example.dormitorymanager.View.RoomManagerAdmin.RoomFragment"
+        android:label="fragment_room"
+        tools:layout="@layout/fragment_room" >
+        <action
+            android:id="@+id/action_roomFragment5_to_informationUserUpdateFragment"
+            app:destination="@id/informationUserUpdateFragment" />
+    </fragment>
+</navigation>

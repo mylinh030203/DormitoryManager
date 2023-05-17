@@ -1,8 +1,10 @@
 package com.example.dormitorymanager.View.RegisterRoomManagerAdmin
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +14,9 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.dormitorymanager.R
+import com.example.dormitorymanager.View.RoomManagerAdmin.RoomActivity
 import com.example.dormitorymanager.ViewModel.ViewModelDetailRR
+import com.example.dormitorymanager.ViewModel.ViewModelRoom
 import com.example.dormitorymanager.ViewModel.ViewModelStudent
 import com.example.dormitorymanager.ViewModel.ViewModelUser
 import com.example.dormitorymanager.databinding.FragmentUpdateStudentInRoomBinding
@@ -33,9 +37,10 @@ class UpdateStudentInRoomFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(ViewModelUser::class.java)
         viewmodelDetailRRM = ViewModelProvider(this).get(ViewModelDetailRR::class.java)
         binding = FragmentUpdateStudentInRoomBinding.inflate(inflater, container, false)
-        binding.tvRoomNameUpdate.text = arguments?.getString("room_name","a")
-        binding.tvFullnameUp.text = arguments?.getString("fullname","a")
-        binding.tvPriceOfStUp.text = arguments?.getString("price","a")
+        binding.tvRoomNameUpdate.text = arguments?.getString("room_name","")
+        Log.e("room_name",arguments?.getString("room_name","").toString() )
+        binding.tvFullnameUp.text = arguments?.getString("fullname","")
+        binding.tvPriceOfStUp.text = arguments?.getString("price","")
         binding.tvDateRegisterup.text = arguments?.getString("registrationDate","a")
         binding.tvStatusRRMup.text = arguments?.getString("status","a")
         binding.tvDateExpirateup.text = arguments?.getString("expirationDate","a")
@@ -86,13 +91,35 @@ class UpdateStudentInRoomFragment : Fragment() {
         binding.btnStatusup.setOnClickListener {
             binding.tvStatusRRMup.text = "Đã duyệt"
         }
+
+        viewModelStudent.countStudentInRoom(room_id.toString())
+        val viewModelRoom = ViewModelRoom()
         binding.btnUpdateStInRoom.setOnClickListener {
-            viewmodelDetailRRM.updateDetail(id,room_id, id,binding.tvDateRegisterup.text.toString(),
-                binding.tvDateExpirateup.text.toString(), binding.tvStatusRRMup.text.toString(), (binding.tvPriceOfStUp.text.toString()).toLong() )
+            val member =viewModelStudent.CountstudentByRoomID.value?.toInt()
+            viewmodelDetailRRM.getDate(binding.tvDateRegisterup.text.toString(),binding.tvDateExpirateup.text.toString(),{daysDiff ->
+                viewModelRoom.getRoomPrice(room_id.toString(), {price->
+                    val priceInADayforaStudent = member?.let { it1 ->
+                        (price?.toDouble()?.div(30))?.div(
+                            it1
+                        )
+
+                    }
+                    Log.e("price",price.toString())
+                    Log.e("daysDiff",daysDiff.toString())
+                    Log.e("priceInADayforaStudent",priceInADayforaStudent.toString())
+
+                    priceInADayforaStudent?.let { it1 -> daysDiff?.times(it1)
+                        Log.e("daysDiff",daysDiff?.times(it1).toString())
+                        viewmodelDetailRRM.updateDetail(id,room_id, id,binding.tvDateRegisterup.text.toString(),
+                            binding.tvDateExpirateup.text.toString(), binding.tvStatusRRMup.text.toString(),daysDiff?.times(it1)?.toLong() ?: 100000)
+                    }
+                })
+            })
+
+
             Toast.makeText(context, "Update student Success", Toast.LENGTH_SHORT).show()
-            val navController = view?.findNavController()
-            navController?.navigate(
-                R.id.action_updateStudentInRoomFragment3_to_studentFragment)
+            val inten  = Intent(context, RoomActivity::class.java)
+            startActivity(inten)
         }
         return binding.root
     }

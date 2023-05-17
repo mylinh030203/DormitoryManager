@@ -69,6 +69,7 @@ class RegisterRMFragment : Fragment() {
                 bundle.putString("idStudent", adapter.currentList[position].idStudent)
                 bundle.putString("classStd", adapter.currentList[position].classStd)
                 bundle.putString("avatar", adapter.currentList[position].avatar)
+
 //                val navController = view?.findNavController()
 //                navController?.navigate(
 //                    R.id.action_studentFragment_to_updateStudentFragment,

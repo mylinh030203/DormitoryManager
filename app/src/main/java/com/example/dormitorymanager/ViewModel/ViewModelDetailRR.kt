@@ -16,6 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.text.SimpleDateFormat
 import java.util.Date
 
 class ViewModelDetailRR : ViewModel() {
@@ -58,6 +59,19 @@ class ViewModelDetailRR : ViewModel() {
     suspend fun getRoomID(id: String, fieldName: String): Any? {
         val document = collectionDetail.document(id).get().await()
         return document[fieldName]
+    }
+
+    fun getDate(dateStringRegistered: String, dateStringExpired: String, callback : (Long?) -> Unit){
+
+                val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+                val dateRegistered: Date = dateFormat.parse(dateStringRegistered)
+                val dateExpired: Date = dateFormat.parse(dateStringExpired)
+                // Tính số milliseconds giữa ngày đăng ký và ngày hết hạn
+                val millisecondsDiff: Long = dateExpired.time - dateRegistered.time
+                // Chuyển đổi milliseconds thành số ngày
+                val daysDiff: Long = millisecondsDiff / (24 * 60 * 60 * 1000)
+                callback(daysDiff)
+
     }
 
     fun RegisterRoom(

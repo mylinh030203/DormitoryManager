@@ -1,4 +1,4 @@
-package com.example.dormitorymanager.View.Chart
+package com.example.dormitorymanager.View.Notification
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,44 +9,36 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.example.dormitorymanager.MainActivity
 import com.example.dormitorymanager.R
+import com.example.dormitorymanager.View.Chart.ChartActivity
 import com.example.dormitorymanager.View.InformationUser.InformationUserActivity
 import com.example.dormitorymanager.View.LoginActivity
-import com.example.dormitorymanager.View.RoomManagerAdmin.RoomActivity
 import com.example.dormitorymanager.View.StudentManagerAdmin.StudentActivity
-import com.example.dormitorymanager.View.StudentRegisterRoom.RoomRegisterActivity
 import com.example.dormitorymanager.ViewModel.ViewModelStudent
 import com.example.dormitorymanager.ViewModel.ViewModelUser
-import com.example.dormitorymanager.databinding.ActivityChartBinding
+import com.example.dormitorymanager.databinding.ActivityNotificationBinding
+import com.example.dormitorymanager.databinding.ActivityRegisterRoomManagerBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
-
-class ChartActivity: AppCompatActivity() {
-    private lateinit var binding: ActivityChartBinding
+class NotificationActivity : AppCompatActivity() {
+    private lateinit var viewModelStudent: ViewModelStudent
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var viewModel: ViewModelUser
-    private lateinit var viewModelStudent: ViewModelStudent
-
+    private lateinit var binding : ActivityNotificationBinding
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityChartBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this).get(ViewModelUser::class.java)
+        binding = ActivityNotificationBinding.inflate(layoutInflater)
         viewModelStudent = ViewModelProvider(this).get(ViewModelStudent::class.java)
-
+        viewModel = ViewModelProvider(this).get(ViewModelUser::class.java)
+        super.onCreate(savedInstanceState)
         setContentView(binding.root)
-//        val sub2 = ChartFragment()
-//        supportFragmentManager.beginTransaction().apply {
-//            replace(R.id.frame_Chartlayout,sub2)
-//            commit()
-//        }
         setupDrawerLayout()
         menu()
     }
@@ -112,21 +104,10 @@ class ChartActivity: AppCompatActivity() {
         binding.navLeftmenu.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> {
-                    if (viewModel.checkLogin()) {
-                        viewModel.checkAdmin { isAdmin ->
-                            if (isAdmin) {
-                                val inten = Intent(this, RoomActivity::class.java)
-                                startActivity(inten)
-                            } else {
-                                val intentuser = Intent(this, RoomRegisterActivity::class.java)
-                                startActivity(intentuser)
-
-                            }
-                        }
-
-                    }
+                    var intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
                 }
-                R.id.info -> {
+                R.id.info->{
                     if (viewModel.checkLogin()) {
                         viewModel.checkAdmin { isAdmin ->
                             if (isAdmin) {
@@ -143,16 +124,17 @@ class ChartActivity: AppCompatActivity() {
                                     if (student != null) {
 
                                         val bundle = Bundle()
-                                        bundle.putString("id", student?._id)
-                                        bundle.putString("fullname", student?.fullname)
-                                        bundle.putString("phone", student?.phone)
-                                        bundle.putString("gender", student?.gender)
-                                        bundle.putString("idStudent", student?.idStudent)
-                                        bundle.putString("classStd", student?.classStd)
-                                        bundle.putString("avatar", student?.avatar)
+                                        bundle.putString("id", student._id)
+                                        bundle.putString("fullname", student.fullname)
+                                        bundle.putString("phone", student.phone)
+                                        bundle.putString("gender", student.gender)
+                                        bundle.putString("idStudent", student.idStudent)
+                                        bundle.putString("classStd", student.classStd)
+                                        bundle.putString("avatar", student.avatar)
                                         val inten = Intent(this, InformationUserActivity::class.java)
 //                                        inten.putExtras(bundle)
                                         startActivity(inten)
+
                                     } else {
                                         // Xử lý khi không tìm thấy sinh viên với studentId tương ứng
                                     }
@@ -173,9 +155,9 @@ class ChartActivity: AppCompatActivity() {
                     startActivity(intent)
                 }
                 R.id.logout -> {
-                    Log.e("dc", viewModel.checkLogin().toString())
+                    Log.e("dc",viewModel.checkLogin().toString())
                     viewModel.Logout()
-                    Log.e("dd", viewModel.checkLogin().toString())
+                    Log.e("dd",viewModel.checkLogin().toString())
                     finish()
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
@@ -189,39 +171,6 @@ class ChartActivity: AppCompatActivity() {
         if (viewModel.checkLogin() == false) {
             header.findViewById<TextView>(R.id.textView).setText("")
         }
-
-//        val bottomNavigationView = binding.bottomNavigationView
-//        bottomNavigationView.setOnItemReselectedListener {
-//            when(it.itemId){
-//                R.id.home->{
-//                    Log.e("aaa",viewModel.checkLogin().toString())
-//                    if(viewModel.checkLogin()){
-//                        replaceFragment(HomeFragment())
-//                    }
-//                    else{
-//                        var intent = Intent(this, LoginActivity::class.java)
-//                        startActivity(intent)
-//                        finish()
-//                    }
-//
-//                }
-//                R.id.room->{
-//                    Log.e("aaa",viewModel.checkLogin().toString())
-//                    if(viewModel.checkLogin()) {
-//                        replaceFragment(RoomFragment())
-//                    }else{
-//                        var intent = Intent(this, LoginActivity::class.java)
-//                        startActivity(intent)
-//                        finish()
-//                    }
-//                }
-//
-//                else -> {
-//
-//                }
-//            }
-//            true
-//        }
 
     }
 
@@ -239,12 +188,4 @@ class ChartActivity: AppCompatActivity() {
         return NavigationUI.navigateUp(navController, drawerLayout)
     }
 
-
-    fun replaceFragment(fragment: Fragment) {
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frame_layout, fragment)
-        fragmentTransaction.commit()
-
-    }
 }

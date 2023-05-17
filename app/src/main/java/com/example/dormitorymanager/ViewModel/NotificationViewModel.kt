@@ -16,10 +16,14 @@ import com.example.dormitorymanager.MainActivity
 import com.example.dormitorymanager.Model.Notification
 import com.example.dormitorymanager.Model.StudentInfor
 import com.example.dormitorymanager.R
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class NotificationViewModel(application: Application): AndroidViewModel(application) {
     private val db = Firebase.firestore
@@ -34,7 +38,11 @@ class NotificationViewModel(application: Application): AndroidViewModel(applicat
     val studentByRoomID: LiveData<List<StudentInfor>>
         get() = _studentByRoomID
 
-    fun getStudentInRoom(roomID: String): MutableList<StudentInfor> {
+    val _notification = MutableLiveData<List<Notification>>()
+    val notification : LiveData<List<Notification>>
+        get() = _notification
+
+    fun getStudentInRoom(roomID: String, callback: (List<String>) -> Unit) {
         collectionRegisterRoom.whereEqualTo("room_id", roomID).get()
             .addOnSuccessListener { registeRoomDoc ->
                 if (!registeRoomDoc.isEmpty) {
@@ -52,44 +60,48 @@ class NotificationViewModel(application: Application): AndroidViewModel(applicat
                                 studentList.add(student)
                             }
                             _studentByRoomID.value = studentList
+
+                            // Gọi callback với danh sách ID của sinh viên
+                            val studentIdList = studentList.map { it._id }
+                            callback(studentIdList)
                         }
                         .addOnFailureListener { }
-                } else
+
+                } else {
                     _studentByRoomID.value = emptyList()
-            }.addOnFailureListener {
-
-            }
-        return _studentByRoomID.value?.toMutableList() ?: mutableListOf()
-    }
-
-    fun sendNotificationToStudents(recipients: List<String>, title: String, message: String) {
-        val notification = Notification(title = title, message = message, id_user = recipients)
-        collectionNotification
-            .add(notification)
-            .addOnSuccessListener { documentReference ->
-                val notificationId = documentReference.id
-                recipients.forEach { recipientId ->
-                    // Tạo intent để mở ứng dụng khi người dùng nhấn vào thông báo
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://myapp.com/notification/$notificationId"))
-                    val pendingIntent = PendingIntent.getActivity(getApplication(), 0, intent, 0)
-
-                    // Xây dựng thông báo
-                    val notificationBuilder = NotificationCompat.Builder(getApplication(), "channel_id")
-                        .setSmallIcon(R.drawable.ic_notifications)
-                        .setContentTitle(title)
-                        .setContentText(message)
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setContentIntent(pendingIntent)
-                        .setAutoCancel(true)
-
-                    // Gửi thông báo
-                    val notificationManager = NotificationManagerCompat.from(getApplication())
-                    val notificationIdInt = notificationId.hashCode()
-                    notificationManager.notify(notificationIdInt, notificationBuilder.build())
+                    callback(emptyList())
                 }
             }
-            .addOnFailureListener { error ->
-                Log.e("notification", "Error sending notification", error)
+            .addOnFailureListener { }
+
+        // Không trả về giá trị từ hàm này nữa
+    }
+
+    fun sendNotificationToStudents(id: String, recipients: List<String>, title: String, message: String, timestamp: Timestamp) {
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
+        coroutineScope.launch {
+            try {
+                val Notification = Notification(id = id,title = title, message = message, id_user = recipients, timestamp = timestamp)
+                val notification = hashMapOf(
+                    "id" to id,
+                    "id_user" to recipients,
+                    "message" to message,
+                    "timestamp" to timestamp,
+                    "title" to title
+                )
+                collectionNotification.document(id).set(notification).addOnSuccessListener{
+                    val list = _notification.value?.toMutableList() ?: mutableListOf()
+                    list.add(Notification)
+                    _notification.value = list
+                    Log.d("TAG", "Đã thêm tài liệu mới với ID: ${it}")
+                }.addOnFailureListener { error ->
+                    Log.e("TAG", "Lỗi khi thêm tài liệu: ", error) }
+
+            }catch (e: Exception){
+
             }
+
+        }
+
     }
 }

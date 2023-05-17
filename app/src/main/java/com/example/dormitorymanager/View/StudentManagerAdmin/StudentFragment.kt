@@ -2,6 +2,7 @@ package com.example.dormitorymanager.View.StudentManagerAdmin
 
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Button
@@ -125,9 +126,10 @@ class StudentFragment : Fragment() {
                         bundle.putString("id", adapter.currentList[position]._id)
                         bundle.putString("fullname", adapter.currentList[position].fullname)
                         bundle.putString("room_id", detail.room_id.toString())
-                        viewModelRoom.getRoomName(adapter.currentList[position]._id){
+                        viewModelRoom.getRoomName(detail.room_id){
                                 roomName->
-                            bundle.putString("room_name", roomName)
+                            bundle.putString("room_name", roomName.toString())
+                            Log.e("roomname",roomName.toString())
                         }
                         bundle.putString("registrationDate", detail.registerDate.toString())
                         bundle.putString("expirationDate", detail.expirationDate.toString())

@@ -1,23 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".View.HomeFragment">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="743dp"
-            android:orientation="vertical">
-        <Button
-                android:id="@+id/btnstart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="250dp"
-                android:backgroundTint="@color/teal_200"
-                android:text="Start" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="743dp"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        </LinearLayout>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/logo"
+            android:layout_width="229dp"
+            android:layout_height="270dp"
+            android:src="@mipmap/ic_dm" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/custom_title"
+            android:paddingTop="7dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:text="DORMITORY MANAGER"
+            android:textColor="#ED9478"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnstart"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/custom_btn"
+            android:drawableLeft="@drawable/ic_started"
+            android:paddingLeft="50dp"
+            android:paddingRight="45dp"
+            android:text="Start"
+            android:textSize="20dp"
+            app:backgroundTint="@null" />
+
+    </LinearLayout>
 
 </FrameLayout>

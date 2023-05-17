@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".View.InformationUser.InformationUserUpdateFragment">
+
+
+    <TextView
+        android:id="@+id/information"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:text="Information"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/fullname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="10dp"
+        android:text="Full Name"
+        android:textColor="@color/black"
+        android:textSize="17dp" />
+
+    <EditText
+        android:id="@+id/edtFullnameSt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/custom_edt"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
+        android:hint="Enter Full Name" />
+
+    <TextView
+        android:id="@+id/phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="10dp"
+        android:text="Phone number"
+        android:textColor="@color/black"
+        android:textSize="17dp" />
+
+
+    <EditText
+        android:id="@+id/phoneSt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/custom_edt"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
+        android:hint="Enter phone number" />
+
+    <TextView
+        android:id="@+id/Gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="10dp"
+        android:text="Gender"
+        android:textColor="@color/black"
+        android:textSize="17dp" />
+
+    <RadioGroup
+        android:id="@+id/rgGenderSt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+
+        <RadioButton
+            android:id="@+id/rbMaleSt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Male"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
+
+        <RadioButton
+            android:id="@+id/rbFemaleSt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Female"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/idSt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="10dp"
+        android:text="ID Student"
+        android:textColor="@color/black"
+        android:textSize="17dp" />
+
+    <EditText
+        android:id="@+id/edtIdSt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/custom_edt"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
+        android:hint="Enter id student" />
+
+    <TextView
+        android:id="@+id/txtclassSt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="10dp"
+        android:text="Class"
+        android:textColor="@color/black"
+        android:textSize="17dp" />
+
+    <EditText
+        android:id="@+id/edtClass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/custom_edt"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
+        android:hint="Enter Class" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal">
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/avata"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="Avatar"-->
+        <!--            android:textColor="@color/black"-->
+        <!--            android:textSize="17dp" />-->
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            app:cardCornerRadius="30dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgSt"
+                android:layout_width="141dp"
+                android:layout_height="124dp"
+                android:layout_marginTop="5dp"
+                app:srcCompat="@drawable/ic_person" />
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/edtAvatar"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_btn"
+            android:layout_marginTop="40dp"
+            android:drawableLeft="@drawable/ic_photo_camera"
+            android:paddingLeft="20dp"
+            android:text="Enter Avatar"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:backgroundTint="@null" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnupdateSt"
+            android:layout_width="190dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/custom_btn"
+            android:drawableLeft="@drawable/ic_update"
+            android:text="Update"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/btndeleteSt"
+            android:layout_width="190dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/custom_btn"
+            android:drawableLeft="@drawable/ic_delete"
+            android:text="Delete"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:backgroundTint="@null" />
+    </LinearLayout>
+
+</LinearLayout>
+
