@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.dormitorymanager.MainActivity
 import com.example.dormitorymanager.Model.Notification
+import com.example.dormitorymanager.Model.Rooms
 import com.example.dormitorymanager.Model.StudentInfor
 import com.example.dormitorymanager.R
 import com.google.firebase.Timestamp
@@ -104,4 +105,22 @@ class NotificationViewModel(application: Application): AndroidViewModel(applicat
         }
 
     }
+
+    fun selectNotification(): MutableList<Notification>{
+        collectionNotification.get().addOnSuccessListener { snapshot ->
+            val notificationList = mutableListOf<Notification>()
+            for (doc in snapshot!!) {
+                val notification = doc.toObject(Notification::class.java)
+                notification.id = doc.id
+                notificationList.add(notification)
+            }
+            _notification.value = notificationList
+        }.addOnFailureListener { exception ->
+            Log.w("TAG", "Error getting documents: ", exception)
+        }
+
+        return _notification.value?.toMutableList() ?: mutableListOf()
+        //chuyển từ multablelivedata sang multablelist
+    }
+
 }

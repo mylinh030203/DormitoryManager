@@ -239,6 +239,19 @@ class RoomFragment : Fragment() {
                     longClickedPosition = -1
                 }
             }
+            R.id.notification->{
+                val position = longClickedPosition
+                if (position != -1) {
+                    val bundle = Bundle()
+                    bundle.putString("id", adapter.currentList[position]._id)
+                    val navController = view?.findNavController()
+                    navController?.navigate(
+                        R.id.action_roomFragment2_to_sendNotificationFragment2,
+                        bundle
+                    )
+                    longClickedPosition = -1
+                }
+            }
         }
         return super.onContextItemSelected(item)
     }

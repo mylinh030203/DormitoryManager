@@ -3,8 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_notification"
-    app:startDestination="@id/sendNotificationFragment">
-
+    app:startDestination="@id/listNotificationFragment">
+    <fragment
+        android:id="@+id/listNotificationFragment"
+        android:name="com.example.dormitorymanager.View.Notification.ListNotificationFragment"
+        android:label="fragment_list_notification"
+        tools:layout="@layout/fragment_list_notification" >
+        <action
+            android:id="@+id/action_listNotificationFragment_to_sendNotificationFragment"
+            app:destination="@id/sendNotificationFragment" />
+    </fragment>
     <fragment
         android:id="@+id/sendNotificationFragment"
         android:name="com.example.dormitorymanager.View.Notification.SendNotificationFragment"

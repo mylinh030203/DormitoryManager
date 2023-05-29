@@ -7,5 +7,8 @@
     <item
         android:id="@+id/member"
         android:title="Member of room" />
+    <item
+        android:id="@+id/notification"
+        android:title="Send notification to member of room" />
 
 </menu>

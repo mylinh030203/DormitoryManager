@@ -5,7 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".View.Notification.SendNotificationFragment">
-
+    <EditText
+        android:id="@+id/idNotification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="ID"
+        android:inputType="text" />
     <EditText
         android:id="@+id/etTitle"
         android:layout_width="match_parent"
@@ -28,5 +33,12 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
         android:text="Send Notification" />
+    <Button
+        android:id="@+id/btnList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:text="List Notification" />
 
 </LinearLayout>
